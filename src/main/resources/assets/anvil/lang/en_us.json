@@ -1,0 +1,13 @@
+{
+  "itemGroup.anvil": "Example Mod Tab",
+  "block.anvil.example_block": "Example Block",
+  "item.anvil.example_item": "Example Item",
+
+  "anvil.configuration.title": "ANVIL Configs",
+  "anvil.configuration.section.anvil.common.toml": "ANVIL Configs",
+  "anvil.configuration.section.anvil.common.toml.title": "ANVIL Configs",
+  "anvil.configuration.items": "Item List",
+  "anvil.configuration.logDirtBlock": "Log Dirt Block",
+  "anvil.configuration.magicNumberIntroduction": "Magic Number Text",
+  "anvil.configuration.magicNumber": "Magic Number"
+}
