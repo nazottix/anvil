@@ -7,6 +7,7 @@ import com.mojang.logging.LogUtils;
 import io.github.nazottix.anvil.data.AnvilDataComponents;
 import io.github.nazottix.anvil.item.AnvilItems;
 import io.github.nazottix.anvil.material.MaterialRegistry;
+import io.github.nazottix.anvil.trait.TraitRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -108,6 +109,9 @@ public class ANVIL {
 
         // 素材レジストリを初期化（初期30種の素材を登録）
         MaterialRegistry.getInstance().initialize();
+
+        // 特性レジストリを初期化（初期30種の特性を登録）
+        TraitRegistry.getInstance().initialize();
     }
 
     /**
