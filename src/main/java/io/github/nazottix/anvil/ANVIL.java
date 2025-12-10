@@ -4,9 +4,12 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
+import io.github.nazottix.anvil.block.AnvilBlocks;
+import io.github.nazottix.anvil.block.entity.AnvilBlockEntities;
 import io.github.nazottix.anvil.data.AnvilDataComponents;
 import io.github.nazottix.anvil.item.AnvilItems;
 import io.github.nazottix.anvil.material.MaterialRegistry;
+import io.github.nazottix.anvil.menu.AnvilMenuTypes;
 import io.github.nazottix.anvil.trait.TraitRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -57,8 +60,11 @@ public class ANVIL {
                     .withTabsBefore(CreativeModeTabs.COMBAT)
                     // タブアイコン（ANVILピッケルを使用）
                     .icon(() -> AnvilItems.ANVIL_PICKAXE.get().getDefaultInstance())
-                    // タブに表示するアイテム（全8種のANVILツール）
+                    // タブに表示するアイテム（ブロックとツール）
                     .displayItems((parameters, output) -> {
+                        // ツールステーションブロック
+                        output.accept(AnvilBlocks.TOOL_STATION_ITEM.get());
+
                         // 全ANVILツールをタブに追加
                         output.accept(AnvilItems.ANVIL_PICKAXE.get());
                         output.accept(AnvilItems.ANVIL_AXE.get());
@@ -81,13 +87,20 @@ public class ANVIL {
         // 共通セットアップイベントを登録
         modEventBus.addListener(this::commonSetup);
 
-        // アイテムクラスを初期化（staticフィールドの初期化を確実に行う）
+        // 各クラスを初期化（staticフィールドの初期化を確実に行う）
         AnvilItems.init();
+        AnvilBlocks.init();
 
         // 各DeferredRegisterをMODイベントバスに登録
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
+
+        // ブロックエンティティを登録
+        AnvilBlockEntities.register(modEventBus);
+
+        // メニュータイプを登録
+        AnvilMenuTypes.register(modEventBus);
 
         // Data Componentsを登録（ツールデータ保存用）
         AnvilDataComponents.register(modEventBus);

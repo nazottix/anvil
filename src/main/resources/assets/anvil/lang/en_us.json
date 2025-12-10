@@ -12,6 +12,8 @@
   "item.anvil.anvil_fishing_rod": "ANVIL Fishing Rod",
   "item.anvil.anvil_shears": "ANVIL Shears",
 
+  "block.anvil.tool_station": "Tool Station",
+
   "tool.anvil.pickaxe": "Pickaxe",
   "tool.anvil.axe": "Axe",
   "tool.anvil.shovel": "Shovel",

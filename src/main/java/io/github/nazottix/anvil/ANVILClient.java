@@ -1,11 +1,14 @@
 package io.github.nazottix.anvil;
 
+import io.github.nazottix.anvil.client.screen.ToolStationScreen;
+import io.github.nazottix.anvil.menu.AnvilMenuTypes;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
@@ -36,6 +39,17 @@ public class ANVILClient {
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         ANVIL.LOGGER.info("ANVIL: クライアントセットアップ完了");
-        // TODO: Phase 2以降でカスタムUI登録などを追加
+    }
+
+    /**
+     * メニュースクリーン登録イベント
+     *
+     * メニュータイプとスクリーンの関連付けを行います。
+     */
+    @SubscribeEvent
+    static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
+        // ツールステーションスクリーンを登録
+        event.register(AnvilMenuTypes.TOOL_STATION.get(), ToolStationScreen::new);
+        ANVIL.LOGGER.info("ANVIL: メニュースクリーンを登録");
     }
 }

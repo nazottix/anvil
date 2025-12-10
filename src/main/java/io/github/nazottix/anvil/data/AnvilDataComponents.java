@@ -1,6 +1,7 @@
 package io.github.nazottix.anvil.data;
 
 import io.github.nazottix.anvil.ANVIL;
+import io.github.nazottix.anvil.assembly.CalculatedStats;
 import io.github.nazottix.anvil.data.component.AnvilToolData;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -45,6 +46,22 @@ public class AnvilDataComponents {
                             .persistent(AnvilToolData.CODEC)
                             // ネットワーク同期用StreamCodec
                             .networkSynchronized(AnvilToolData.STREAM_CODEC)
+                            .build()
+            );
+
+    /**
+     * 計算済みステータスコンポーネント
+     *
+     * ツールの計算されたステータス（耐久値、採掘速度、攻撃力など）を保存します。
+     * これはパーツ構成から計算された最終値をキャッシュするために使用されます。
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<CalculatedStats>> CALCULATED_STATS =
+            DATA_COMPONENTS.register("calculated_stats", () ->
+                    DataComponentType.<CalculatedStats>builder()
+                            // 永続化用Codec
+                            .persistent(CalculatedStats.CODEC)
+                            // ネットワーク同期用StreamCodec
+                            .networkSynchronized(CalculatedStats.STREAM_CODEC)
                             .build()
             );
 
