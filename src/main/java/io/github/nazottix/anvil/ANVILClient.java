@@ -1,6 +1,5 @@
 package io.github.nazottix.anvil;
 
-import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -10,22 +9,33 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
-// This class will not load on dedicated servers. Accessing client side code from here is safe.
+/**
+ * ANVILクライアント専用クラス
+ *
+ * このクラスは専用サーバーでは読み込まれません。
+ * クライアント専用のコード（UI、レンダリングなど）はここに記述します。
+ */
 @Mod(value = ANVIL.MODID, dist = Dist.CLIENT)
-// You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
 @EventBusSubscriber(modid = ANVIL.MODID, value = Dist.CLIENT)
 public class ANVILClient {
+
+    /**
+     * クライアント専用コンストラクタ
+     *
+     * @param container MODコンテナ
+     */
     public ANVILClient(ModContainer container) {
-        // Allows NeoForge to create a config screen for this mod's configs.
-        // The config screen is accessed by going to the Mods screen > clicking on your mod > clicking on config.
-        // Do not forget to add translations for your config options to the en_us.json file.
+        // NeoForgeの設定画面を有効化
+        // Mods画面 > ANVILを選択 > 設定ボタンでアクセス可能
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 
+    /**
+     * クライアントセットアップイベント - クライアント専用の初期化処理
+     */
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
-        // Some client setup code
-        ANVIL.LOGGER.info("HELLO FROM CLIENT SETUP");
-        ANVIL.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        ANVIL.LOGGER.info("ANVIL: クライアントセットアップ完了");
+        // TODO: Phase 2以降でカスタムUI登録などを追加
     }
 }

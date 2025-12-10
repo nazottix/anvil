@@ -4,19 +4,13 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.core.registries.BuiltInRegistries;
+import io.github.nazottix.anvil.data.AnvilDataComponents;
+import io.github.nazottix.anvil.item.AnvilItems;
+import io.github.nazottix.anvil.material.MaterialRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -24,94 +18,103 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-// The value here should match an entry in the META-INF/neoforge.mods.toml file
+/**
+ * ANVIL (Advanced Nexus of Variable Implement Leverage) メインクラス
+ *
+ * Minecraft 1.21.1向けのNeoForge modで、PvEツールのカスタマイズに焦点を当てています。
+ * Tinkers' ConstructやPath of Exile等に触発された深いツールクラフティングと
+ * レベリングシステムを提供します。
+ */
 @Mod(ANVIL.MODID)
 public class ANVIL {
-    // Define mod id in a common place for everything to reference
+    // MOD ID - neoforge.mods.tomlのエントリと一致する必要があります
     public static final String MODID = "anvil";
-    // Directly reference a slf4j logger
+
+    // ロガー - デバッグやエラー出力に使用
     public static final Logger LOGGER = LogUtils.getLogger();
-    // Create a Deferred Register to hold Blocks which will all be registered under the "anvil" namespace
+
+    // ブロック登録用のDeferredRegister
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
-    // Create a Deferred Register to hold Items which will all be registered under the "anvil" namespace
+
+    // アイテム登録用のDeferredRegister
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
-    // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "anvil" namespace
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
-    // Creates a new Block with the id "anvil:example_block", combining the namespace and path
-    public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
-    // Creates a new BlockItem with the id "anvil:example_block", combining the namespace and path
-    public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
+    // クリエイティブタブ登録用のDeferredRegister
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
-    // Creates a new food item with the id "anvil:example_id", nutrition 1 and saturation 2
-    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
-            .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
+    // ANVILクリエイティブタブ - MODのアイテムを表示するタブ
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ANVIL_TAB =
+            CREATIVE_MODE_TABS.register("anvil_tab", () -> CreativeModeTab.builder()
+                    // タブのタイトル（ローカライズキー）
+                    .title(Component.translatable("itemGroup.anvil"))
+                    // 戦闘タブの後に配置
+                    .withTabsBefore(CreativeModeTabs.COMBAT)
+                    // タブアイコン（ANVILピッケルを使用）
+                    .icon(() -> AnvilItems.ANVIL_PICKAXE.get().getDefaultInstance())
+                    // タブに表示するアイテム（全8種のANVILツール）
+                    .displayItems((parameters, output) -> {
+                        // 全ANVILツールをタブに追加
+                        output.accept(AnvilItems.ANVIL_PICKAXE.get());
+                        output.accept(AnvilItems.ANVIL_AXE.get());
+                        output.accept(AnvilItems.ANVIL_SHOVEL.get());
+                        output.accept(AnvilItems.ANVIL_SWORD.get());
+                        output.accept(AnvilItems.ANVIL_HOE.get());
+                        output.accept(AnvilItems.ANVIL_BOW.get());
+                        output.accept(AnvilItems.ANVIL_FISHING_ROD.get());
+                        output.accept(AnvilItems.ANVIL_SHEARS.get());
+                    })
+                    .build());
 
-    // Creates a creative tab with the id "anvil:example_tab" for the example item, that is placed after the combat tab
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.anvil")) //The language key for the title of your CreativeModeTab
-            .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
-            .displayItems((parameters, output) -> {
-                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
-            }).build());
-
-    // The constructor for the mod class is the first code that is run when your mod is loaded.
-    // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
+    /**
+     * MODコンストラクタ - MODがロードされたときに最初に実行されるコード
+     *
+     * @param modEventBus MODイベントバス（登録やライフサイクルイベント用）
+     * @param modContainer MODコンテナ（設定登録用）
+     */
     public ANVIL(IEventBus modEventBus, ModContainer modContainer) {
-        // Register the commonSetup method for modloading
+        // 共通セットアップイベントを登録
         modEventBus.addListener(this::commonSetup);
 
-        // Register the Deferred Register to the mod event bus so blocks get registered
+        // アイテムクラスを初期化（staticフィールドの初期化を確実に行う）
+        AnvilItems.init();
+
+        // 各DeferredRegisterをMODイベントバスに登録
         BLOCKS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so items get registered
         ITEMS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
 
-        // Register ourselves for server and other game events we are interested in.
-        // Note that this is necessary if and only if we want *this* class (ANVIL) to respond directly to events.
-        // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
+        // Data Componentsを登録（ツールデータ保存用）
+        AnvilDataComponents.register(modEventBus);
+
+        // ゲームイベント（サーバー起動など）を受け取るために登録
         NeoForge.EVENT_BUS.register(this);
 
-        // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
-
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
+        // 設定ファイルを登録
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
+    /**
+     * 共通セットアップ - クライアント/サーバー両方で実行される初期化処理
+     */
     private void commonSetup(FMLCommonSetupEvent event) {
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
+        LOGGER.info("ANVIL: 共通セットアップを開始");
+        LOGGER.info("ANVIL: 最大レベル = {}", Config.MAX_LEVEL.get());
+        LOGGER.info("ANVIL: XP倍率 = {}", Config.XP_MULTIPLIER.get());
 
-        if (Config.LOG_DIRT_BLOCK.getAsBoolean()) {
-            LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
-        }
-
-        LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
-
-        Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
+        // 素材レジストリを初期化（初期30種の素材を登録）
+        MaterialRegistry.getInstance().initialize();
     }
 
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(EXAMPLE_BLOCK_ITEM);
-        }
-    }
-
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
+    /**
+     * サーバー起動イベント - サーバーが起動したときに実行
+     */
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        LOGGER.info("ANVIL: サーバー起動");
     }
 }
