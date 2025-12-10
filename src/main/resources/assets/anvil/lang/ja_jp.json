@@ -214,5 +214,16 @@
   "trait_category.anvil.defense": "防御系",
   "trait_category.anvil.utility": "ユーティリティ",
   "trait_category.anvil.environmental": "環境適応",
-  "trait_category.anvil.synergy": "シナジー"
+  "trait_category.anvil.synergy": "シナジー",
+
+  "_comment_leveling": "レベリングシステム",
+  "tooltip.anvil.xp_progress": "XP: %d / %d",
+  "tooltip.anvil.total_xp": "累計XP: %s",
+  "message.anvil.level_up": "§6%s §eがレベルアップ！ §6Lv.%d§e になりました！",
+  "message.anvil.milestone": "§d✦ マイルストーン達成！ §b%s",
+  "message.anvil.milestone.stat_selection": "ステータスを選択してください！",
+  "message.anvil.milestone.trait_selection": "新しい特性を選択してください！",
+  "message.anvil.milestone.mod_slot": "MODスロットを獲得しました！",
+  "message.anvil.milestone.core_expansion": "コアボックスが拡張されました！",
+  "message.anvil.milestone.special_reward": "特別報酬を解放しました！"
 }

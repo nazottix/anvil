@@ -32,6 +32,8 @@ public record AnvilToolData(
         int level,
         // 現在の経験値（次のレベルまでの累積値）
         long currentXp,
+        // 累計経験値（全て獲得したXPの合計）
+        long totalXp,
         // ツールを構成するパーツのリスト
         List<ToolPart> parts
 ) {
@@ -39,7 +41,7 @@ public record AnvilToolData(
      * デフォルト値でインスタンスを作成するための定数
      * ピッケルタイプ、レベル1、経験値0、パーツなし
      */
-    public static final AnvilToolData DEFAULT = new AnvilToolData("pickaxe", 1, 0L, List.of());
+    public static final AnvilToolData DEFAULT = new AnvilToolData("pickaxe", 1, 0L, 0L, List.of());
 
     /**
      * Codec - データの保存/読み込み用（NBT、JSON）
@@ -55,6 +57,8 @@ public record AnvilToolData(
                     Codec.INT.optionalFieldOf("level", 1).forGetter(AnvilToolData::level),
                     // "current_xp"フィールド: long型、デフォルト値0
                     Codec.LONG.optionalFieldOf("current_xp", 0L).forGetter(AnvilToolData::currentXp),
+                    // "total_xp"フィールド: long型、デフォルト値0
+                    Codec.LONG.optionalFieldOf("total_xp", 0L).forGetter(AnvilToolData::totalXp),
                     // "parts"フィールド: ToolPartのリスト、デフォルト値は空リスト
                     ToolPart.CODEC.listOf().optionalFieldOf("parts", List.of()).forGetter(AnvilToolData::parts)
             ).apply(instance, AnvilToolData::new)
@@ -65,19 +69,32 @@ public record AnvilToolData(
      *
      * バイナリ形式でデータを送受信するためのコーデック。
      * Codecより高速だが、人間が読める形式ではありません。
+     *
+     * 注意: StreamCodec.compositeは最大6フィールドまでしかサポートしないため、
+     * 5フィールド以上の場合はカスタム実装を使用します。
      */
-    public static final StreamCodec<ByteBuf, AnvilToolData> STREAM_CODEC = StreamCodec.composite(
-            // toolType: String型
-            ByteBufCodecs.STRING_UTF8, AnvilToolData::toolType,
-            // level: int型をVarInt形式で送信
-            ByteBufCodecs.VAR_INT, AnvilToolData::level,
-            // currentXp: long型をVarLong形式で送信
-            ByteBufCodecs.VAR_LONG, AnvilToolData::currentXp,
-            // parts: ToolPartのリスト
-            ToolPart.STREAM_CODEC.apply(ByteBufCodecs.list()), AnvilToolData::parts,
-            // コンストラクタ参照
-            AnvilToolData::new
-    );
+    public static final StreamCodec<ByteBuf, AnvilToolData> STREAM_CODEC = new StreamCodec<>() {
+        @Override
+        public AnvilToolData decode(ByteBuf buf) {
+            // 各フィールドを順番にデコード
+            String toolType = ByteBufCodecs.STRING_UTF8.decode(buf);
+            int level = ByteBufCodecs.VAR_INT.decode(buf);
+            long currentXp = ByteBufCodecs.VAR_LONG.decode(buf);
+            long totalXp = ByteBufCodecs.VAR_LONG.decode(buf);
+            List<ToolPart> parts = ToolPart.STREAM_CODEC.apply(ByteBufCodecs.list()).decode(buf);
+            return new AnvilToolData(toolType, level, currentXp, totalXp, parts);
+        }
+
+        @Override
+        public void encode(ByteBuf buf, AnvilToolData data) {
+            // 各フィールドを順番にエンコード
+            ByteBufCodecs.STRING_UTF8.encode(buf, data.toolType());
+            ByteBufCodecs.VAR_INT.encode(buf, data.level());
+            ByteBufCodecs.VAR_LONG.encode(buf, data.currentXp());
+            ByteBufCodecs.VAR_LONG.encode(buf, data.totalXp());
+            ToolPart.STREAM_CODEC.apply(ByteBufCodecs.list()).encode(buf, data.parts());
+        }
+    };
 
     /**
      * 新しいツールデータを作成するビルダー
@@ -87,7 +104,8 @@ public record AnvilToolData(
      * @return 新しいAnvilToolData（レベル1、経験値0）
      */
     public static AnvilToolData create(String toolType, List<ToolPart> parts) {
-        return new AnvilToolData(toolType, 1, 0L, parts);
+        // totalXpを0で初期化
+        return new AnvilToolData(toolType, 1, 0L, 0L, parts);
     }
 
     /**
@@ -100,7 +118,8 @@ public record AnvilToolData(
      * @return 経験値が追加された新しいAnvilToolData
      */
     public AnvilToolData addXp(long xp) {
-        return new AnvilToolData(this.toolType, this.level, this.currentXp + xp, this.parts);
+        // currentXpとtotalXpの両方に加算
+        return new AnvilToolData(this.toolType, this.level, this.currentXp + xp, this.totalXp + xp, this.parts);
     }
 
     /**
@@ -111,7 +130,22 @@ public record AnvilToolData(
      * @return 新しいAnvilToolData
      */
     public AnvilToolData levelUp(int newLevel, long remainingXp) {
-        return new AnvilToolData(this.toolType, newLevel, remainingXp, this.parts);
+        // totalXpはそのまま維持
+        return new AnvilToolData(this.toolType, newLevel, remainingXp, this.totalXp, this.parts);
+    }
+
+    /**
+     * XP情報を更新した新しいインスタンスを返す
+     *
+     * LevelingManagerから使用される、レベル、現在XP、累計XPを一括更新するメソッド
+     *
+     * @param newLevel 新しいレベル
+     * @param newCurrentXp 新しい現在XP
+     * @param newTotalXp 新しい累計XP
+     * @return 新しいAnvilToolData
+     */
+    public AnvilToolData withXp(int newLevel, long newCurrentXp, long newTotalXp) {
+        return new AnvilToolData(this.toolType, newLevel, newCurrentXp, newTotalXp, this.parts);
     }
 
     /**
@@ -121,7 +155,8 @@ public record AnvilToolData(
      * @return 新しいAnvilToolData
      */
     public AnvilToolData withParts(List<ToolPart> newParts) {
-        return new AnvilToolData(this.toolType, this.level, this.currentXp, newParts);
+        // totalXpを維持
+        return new AnvilToolData(this.toolType, this.level, this.currentXp, this.totalXp, newParts);
     }
 
     /**

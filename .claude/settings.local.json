@@ -4,7 +4,10 @@
       "Bash(./gradlew build:*)",
       "Bash(gradlew build:*)",
       "Bash(cmd /c:*)",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "Bash(.gradlew.bat build --console=plain)",
+      "Bash(Select-String -Pattern \"error:|Error:|cannot find|symbol:\")",
+      "Bash(./gradlew.bat build --console=plain)"
     ]
   }
 }

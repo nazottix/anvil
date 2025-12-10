@@ -214,5 +214,16 @@
   "trait_category.anvil.defense": "Defense",
   "trait_category.anvil.utility": "Utility",
   "trait_category.anvil.environmental": "Environmental",
-  "trait_category.anvil.synergy": "Synergy"
+  "trait_category.anvil.synergy": "Synergy",
+
+  "_comment_leveling": "Leveling System",
+  "tooltip.anvil.xp_progress": "XP: %d / %d",
+  "tooltip.anvil.total_xp": "Total XP: %s",
+  "message.anvil.level_up": "§6%s §eleveled up to §6Lv.%d§e!",
+  "message.anvil.milestone": "§d✦ Milestone Reached! §b%s",
+  "message.anvil.milestone.stat_selection": "Choose a stat boost!",
+  "message.anvil.milestone.trait_selection": "Choose a new trait!",
+  "message.anvil.milestone.mod_slot": "Gained a new MOD slot!",
+  "message.anvil.milestone.core_expansion": "Core box expanded!",
+  "message.anvil.milestone.special_reward": "Special reward unlocked!"
 }

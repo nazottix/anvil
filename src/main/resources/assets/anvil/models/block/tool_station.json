@@ -1,0 +1,9 @@
+{
+  "_comment": "ツールステーションブロックモデル - 仮実装としてクラフティングテーブルベース",
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "minecraft:block/crafting_table_top",
+    "bottom": "minecraft:block/oak_planks",
+    "side": "minecraft:block/crafting_table_side"
+  }
+}
