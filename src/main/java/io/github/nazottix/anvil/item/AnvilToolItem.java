@@ -1,11 +1,15 @@
 package io.github.nazottix.anvil.item;
 
+import io.github.nazottix.anvil.assembly.CalculatedStats;
+import io.github.nazottix.anvil.client.ui.AnvilColors;
+import io.github.nazottix.anvil.client.ui.ToolInfoRenderer;
 import io.github.nazottix.anvil.data.AnvilDataComponents;
 import io.github.nazottix.anvil.data.component.AnvilToolData;
 import io.github.nazottix.anvil.data.component.ToolPart;
 import io.github.nazottix.anvil.tool.ToolType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -79,6 +83,7 @@ public class AnvilToolItem extends Item {
      * ツールチップを追加
      *
      * アイテムにカーソルを合わせた時に表示される情報を追加します。
+     * Shiftキーで詳細表示（ステータス、パーツ情報）を表示します。
      *
      * @param stack アイテムスタック
      * @param context ツールチップコンテキスト
@@ -92,44 +97,96 @@ public class AnvilToolItem extends Item {
 
         // ツールデータを取得
         AnvilToolData data = getToolData(stack);
+        CalculatedStats stats = getCalculatedStats(stack);
 
-        // ツールタイプを表示
-        tooltipComponents.add(Component.translatable("tooltip.anvil.tool_type",
-                        Component.translatable(toolType.getTranslationKey()))
-                .withStyle(ChatFormatting.GRAY));
+        // Shift押下または詳細モードの場合
+        boolean showDetails = tooltipFlag.isAdvanced() || tooltipFlag.hasShiftDown();
 
-        // レベルを表示
-        tooltipComponents.add(Component.translatable("tooltip.anvil.level", data.level())
-                .withStyle(ChatFormatting.GREEN));
+        if (showDetails) {
+            // 詳細ツールチップ（ToolInfoRendererを使用）
+            tooltipComponents.addAll(ToolInfoRenderer.getDetailedTooltip(stack, toolType));
 
-        // 経験値を表示
-        tooltipComponents.add(Component.translatable("tooltip.anvil.xp", data.currentXp())
-                .withStyle(ChatFormatting.AQUA));
+            // 空行
+            tooltipComponents.add(Component.empty());
 
-        // パーツ情報を表示（Shiftキーで詳細表示）
-        if (tooltipFlag.isAdvanced() || tooltipFlag.hasShiftDown()) {
-            if (!data.parts().isEmpty()) {
-                tooltipComponents.add(Component.translatable("tooltip.anvil.parts")
-                        .withStyle(ChatFormatting.YELLOW));
-
-                for (ToolPart part : data.parts()) {
-                    // パーツ情報: [グレード] パーツタイプ - 素材
-                    tooltipComponents.add(Component.literal("  ")
-                            .append(Component.literal("[" + part.grade().toUpperCase() + "] ")
-                                    .withStyle(ChatFormatting.LIGHT_PURPLE))
-                            .append(Component.translatable("part.anvil." + part.partType()))
-                            .append(Component.literal(" - "))
-                            .append(Component.literal(part.materialId()))
-                            .withStyle(ChatFormatting.GRAY));
-                }
-            }
+            // パーツ情報
+            tooltipComponents.addAll(ToolInfoRenderer.getPartsTooltip(data));
         } else {
-            // Shiftキーで詳細表示のヒント
-            if (!data.parts().isEmpty()) {
-                tooltipComponents.add(Component.translatable("tooltip.anvil.shift_for_details")
-                        .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+            // 簡易ツールチップ
+            // ツールタイプ
+            tooltipComponents.add(Component.translatable("tooltip.anvil.tool_type",
+                            Component.translatable(toolType.getTranslationKey()))
+                    .withStyle(ChatFormatting.GRAY));
+
+            // レベルをカラフルに表示
+            tooltipComponents.add(Component.literal("Lv.")
+                    .withStyle(Style.EMPTY.withColor(AnvilColors.toRGB(AnvilColors.LEVEL_COLOR)))
+                    .append(Component.literal(String.valueOf(data.level()))
+                            .withStyle(ChatFormatting.WHITE)));
+
+            // 主要ステータス（ツールタイプに応じて）
+            addQuickStats(tooltipComponents, stats);
+
+            // Shiftキーでの詳細表示ヒント
+            tooltipComponents.add(Component.translatable("tooltip.anvil.shift_for_details")
+                    .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+        }
+    }
+
+    /**
+     * 簡易ステータス表示を追加
+     */
+    private void addQuickStats(List<Component> tooltip, CalculatedStats stats) {
+        switch (toolType) {
+            case PICKAXE, AXE, SHOVEL, HOE -> {
+                // 採掘ツール: 採掘速度
+                tooltip.add(Component.literal("  ")
+                        .append(Component.translatable("tooltip.anvil.mining_speed_short"))
+                        .append(Component.literal(": "))
+                        .append(Component.literal(String.format("%.1f", stats.miningSpeed()))
+                                .withStyle(Style.EMPTY.withColor(AnvilColors.toRGB(AnvilColors.MINING_SPEED_COLOR)))));
+            }
+            case SWORD -> {
+                // 剣: 攻撃力
+                tooltip.add(Component.literal("  ")
+                        .append(Component.translatable("tooltip.anvil.attack_damage_short"))
+                        .append(Component.literal(": "))
+                        .append(Component.literal(String.format("%.1f", stats.attackDamage()))
+                                .withStyle(Style.EMPTY.withColor(AnvilColors.toRGB(AnvilColors.ATTACK_DAMAGE_COLOR)))));
+            }
+            case BOW -> {
+                // 弓: 引き速度
+                tooltip.add(Component.literal("  ")
+                        .append(Component.translatable("tooltip.anvil.draw_speed_short"))
+                        .append(Component.literal(": "))
+                        .append(Component.literal(String.format("%.1f", stats.drawSpeed()))
+                                .withStyle(Style.EMPTY.withColor(AnvilColors.toRGB(AnvilColors.ATTACK_SPEED_COLOR)))));
+            }
+            case FISHING_ROD -> {
+                // 釣り竿: 釣り効率
+                tooltip.add(Component.literal("  ")
+                        .append(Component.translatable("tooltip.anvil.fishing_short"))
+                        .append(Component.literal(": "))
+                        .append(Component.literal(String.format("%.1f", stats.fishingEfficiency()))
+                                .withStyle(Style.EMPTY.withColor(AnvilColors.toRGB(AnvilColors.TECH_CYAN)))));
+            }
+            case SHEARS -> {
+                // ハサミ: 切断効率
+                tooltip.add(Component.literal("  ")
+                        .append(Component.translatable("tooltip.anvil.cutting_short"))
+                        .append(Component.literal(": "))
+                        .append(Component.literal(String.format("%.1f", stats.cuttingEfficiency()))
+                                .withStyle(Style.EMPTY.withColor(AnvilColors.toRGB(AnvilColors.MINING_SPEED_COLOR)))));
             }
         }
+    }
+
+    /**
+     * CalculatedStatsを取得
+     */
+    public static CalculatedStats getCalculatedStats(ItemStack stack) {
+        CalculatedStats stats = stack.get(AnvilDataComponents.CALCULATED_STATS.get());
+        return stats != null ? stats : CalculatedStats.DEFAULT;
     }
 
     /**
