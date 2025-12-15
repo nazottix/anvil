@@ -431,5 +431,18 @@
   "fusion.anvil.endo.small": "小エンドー",
   "fusion.anvil.endo.medium": "中エンドー",
   "fusion.anvil.endo.large": "大エンドー",
-  "fusion.anvil.endo.legendary": "極大エンドー"
+  "fusion.anvil.endo.legendary": "極大エンドー",
+
+  "_comment_ui": "UI要素",
+  "gui.anvil.apply": "適用",
+  "gui.anvil.reset": "リセット",
+  "gui.anvil.clear": "クリア",
+  "gui.anvil.close": "閉じる",
+  "gui.anvil.save": "保存",
+  "gui.anvil.cancel": "キャンセル",
+  "gui.anvil.confirm": "確認",
+
+  "gui.anvil.mod_customization": "MODカスタマイズ",
+  "gui.anvil.grid_customization": "コアボックスカスタマイズ",
+  "gui.anvil.tool_station": "ツールステーション"
 }

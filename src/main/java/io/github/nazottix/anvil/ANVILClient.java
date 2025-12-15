@@ -1,5 +1,7 @@
 package io.github.nazottix.anvil;
 
+import io.github.nazottix.anvil.client.screen.GridCustomizationScreen;
+import io.github.nazottix.anvil.client.screen.ModCustomizationScreen;
 import io.github.nazottix.anvil.client.screen.ToolStationScreen;
 import io.github.nazottix.anvil.menu.AnvilMenuTypes;
 import net.neoforged.api.distmarker.Dist;
@@ -50,6 +52,13 @@ public class ANVILClient {
     static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
         // ツールステーションスクリーンを登録
         event.register(AnvilMenuTypes.TOOL_STATION.get(), ToolStationScreen::new);
-        ANVIL.LOGGER.info("ANVIL: メニュースクリーンを登録");
+
+        // MODカスタマイズスクリーンを登録
+        event.register(AnvilMenuTypes.MOD_CUSTOMIZATION.get(), ModCustomizationScreen::new);
+
+        // グリッドカスタマイズスクリーンを登録
+        event.register(AnvilMenuTypes.GRID_CUSTOMIZATION.get(), GridCustomizationScreen::new);
+
+        ANVIL.LOGGER.info("ANVIL: メニュースクリーンを登録（3種）");
     }
 }

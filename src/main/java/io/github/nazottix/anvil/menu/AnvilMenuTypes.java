@@ -35,6 +35,28 @@ public class AnvilMenuTypes {
                     () -> IMenuTypeExtension.create(ToolStationMenu::new)
             );
 
+    /**
+     * MODカスタマイズメニュータイプ
+     *
+     * ツールにMODを装着・変更する画面のメニュータイプです。
+     * Warframe風のMODスロットシステムを実装。
+     */
+    public static final DeferredHolder<MenuType<?>, MenuType<ModCustomizationMenu>> MOD_CUSTOMIZATION =
+            MENU_TYPES.register("mod_customization",
+                    () -> IMenuTypeExtension.create(ModCustomizationMenu::new)
+            );
+
+    /**
+     * グリッドカスタマイズメニュータイプ
+     *
+     * ツールのコアボックスにモジュールを配置する画面のメニュータイプです。
+     * Path of Exile風のテトリス配置システムを実装。
+     */
+    public static final DeferredHolder<MenuType<?>, MenuType<GridCustomizationMenu>> GRID_CUSTOMIZATION =
+            MENU_TYPES.register("grid_customization",
+                    () -> IMenuTypeExtension.create(GridCustomizationMenu::new)
+            );
+
     // ============================================
     // 登録
     // ============================================

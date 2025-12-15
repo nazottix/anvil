@@ -431,5 +431,18 @@
   "fusion.anvil.endo.small": "Small Endo",
   "fusion.anvil.endo.medium": "Medium Endo",
   "fusion.anvil.endo.large": "Large Endo",
-  "fusion.anvil.endo.legendary": "Legendary Endo"
+  "fusion.anvil.endo.legendary": "Legendary Endo",
+
+  "_comment_ui": "UI Elements",
+  "gui.anvil.apply": "Apply",
+  "gui.anvil.reset": "Reset",
+  "gui.anvil.clear": "Clear",
+  "gui.anvil.close": "Close",
+  "gui.anvil.save": "Save",
+  "gui.anvil.cancel": "Cancel",
+  "gui.anvil.confirm": "Confirm",
+
+  "gui.anvil.mod_customization": "MOD Customization",
+  "gui.anvil.grid_customization": "Core Box Customization",
+  "gui.anvil.tool_station": "Tool Station"
 }
