@@ -77,6 +77,13 @@ public final class SkillTreeRegistry {
     }
 
     /**
+     * IDでツリーを取得（getのエイリアス）
+     */
+    public static SkillTree getTree(ResourceLocation id) {
+        return TREES.get(id);
+    }
+
+    /**
      * ツールタイプでツリーを取得
      */
     public static SkillTree getForToolType(String toolType) {
