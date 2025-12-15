@@ -3,6 +3,8 @@ package io.github.nazottix.anvil.data;
 import io.github.nazottix.anvil.ANVIL;
 import io.github.nazottix.anvil.assembly.CalculatedStats;
 import io.github.nazottix.anvil.data.component.AnvilToolData;
+import io.github.nazottix.anvil.grid.GridConfiguration;
+import io.github.nazottix.anvil.mod.ModConfiguration;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.bus.api.IEventBus;
@@ -62,6 +64,40 @@ public class AnvilDataComponents {
                             .persistent(CalculatedStats.CODEC)
                             // ネットワーク同期用StreamCodec
                             .networkSynchronized(CalculatedStats.STREAM_CODEC)
+                            .build()
+            );
+
+    /**
+     * MOD構成コンポーネント
+     *
+     * ツールに装着されているMODの構成（オーラ、通常MOD、エクシルス）を保存します。
+     * 容量システム、極性システムの情報も含みます。
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ModConfiguration>> MOD_CONFIG =
+            DATA_COMPONENTS.register("mod_config", () ->
+                    DataComponentType.<ModConfiguration>builder()
+                            // 永続化用Codec
+                            .persistent(ModConfiguration.CODEC)
+                            // ネットワーク同期用StreamCodec
+                            .networkSynchronized(ModConfiguration.STREAM_CODEC)
+                            .build()
+            );
+
+    /**
+     * グリッド構成コンポーネント
+     *
+     * ツールのコアボックス（グリッドモジュール配置）構成を保存します。
+     * モジュールの配置位置、回転、重量システムの情報を含みます。
+     *
+     * 仕様書参照: docs/04_グリッド配置システム.md
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<GridConfiguration>> GRID_CONFIG =
+            DATA_COMPONENTS.register("grid_config", () ->
+                    DataComponentType.<GridConfiguration>builder()
+                            // 永続化用Codec
+                            .persistent(GridConfiguration.CODEC)
+                            // ネットワーク同期用StreamCodec
+                            .networkSynchronized(GridConfiguration.STREAM_CODEC)
                             .build()
             );
 
