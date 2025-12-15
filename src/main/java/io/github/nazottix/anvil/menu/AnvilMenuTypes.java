@@ -57,6 +57,17 @@ public class AnvilMenuTypes {
                     () -> IMenuTypeExtension.create(GridCustomizationMenu::new)
             );
 
+    /**
+     * スキルツリーメニュータイプ
+     *
+     * ツールのスキルツリー画面のメニュータイプです。
+     * Path of Exile風の大規模スキルツリーシステムを実装。
+     */
+    public static final DeferredHolder<MenuType<?>, MenuType<SkillTreeMenu>> SKILL_TREE =
+            MENU_TYPES.register("skill_tree",
+                    () -> IMenuTypeExtension.create(SkillTreeMenu::new)
+            );
+
     // ============================================
     // 登録
     // ============================================

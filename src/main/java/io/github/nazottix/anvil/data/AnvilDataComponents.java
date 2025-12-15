@@ -5,6 +5,7 @@ import io.github.nazottix.anvil.assembly.CalculatedStats;
 import io.github.nazottix.anvil.data.component.AnvilToolData;
 import io.github.nazottix.anvil.grid.GridConfiguration;
 import io.github.nazottix.anvil.mod.ModConfiguration;
+import io.github.nazottix.anvil.skill.SkillAllocation;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.bus.api.IEventBus;
@@ -98,6 +99,24 @@ public class AnvilDataComponents {
                             .persistent(GridConfiguration.CODEC)
                             // ネットワーク同期用StreamCodec
                             .networkSynchronized(GridConfiguration.STREAM_CODEC)
+                            .build()
+            );
+
+    /**
+     * スキル配分コンポーネント
+     *
+     * ツールのスキルツリー配分（解放済みノード、装着ジュエル）を保存します。
+     * Path of Exile風のスキルツリーシステムで使用されます。
+     *
+     * 仕様書参照: docs/03_スキルツリーシステム.md
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<SkillAllocation>> SKILL_ALLOCATION =
+            DATA_COMPONENTS.register("skill_allocation", () ->
+                    DataComponentType.<SkillAllocation>builder()
+                            // 永続化用Codec
+                            .persistent(SkillAllocation.CODEC)
+                            // ネットワーク同期用StreamCodec
+                            .networkSynchronized(SkillAllocation.STREAM_CODEC)
                             .build()
             );
 

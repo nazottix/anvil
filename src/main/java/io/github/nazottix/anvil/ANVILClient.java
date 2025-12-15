@@ -2,6 +2,7 @@ package io.github.nazottix.anvil;
 
 import io.github.nazottix.anvil.client.screen.GridCustomizationScreen;
 import io.github.nazottix.anvil.client.screen.ModCustomizationScreen;
+import io.github.nazottix.anvil.client.screen.SkillTreeScreen;
 import io.github.nazottix.anvil.client.screen.ToolStationScreen;
 import io.github.nazottix.anvil.menu.AnvilMenuTypes;
 import net.neoforged.api.distmarker.Dist;
@@ -59,6 +60,9 @@ public class ANVILClient {
         // グリッドカスタマイズスクリーンを登録
         event.register(AnvilMenuTypes.GRID_CUSTOMIZATION.get(), GridCustomizationScreen::new);
 
-        ANVIL.LOGGER.info("ANVIL: メニュースクリーンを登録（3種）");
+        // スキルツリースクリーンを登録
+        event.register(AnvilMenuTypes.SKILL_TREE.get(), SkillTreeScreen::new);
+
+        ANVIL.LOGGER.info("ANVIL: メニュースクリーンを登録（4種）");
     }
 }
