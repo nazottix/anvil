@@ -660,5 +660,71 @@
   "skill.anvil.shears.keystone_collector": "コレクター",
   "skill.anvil.shears.keystone_collector.desc": "5ブロック自動収集、移動速度-20%",
   "skill.anvil.shears.mastery": "収穫の達人",
-  "skill.anvil.shears.mastery.desc": "刈り取りの究極マスタリー"
+  "skill.anvil.shears.mastery.desc": "刈り取りの究極マスタリー",
+
+  "_comment_jewels": "=== ジュエルシステム ===",
+
+  "item.anvil.jewel": "ジュエル",
+
+  "tooltip.anvil.jewel.effects": "効果:",
+  "tooltip.anvil.jewel.radius": "半径効果: %d ノード",
+  "tooltip.anvil.jewel.allowed_tools": "装着可能ツール:",
+
+  "jewel.anvil.rarity.normal": "ノーマル",
+  "jewel.anvil.rarity.magic": "マジック",
+  "jewel.anvil.rarity.rare": "レア",
+  "jewel.anvil.rarity.unique": "ユニーク",
+  "jewel.anvil.rarity.primordial": "プライモーディアル",
+
+  "_comment_skill_stats": "スキルステータス（ジュエルツールチップ用）",
+  "skill.anvil.stat.mining_speed": "採掘速度",
+  "skill.anvil.stat.attack_damage": "攻撃力",
+  "skill.anvil.stat.durability": "耐久値",
+  "skill.anvil.stat.fortune": "幸運",
+  "skill.anvil.stat.crit_chance": "クリティカル率",
+  "skill.anvil.stat.crit_damage": "クリティカルダメージ",
+  "skill.anvil.stat.attack_speed": "攻撃速度",
+  "skill.anvil.stat.lifesteal": "ライフスティール",
+  "skill.anvil.stat.fishing_speed": "釣り速度",
+  "skill.anvil.stat.shearing_speed": "刈り取り速度",
+  "skill.anvil.stat.chopping_speed": "伐採速度",
+  "skill.anvil.stat.digging_speed": "掘削速度",
+
+  "_comment_normal_jewels": "ノーマルジュエル",
+  "jewel.anvil.normal.mining_speed": "採掘のジュエル",
+  "jewel.anvil.normal.attack_damage": "攻撃のジュエル",
+  "jewel.anvil.normal.durability": "耐久のジュエル",
+  "jewel.anvil.normal.fortune": "幸運のジュエル",
+  "jewel.anvil.normal.crit_chance": "精密のジュエル",
+  "jewel.anvil.normal.crit_damage": "クリティカルのジュエル",
+  "jewel.anvil.normal.attack_speed": "速度のジュエル",
+  "jewel.anvil.normal.lifesteal": "吸血のジュエル",
+
+  "_comment_magic_jewels": "マジックジュエル",
+  "jewel.anvil.magic.enhanced_mining": "強化採掘のジュエル",
+  "jewel.anvil.magic.enhanced_combat": "強化戦闘のジュエル",
+  "jewel.anvil.magic.enhanced_crit": "強化クリティカルのジュエル",
+  "jewel.anvil.magic.enhanced_durability": "強化耐久のジュエル",
+  "jewel.anvil.magic.enhanced_fortune": "強化幸運のジュエル",
+  "jewel.anvil.magic.enhanced_speed": "強化速度のジュエル",
+
+  "_comment_rare_jewels": "レアジュエル",
+  "jewel.anvil.rare.miners_dream": "採掘者の夢",
+  "jewel.anvil.rare.warriors_pride": "戦士の誇り",
+  "jewel.anvil.rare.assassins_edge": "暗殺者の刃",
+  "jewel.anvil.rare.guardian_oath": "守護者の誓い",
+  "jewel.anvil.rare.lucky_star": "幸運の星",
+
+  "_comment_unique_jewels": "ユニークジュエル",
+  "jewel.anvil.unique.void_touch": "虚空の接触",
+  "jewel.anvil.unique.berserkers_soul": "バーサーカーの魂",
+  "jewel.anvil.unique.eagle_eye": "鷲の目",
+  "jewel.anvil.unique.fishermans_luck": "釣り人の幸運",
+  "jewel.anvil.unique.shepherds_blessing": "羊飼いの祝福",
+
+  "_comment_primordial_jewels": "プライモーディアルジュエル",
+  "jewel.anvil.primordial.power_nexus": "力のネクサス",
+  "jewel.anvil.primordial.speed_nexus": "速度のネクサス",
+  "jewel.anvil.primordial.fortune_nexus": "幸運のネクサス",
+  "jewel.anvil.primordial.vitality_nexus": "生命力のネクサス"
 }

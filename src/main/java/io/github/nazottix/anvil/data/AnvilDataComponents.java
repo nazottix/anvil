@@ -121,6 +121,24 @@ public class AnvilDataComponents {
             );
 
     /**
+     * ジュエルIDコンポーネント
+     *
+     * ジュエルアイテムが持つジュエルの種類を識別するIDを保存します。
+     * JewelRegistryに登録されているジュエルデータを参照するために使用されます。
+     *
+     * 仕様書参照: docs/03_スキルツリーシステム.md
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.resources.ResourceLocation>> JEWEL_ID =
+            DATA_COMPONENTS.register("jewel_id", () ->
+                    DataComponentType.<net.minecraft.resources.ResourceLocation>builder()
+                            // 永続化用Codec
+                            .persistent(net.minecraft.resources.ResourceLocation.CODEC)
+                            // ネットワーク同期用StreamCodec
+                            .networkSynchronized(net.minecraft.resources.ResourceLocation.STREAM_CODEC)
+                            .build()
+            );
+
+    /**
      * Data ComponentsをMODイベントバスに登録
      *
      * この方法はANVIL.javaのコンストラクタから呼び出されます。

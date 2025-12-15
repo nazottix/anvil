@@ -11,6 +11,7 @@ import io.github.nazottix.anvil.item.AnvilItems;
 import io.github.nazottix.anvil.material.MaterialRegistry;
 import io.github.nazottix.anvil.menu.AnvilMenuTypes;
 import io.github.nazottix.anvil.skill.SkillTreeRegistry;
+import io.github.nazottix.anvil.skill.jewel.JewelRegistry;
 import io.github.nazottix.anvil.trait.TraitRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -129,6 +130,9 @@ public class ANVIL {
 
         // スキルツリーレジストリを初期化（ピッケル・剣のツリーを登録）
         SkillTreeRegistry.init();
+
+        // ジュエルレジストリを初期化（スキルツリー用ジュエルを登録）
+        JewelRegistry.init();
     }
 
     /**

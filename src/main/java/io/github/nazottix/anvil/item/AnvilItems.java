@@ -94,6 +94,20 @@ public class AnvilItems {
             () -> new AnvilToolItem(ToolType.SHEARS, new Item.Properties())
     );
 
+    // ============================================
+    // ジュエルアイテム
+    // ============================================
+
+    /**
+     * ジュエル
+     * スキルツリーのジュエルソケットに装着可能なアイテム。
+     * JewelItem.createJewelStack() でジュエルIDを設定して使用します。
+     */
+    public static final DeferredItem<JewelItem> JEWEL = ANVIL.ITEMS.register(
+            "jewel",
+            () -> new JewelItem(new Item.Properties())
+    );
+
     /**
      * アイテムを初期化
      *

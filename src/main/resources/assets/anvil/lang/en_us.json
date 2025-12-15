@@ -660,5 +660,71 @@
   "skill.anvil.shears.keystone_collector": "Collector",
   "skill.anvil.shears.keystone_collector.desc": "5 block auto collect, -20% movement speed",
   "skill.anvil.shears.mastery": "Harvest Master",
-  "skill.anvil.shears.mastery.desc": "Ultimate shearing mastery"
+  "skill.anvil.shears.mastery.desc": "Ultimate shearing mastery",
+
+  "_comment_jewels": "=== Jewel System ===",
+
+  "item.anvil.jewel": "Jewel",
+
+  "tooltip.anvil.jewel.effects": "Effects:",
+  "tooltip.anvil.jewel.radius": "Radius Effect: %d nodes",
+  "tooltip.anvil.jewel.allowed_tools": "Allowed Tools:",
+
+  "jewel.anvil.rarity.normal": "Normal",
+  "jewel.anvil.rarity.magic": "Magic",
+  "jewel.anvil.rarity.rare": "Rare",
+  "jewel.anvil.rarity.unique": "Unique",
+  "jewel.anvil.rarity.primordial": "Primordial",
+
+  "_comment_skill_stats": "Skill Stats (for jewel tooltip)",
+  "skill.anvil.stat.mining_speed": "Mining Speed",
+  "skill.anvil.stat.attack_damage": "Attack Damage",
+  "skill.anvil.stat.durability": "Durability",
+  "skill.anvil.stat.fortune": "Fortune",
+  "skill.anvil.stat.crit_chance": "Critical Chance",
+  "skill.anvil.stat.crit_damage": "Critical Damage",
+  "skill.anvil.stat.attack_speed": "Attack Speed",
+  "skill.anvil.stat.lifesteal": "Lifesteal",
+  "skill.anvil.stat.fishing_speed": "Fishing Speed",
+  "skill.anvil.stat.shearing_speed": "Shearing Speed",
+  "skill.anvil.stat.chopping_speed": "Chopping Speed",
+  "skill.anvil.stat.digging_speed": "Digging Speed",
+
+  "_comment_normal_jewels": "Normal Jewels",
+  "jewel.anvil.normal.mining_speed": "Mining Jewel",
+  "jewel.anvil.normal.attack_damage": "Attack Jewel",
+  "jewel.anvil.normal.durability": "Durability Jewel",
+  "jewel.anvil.normal.fortune": "Fortune Jewel",
+  "jewel.anvil.normal.crit_chance": "Precision Jewel",
+  "jewel.anvil.normal.crit_damage": "Critical Jewel",
+  "jewel.anvil.normal.attack_speed": "Speed Jewel",
+  "jewel.anvil.normal.lifesteal": "Vampiric Jewel",
+
+  "_comment_magic_jewels": "Magic Jewels",
+  "jewel.anvil.magic.enhanced_mining": "Enhanced Mining Jewel",
+  "jewel.anvil.magic.enhanced_combat": "Enhanced Combat Jewel",
+  "jewel.anvil.magic.enhanced_crit": "Enhanced Critical Jewel",
+  "jewel.anvil.magic.enhanced_durability": "Enhanced Durability Jewel",
+  "jewel.anvil.magic.enhanced_fortune": "Enhanced Fortune Jewel",
+  "jewel.anvil.magic.enhanced_speed": "Enhanced Speed Jewel",
+
+  "_comment_rare_jewels": "Rare Jewels",
+  "jewel.anvil.rare.miners_dream": "Miner's Dream",
+  "jewel.anvil.rare.warriors_pride": "Warrior's Pride",
+  "jewel.anvil.rare.assassins_edge": "Assassin's Edge",
+  "jewel.anvil.rare.guardian_oath": "Guardian's Oath",
+  "jewel.anvil.rare.lucky_star": "Lucky Star",
+
+  "_comment_unique_jewels": "Unique Jewels",
+  "jewel.anvil.unique.void_touch": "Void Touch",
+  "jewel.anvil.unique.berserkers_soul": "Berserker's Soul",
+  "jewel.anvil.unique.eagle_eye": "Eagle Eye",
+  "jewel.anvil.unique.fishermans_luck": "Fisherman's Luck",
+  "jewel.anvil.unique.shepherds_blessing": "Shepherd's Blessing",
+
+  "_comment_primordial_jewels": "Primordial Jewels",
+  "jewel.anvil.primordial.power_nexus": "Power Nexus",
+  "jewel.anvil.primordial.speed_nexus": "Speed Nexus",
+  "jewel.anvil.primordial.fortune_nexus": "Fortune Nexus",
+  "jewel.anvil.primordial.vitality_nexus": "Vitality Nexus"
 }

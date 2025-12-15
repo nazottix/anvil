@@ -3,6 +3,8 @@ package io.github.nazottix.anvil.skill;
 import io.github.nazottix.anvil.ANVIL;
 import io.github.nazottix.anvil.assembly.CalculatedStats;
 import io.github.nazottix.anvil.data.AnvilDataComponents;
+import io.github.nazottix.anvil.skill.jewel.JewelData;
+import io.github.nazottix.anvil.skill.jewel.JewelRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -212,41 +214,31 @@ public class SkillEffectApplier {
 
             // ノードの全効果を処理
             for (SkillEffect effect : node.effects()) {
-                switch (effect.type()) {
-                    case STAT -> {
-                        // ステータス修正を集計
-                        StatModifiers current = statModifiers.getOrDefault(effect.targetId(), StatModifiers.ZERO);
-                        StatModifiers addition = switch (effect.operation()) {
-                            case FLAT -> new StatModifiers(effect.value(), 0, 0);
-                            case PERCENT -> new StatModifiers(0, effect.value(), 0);
-                            case MULTIPLY -> new StatModifiers(0, 0, effect.value());
-                            case SPECIAL -> StatModifiers.ZERO;
-                        };
-                        statModifiers.put(effect.targetId(), current.add(addition));
-                    }
-                    case SPECIAL -> {
-                        // 特殊効果は最大値または合算（効果による）
-                        float current = specialEffects.getOrDefault(effect.targetId(), 0f);
-                        // 多くの特殊効果は合算
-                        specialEffects.put(effect.targetId(), current + effect.value());
-                    }
-                    case ELEMENT -> {
-                        // 属性ダメージは合算
-                        float current = elementDamage.getOrDefault(effect.targetId(), 0f);
-                        elementDamage.put(effect.targetId(), current + effect.value());
-                    }
-                    case RESOURCE -> {
-                        // リソース修正はSTATと同様に処理
-                        StatModifiers current = statModifiers.getOrDefault(effect.targetId(), StatModifiers.ZERO);
-                        StatModifiers addition = switch (effect.operation()) {
-                            case FLAT -> new StatModifiers(effect.value(), 0, 0);
-                            case PERCENT -> new StatModifiers(0, effect.value(), 0);
-                            case MULTIPLY -> new StatModifiers(0, 0, effect.value());
-                            case SPECIAL -> StatModifiers.ZERO;
-                        };
-                        statModifiers.put(effect.targetId(), current.add(addition));
-                    }
-                }
+                aggregateEffect(effect, statModifiers, specialEffects, elementDamage);
+            }
+        }
+
+        // 装着済みジュエルの効果を集計
+        for (Map.Entry<ResourceLocation, ResourceLocation> entry : allocation.equippedJewels().entrySet()) {
+            ResourceLocation jewelId = entry.getValue();
+            // JewelRegistry.get()はOptionalを返すのでorElse(null)で取得
+            JewelData jewelData = JewelRegistry.get(jewelId).orElse(null);
+            if (jewelData == null) {
+                ANVIL.LOGGER.warn("ジュエルが見つかりません: {}", jewelId);
+                continue;
+            }
+
+            // レアリティ倍率を適用した効果を取得
+            List<SkillEffect> scaledEffects = jewelData.getScaledEffects();
+            for (SkillEffect effect : scaledEffects) {
+                aggregateEffect(effect, statModifiers, specialEffects, elementDamage);
+            }
+
+            // 半径効果がある場合（Primordialジュエル）
+            if (jewelData.hasRadiusEffect()) {
+                // 周囲のノードにも効果を適用
+                applyRadiusEffect(tree, allocation, entry.getKey(), jewelData.radiusEffect(),
+                        scaledEffects, statModifiers, specialEffects, elementDamage);
             }
         }
 
@@ -255,6 +247,134 @@ public class SkillEffectApplier {
                 Map.copyOf(specialEffects),
                 Map.copyOf(elementDamage)
         );
+    }
+
+    /**
+     * 単一の効果を集計マップに追加
+     *
+     * @param effect 効果
+     * @param statModifiers ステータス修正マップ
+     * @param specialEffects 特殊効果マップ
+     * @param elementDamage 属性ダメージマップ
+     */
+    private static void aggregateEffect(SkillEffect effect,
+                                        Map<String, StatModifiers> statModifiers,
+                                        Map<String, Float> specialEffects,
+                                        Map<String, Float> elementDamage) {
+        switch (effect.type()) {
+            case STAT -> {
+                // ステータス修正を集計
+                StatModifiers current = statModifiers.getOrDefault(effect.targetId(), StatModifiers.ZERO);
+                StatModifiers addition = switch (effect.operation()) {
+                    case FLAT -> new StatModifiers(effect.value(), 0, 0);
+                    case PERCENT -> new StatModifiers(0, effect.value(), 0);
+                    case MULTIPLY -> new StatModifiers(0, 0, effect.value());
+                    case SPECIAL -> StatModifiers.ZERO;
+                };
+                statModifiers.put(effect.targetId(), current.add(addition));
+            }
+            case SPECIAL -> {
+                // 特殊効果は最大値または合算（効果による）
+                float current = specialEffects.getOrDefault(effect.targetId(), 0f);
+                // 多くの特殊効果は合算
+                specialEffects.put(effect.targetId(), current + effect.value());
+            }
+            case ELEMENT -> {
+                // 属性ダメージは合算
+                float current = elementDamage.getOrDefault(effect.targetId(), 0f);
+                elementDamage.put(effect.targetId(), current + effect.value());
+            }
+            case RESOURCE -> {
+                // リソース修正はSTATと同様に処理
+                StatModifiers current = statModifiers.getOrDefault(effect.targetId(), StatModifiers.ZERO);
+                StatModifiers addition = switch (effect.operation()) {
+                    case FLAT -> new StatModifiers(effect.value(), 0, 0);
+                    case PERCENT -> new StatModifiers(0, effect.value(), 0);
+                    case MULTIPLY -> new StatModifiers(0, 0, effect.value());
+                    case SPECIAL -> StatModifiers.ZERO;
+                };
+                statModifiers.put(effect.targetId(), current.add(addition));
+            }
+        }
+    }
+
+    /**
+     * Primordialジュエルの半径効果を適用
+     *
+     * ジュエルソケット周辺の解放済みノードにも効果を適用します。
+     *
+     * @param tree スキルツリー
+     * @param allocation スキル配分
+     * @param socketId ソケットID（ノードID）
+     * @param radius 半径
+     * @param effects 適用する効果
+     * @param statModifiers ステータス修正マップ
+     * @param specialEffects 特殊効果マップ
+     * @param elementDamage 属性ダメージマップ
+     */
+    private static void applyRadiusEffect(SkillTree tree, SkillAllocation allocation,
+                                          ResourceLocation socketId, int radius,
+                                          List<SkillEffect> effects,
+                                          Map<String, StatModifiers> statModifiers,
+                                          Map<String, Float> specialEffects,
+                                          Map<String, Float> elementDamage) {
+        // ソケットノードを取得
+        SkillNode socketNode = tree.getNode(socketId).orElse(null);
+        if (socketNode == null) {
+            return;
+        }
+
+        // 半径内の解放済みノードを探索（簡易実装：接続ノードを再帰的に探索）
+        Set<ResourceLocation> visitedNodes = new HashSet<>();
+        visitedNodes.add(socketId);
+        findNodesInRadius(tree, allocation, socketId, radius, visitedNodes);
+
+        // 発見したノードに追加効果を適用（30%の効果）
+        float radiusMultiplier = 0.3f;
+        for (ResourceLocation nodeId : visitedNodes) {
+            if (nodeId.equals(socketId)) {
+                continue; // ソケット自体はスキップ
+            }
+
+            // 解放済みノードにのみ適用
+            if (allocation.isAllocated(nodeId)) {
+                for (SkillEffect effect : effects) {
+                    SkillEffect scaledEffect = new SkillEffect(
+                            effect.type(),
+                            effect.targetId(),
+                            effect.value() * radiusMultiplier,
+                            effect.operation()
+                    );
+                    aggregateEffect(scaledEffect, statModifiers, specialEffects, elementDamage);
+                }
+            }
+        }
+    }
+
+    /**
+     * 半径内のノードを再帰的に探索
+     */
+    private static void findNodesInRadius(SkillTree tree, SkillAllocation allocation,
+                                          ResourceLocation currentId, int remainingRadius,
+                                          Set<ResourceLocation> visited) {
+        if (remainingRadius <= 0) {
+            return;
+        }
+
+        SkillNode currentNode = tree.getNode(currentId).orElse(null);
+        if (currentNode == null) {
+            return;
+        }
+
+        // 接続ノードを探索
+        for (ResourceLocation connectedId : currentNode.connections()) {
+            if (visited.contains(connectedId)) {
+                continue;
+            }
+
+            visited.add(connectedId);
+            findNodesInRadius(tree, allocation, connectedId, remainingRadius - 1, visited);
+        }
     }
 
     // ============================================
