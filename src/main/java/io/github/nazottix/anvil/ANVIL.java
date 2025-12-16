@@ -77,6 +77,11 @@ public class ANVIL {
                         output.accept(AnvilItems.ANVIL_BOW.get());
                         output.accept(AnvilItems.ANVIL_FISHING_ROD.get());
                         output.accept(AnvilItems.ANVIL_SHEARS.get());
+
+                        // リスペックアイテム
+                        output.accept(AnvilItems.MEMORY_SHARD.get());
+                        output.accept(AnvilItems.MEMORY_CRYSTAL.get());
+                        output.accept(AnvilItems.OBLIVION_ORB.get());
                     })
                     .build());
 

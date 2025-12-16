@@ -1,8 +1,11 @@
 package io.github.nazottix.anvil.item;
 
 import io.github.nazottix.anvil.ANVIL;
+import io.github.nazottix.anvil.item.respec.RespecItem;
+import io.github.nazottix.anvil.item.respec.RespecType;
 import io.github.nazottix.anvil.tool.ToolType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 /**
@@ -106,6 +109,40 @@ public class AnvilItems {
     public static final DeferredItem<JewelItem> JEWEL = ANVIL.ITEMS.register(
             "jewel",
             () -> new JewelItem(new Item.Properties())
+    );
+
+    // ============================================
+    // リスペックアイテム
+    // ============================================
+
+    /**
+     * 記憶の断片
+     * 部分リスペック（10ポイント）を実行するアイテム。
+     * ドロップまたはクラフトで入手可能。
+     */
+    public static final DeferredItem<RespecItem> MEMORY_SHARD = ANVIL.ITEMS.register(
+            "memory_shard",
+            () -> new RespecItem(RespecType.PARTIAL, new Item.Properties().rarity(Rarity.UNCOMMON))
+    );
+
+    /**
+     * 記憶の結晶
+     * 完全リスペックを実行するアイテム。
+     * レアドロップまたは高コストクラフトで入手可能。
+     */
+    public static final DeferredItem<RespecItem> MEMORY_CRYSTAL = ANVIL.ITEMS.register(
+            "memory_crystal",
+            () -> new RespecItem(RespecType.FULL, new Item.Properties().rarity(Rarity.RARE))
+    );
+
+    /**
+     * 忘却のオーブ
+     * キーストーンノードのみをリスペックするアイテム。
+     * ボスドロップで入手可能。
+     */
+    public static final DeferredItem<RespecItem> OBLIVION_ORB = ANVIL.ITEMS.register(
+            "oblivion_orb",
+            () -> new RespecItem(RespecType.KEYSTONE_ONLY, new Item.Properties().rarity(Rarity.EPIC))
     );
 
     /**

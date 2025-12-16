@@ -726,5 +726,24 @@
   "jewel.anvil.primordial.power_nexus": "力のネクサス",
   "jewel.anvil.primordial.speed_nexus": "速度のネクサス",
   "jewel.anvil.primordial.fortune_nexus": "幸運のネクサス",
-  "jewel.anvil.primordial.vitality_nexus": "生命力のネクサス"
+  "jewel.anvil.primordial.vitality_nexus": "生命力のネクサス",
+
+  "_comment_respec": "=== リスペックシステム ===",
+
+  "item.anvil.memory_shard": "記憶の断片",
+  "item.anvil.memory_crystal": "記憶の結晶",
+  "item.anvil.oblivion_orb": "忘却のオーブ",
+
+  "tooltip.anvil.respec.partial": "部分リスペック",
+  "tooltip.anvil.respec.partial.points": "最大 %d スキルポイントを還元",
+  "tooltip.anvil.respec.full": "完全リスペック",
+  "tooltip.anvil.respec.full.warning": "全てのスキルポイントをリセットします！",
+  "tooltip.anvil.respec.keystone": "キーストーンリスペック",
+  "tooltip.anvil.respec.keystone.info": "キーストーンノードのみをリセット",
+  "tooltip.anvil.respec.usage": "ANVILツールを持った状態で使用",
+
+  "message.anvil.respec.no_tool": "もう片方の手にANVILツールを持ってください！",
+  "message.anvil.respec.no_allocation": "このツールにはスキル割り振りがありません",
+  "message.anvil.respec.success": "リスペック成功！ %d スキルポイントを還元しました",
+  "message.anvil.respec.fail": "リスペック失敗 - リセットするスキルがありません"
 }

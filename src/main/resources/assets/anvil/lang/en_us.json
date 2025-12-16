@@ -726,5 +726,24 @@
   "jewel.anvil.primordial.power_nexus": "Power Nexus",
   "jewel.anvil.primordial.speed_nexus": "Speed Nexus",
   "jewel.anvil.primordial.fortune_nexus": "Fortune Nexus",
-  "jewel.anvil.primordial.vitality_nexus": "Vitality Nexus"
+  "jewel.anvil.primordial.vitality_nexus": "Vitality Nexus",
+
+  "_comment_respec": "=== Respec System ===",
+
+  "item.anvil.memory_shard": "Memory Shard",
+  "item.anvil.memory_crystal": "Memory Crystal",
+  "item.anvil.oblivion_orb": "Oblivion Orb",
+
+  "tooltip.anvil.respec.partial": "Partial Respec",
+  "tooltip.anvil.respec.partial.points": "Refunds up to %d skill points",
+  "tooltip.anvil.respec.full": "Full Respec",
+  "tooltip.anvil.respec.full.warning": "Resets ALL allocated skill points!",
+  "tooltip.anvil.respec.keystone": "Keystone Respec",
+  "tooltip.anvil.respec.keystone.info": "Resets only Keystone nodes",
+  "tooltip.anvil.respec.usage": "Use while holding an ANVIL tool",
+
+  "message.anvil.respec.no_tool": "Hold an ANVIL tool in your other hand!",
+  "message.anvil.respec.no_allocation": "This tool has no skill allocation",
+  "message.anvil.respec.success": "Respec successful! Refunded %d skill points",
+  "message.anvil.respec.fail": "Respec failed - no skills to reset"
 }
