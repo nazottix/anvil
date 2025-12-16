@@ -5,7 +5,9 @@ import io.github.nazottix.anvil.assembly.ToolBuilder;
 import io.github.nazottix.anvil.block.entity.ToolStationBlockEntity;
 import io.github.nazottix.anvil.data.AnvilDataComponents;
 import io.github.nazottix.anvil.data.component.AnvilToolData;
+import io.github.nazottix.anvil.data.component.ToolPart;
 import io.github.nazottix.anvil.item.AnvilItems;
+import io.github.nazottix.anvil.item.PartItem;
 import io.github.nazottix.anvil.material.Grade;
 import io.github.nazottix.anvil.material.Material;
 import io.github.nazottix.anvil.material.MaterialRegistry;
@@ -197,28 +199,31 @@ public class ToolStationMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         }
 
-        // TODO: パーツアイテムから素材IDを取得するロジックを実装
-        // 現在は仮実装として鉄/オークを使用
+        // パーツアイテムから素材IDとグレードを取得してツールをビルド
         ToolBuilder builder = ToolBuilder.create(toolType);
 
-        // パーツ1（ヘッド/ボウリム等）
+        // パーツ1（ヘッド/ボウリム等）- 素材とグレードをパーツデータから取得
         String part1Material = getMaterialFromItem(part1, "anvil:iron");
-        builder.head(part1Material, Grade.C);
+        Grade part1Grade = getGradeFromItem(part1, Grade.C);
+        builder.head(part1Material, part1Grade);
 
-        // パーツ2（ハンドル等）
+        // パーツ2（ハンドル等）- 素材とグレードをパーツデータから取得
         String part2Material = getMaterialFromItem(part2, "anvil:oak");
-        builder.handle(part2Material, Grade.C);
+        Grade part2Grade = getGradeFromItem(part2, Grade.C);
+        builder.handle(part2Material, part2Grade);
 
-        // パーツ3（バインディング/ボウリム等）
+        // パーツ3（バインディング/ボウリム等）- 素材とグレードをパーツデータから取得
         if (requiredPartCount >= 3 && !part3.isEmpty()) {
             String part3Material = getMaterialFromItem(part3, "anvil:copper");
-            builder.binding(part3Material, Grade.C);
+            Grade part3Grade = getGradeFromItem(part3, Grade.C);
+            builder.binding(part3Material, part3Grade);
         }
 
-        // パーツ4（ボウストリング等 - 弓などの4パーツツール用）
+        // パーツ4（ボウストリング等 - 弓などの4パーツツール用）- 素材とグレードをパーツデータから取得
         if (requiredPartCount >= 4 && !part4.isEmpty()) {
             String part4Material = getMaterialFromItem(part4, "anvil:string");
-            builder.bowstring(part4Material, Grade.C);
+            Grade part4Grade = getGradeFromItem(part4, Grade.C);
+            builder.bowstring(part4Material, part4Grade);
         }
 
         // ツールをビルド
@@ -243,12 +248,40 @@ public class ToolStationMenu extends AbstractContainerMenu {
     }
 
     /**
-     * アイテムから素材IDを取得（仮実装）
+     * アイテムから素材IDを取得
+     * PartItemのToolPartデータから素材IDを読み取る
+     *
+     * @param stack アイテムスタック
+     * @param defaultMaterial デフォルト素材ID（パーツデータがない場合に使用）
+     * @return 素材ID
      */
     private String getMaterialFromItem(ItemStack stack, String defaultMaterial) {
-        // TODO: アイテムのデータコンポーネントから素材IDを取得
-        // 現在は仮実装
+        // PartItemからToolPartデータを取得
+        ToolPart partData = PartItem.getPartData(stack);
+        if (partData != null && partData.materialId() != null && !partData.materialId().isEmpty()) {
+            return partData.materialId();
+        }
         return defaultMaterial;
+    }
+
+    /**
+     * アイテムからグレードを取得
+     * PartItemのToolPartデータからグレードを読み取る
+     *
+     * @param stack アイテムスタック
+     * @param defaultGrade デフォルトグレード（パーツデータがない場合に使用）
+     * @return グレード
+     */
+    private Grade getGradeFromItem(ItemStack stack, Grade defaultGrade) {
+        // PartItemからToolPartデータを取得
+        ToolPart partData = PartItem.getPartData(stack);
+        if (partData != null && partData.grade() != null && !partData.grade().isEmpty()) {
+            Grade grade = Grade.fromId(partData.grade());
+            if (grade != null) {
+                return grade;
+            }
+        }
+        return defaultGrade;
     }
 
     /**
@@ -277,6 +310,7 @@ public class ToolStationMenu extends AbstractContainerMenu {
 
     /**
      * パーツ入力スロット
+     * パーツアイテム（有効なToolPartデータを持つもの）のみ受け入れる
      */
     private static class PartInputSlot extends Slot {
         public PartInputSlot(Container container, int index, int x, int y) {
@@ -285,8 +319,8 @@ public class ToolStationMenu extends AbstractContainerMenu {
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            // TODO: パーツアイテムのみ受け入れるようにする
-            return true;
+            // パーツアイテムかつ有効なパーツデータを持つ場合のみ受け入れる
+            return PartItem.hasValidPartData(stack);
         }
 
         @Override

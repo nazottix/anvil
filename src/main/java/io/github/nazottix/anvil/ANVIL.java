@@ -8,8 +8,12 @@ import io.github.nazottix.anvil.block.AnvilBlocks;
 import io.github.nazottix.anvil.block.entity.AnvilBlockEntities;
 import io.github.nazottix.anvil.data.AnvilDataComponents;
 import io.github.nazottix.anvil.item.AnvilItems;
+import io.github.nazottix.anvil.item.PartItem;
 import io.github.nazottix.anvil.loot.AnvilLootModifiers;
+import io.github.nazottix.anvil.material.Grade;
+import io.github.nazottix.anvil.material.Material;
 import io.github.nazottix.anvil.material.MaterialRegistry;
+import io.github.nazottix.anvil.tool.PartType;
 import io.github.nazottix.anvil.menu.AnvilMenuTypes;
 import io.github.nazottix.anvil.skill.SkillTreeRegistry;
 import io.github.nazottix.anvil.skill.jewel.JewelRegistry;
@@ -87,6 +91,52 @@ public class ANVIL {
                         output.accept(AnvilItems.MEMORY_SHARD.get());
                         output.accept(AnvilItems.MEMORY_CRYSTAL.get());
                         output.accept(AnvilItems.OBLIVION_ORB.get());
+                    })
+                    .build());
+
+    // ANVILパーツクリエイティブタブ - 全パーツ×素材の組み合わせを表示
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ANVIL_PARTS_TAB =
+            CREATIVE_MODE_TABS.register("anvil_parts_tab", () -> CreativeModeTab.builder()
+                    // タブのタイトル（ローカライズキー）
+                    .title(Component.translatable("itemGroup.anvil_parts"))
+                    // メインANVILタブの後に配置
+                    .withTabsBefore(ANVIL_TAB.getKey())
+                    // タブアイコン（パーツヘッドを使用）
+                    .icon(() -> AnvilItems.PART_HEAD.get().getDefaultInstance())
+                    // タブに表示するアイテム（全パーツ×素材の組み合わせ）
+                    .displayItems((parameters, output) -> {
+                        // 素材レジストリが初期化されていない場合は空のタブ
+                        if (!MaterialRegistry.getInstance().isInitialized()) {
+                            return;
+                        }
+
+                        // コアパーツタイプのみを使用（COATING, UPGRADEを除外）
+                        PartType[] corePartTypes = {
+                                PartType.HEAD,
+                                PartType.HANDLE,
+                                PartType.BINDING,
+                                PartType.BLADE,
+                                PartType.GUARD,
+                                PartType.BOW_LIMB,
+                                PartType.BOWSTRING,
+                                PartType.ROD,
+                                PartType.HOOK,
+                                PartType.LINE,
+                                PartType.PIVOT
+                        };
+
+                        // 各パーツタイプごとに全素材の組み合わせを追加
+                        for (PartType partType : corePartTypes) {
+                            // 素材をレアリティ順（低→高）でソート
+                            for (Material material : MaterialRegistry.getInstance().getSortedByRarity(false)) {
+                                // グレードCのパーツを作成
+                                output.accept(PartItem.createPartStack(
+                                        partType,
+                                        material.getId().toString(),
+                                        Grade.C
+                                ));
+                            }
+                        }
                     })
                     .build());
 

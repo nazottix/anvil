@@ -2,6 +2,7 @@
   "_comment": "ANVIL - Advanced Nexus of Variable Implement Leverage (可変道具活用の先進的ネクサス)",
 
   "itemGroup.anvil": "ANVILツール",
+  "itemGroup.anvil_parts": "ANVILパーツ",
 
   "item.anvil.anvil_pickaxe": "ANVILピッケル",
   "item.anvil.anvil_axe": "ANVIL斧",
@@ -41,6 +42,25 @@
   "part.anvil.pivot": "ピボット",
   "part.anvil.coating": "コーティング",
   "part.anvil.upgrade": "アップグレード",
+
+  "_comment_part_items": "パーツアイテム",
+  "item.anvil.part_head": "ヘッド",
+  "item.anvil.part_handle": "ハンドル",
+  "item.anvil.part_binding": "バインディング",
+  "item.anvil.part_blade": "ブレード",
+  "item.anvil.part_guard": "ガード",
+  "item.anvil.part_bow_limb": "ボウリム",
+  "item.anvil.part_bowstring": "ボウストリング",
+  "item.anvil.part_rod": "ロッド",
+  "item.anvil.part_hook": "フック",
+  "item.anvil.part_line": "ライン",
+  "item.anvil.part_pivot": "ピボット",
+  "item.anvil.part.named": "%s %s",
+
+  "tooltip.anvil.part.no_material": "素材未設定",
+  "tooltip.anvil.part.material": "素材: %s",
+  "tooltip.anvil.part.grade": "グレード: %s",
+  "tooltip.anvil.part.type": "種類: %s",
 
   "tooltip.anvil.tool_type": "タイプ: %s",
   "tooltip.anvil.level": "レベル: %d",

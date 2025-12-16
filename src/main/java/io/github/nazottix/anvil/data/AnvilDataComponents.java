@@ -139,6 +139,24 @@ public class AnvilDataComponents {
             );
 
     /**
+     * パーツデータコンポーネント
+     *
+     * パーツアイテムが持つ素材、パーツタイプ、グレードを保存します。
+     * ToolStationでツールを組み立てる際に使用されます。
+     *
+     * 仕様書参照: docs/01_パーツ_素材システム.md
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.nazottix.anvil.data.component.ToolPart>> PART_DATA =
+            DATA_COMPONENTS.register("part_data", () ->
+                    DataComponentType.<io.github.nazottix.anvil.data.component.ToolPart>builder()
+                            // 永続化用Codec
+                            .persistent(io.github.nazottix.anvil.data.component.ToolPart.CODEC)
+                            // ネットワーク同期用StreamCodec
+                            .networkSynchronized(io.github.nazottix.anvil.data.component.ToolPart.STREAM_CODEC)
+                            .build()
+            );
+
+    /**
      * Data ComponentsをMODイベントバスに登録
      *
      * この方法はANVIL.javaのコンストラクタから呼び出されます。

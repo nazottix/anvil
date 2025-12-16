@@ -15,7 +15,10 @@
       "mcp__serena__list_dir",
       "mcp__serena__find_symbol",
       "Bash(python -c:*)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "mcp__serena__search_for_pattern",
+      "mcp__serena__think_about_task_adherence",
+      "mcp__serena__think_about_whether_you_are_done"
     ]
   }
 }

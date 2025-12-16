@@ -2,6 +2,7 @@
   "_comment": "ANVIL - Advanced Nexus of Variable Implement Leverage",
 
   "itemGroup.anvil": "ANVIL Tools",
+  "itemGroup.anvil_parts": "ANVIL Parts",
 
   "item.anvil.anvil_pickaxe": "ANVIL Pickaxe",
   "item.anvil.anvil_axe": "ANVIL Axe",
@@ -41,6 +42,25 @@
   "part.anvil.pivot": "Pivot",
   "part.anvil.coating": "Coating",
   "part.anvil.upgrade": "Upgrade",
+
+  "_comment_part_items": "Part Items",
+  "item.anvil.part_head": "Head",
+  "item.anvil.part_handle": "Handle",
+  "item.anvil.part_binding": "Binding",
+  "item.anvil.part_blade": "Blade",
+  "item.anvil.part_guard": "Guard",
+  "item.anvil.part_bow_limb": "Bow Limb",
+  "item.anvil.part_bowstring": "Bowstring",
+  "item.anvil.part_rod": "Rod",
+  "item.anvil.part_hook": "Hook",
+  "item.anvil.part_line": "Line",
+  "item.anvil.part_pivot": "Pivot",
+  "item.anvil.part.named": "%s %s",
+
+  "tooltip.anvil.part.no_material": "No material set",
+  "tooltip.anvil.part.material": "Material: %s",
+  "tooltip.anvil.part.grade": "Grade: %s",
+  "tooltip.anvil.part.type": "Type: %s",
 
   "tooltip.anvil.tool_type": "Type: %s",
   "tooltip.anvil.level": "Level: %d",

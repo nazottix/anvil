@@ -1,0 +1,7 @@
+{
+  "_comment": "フックパーツアイテムモデル - 素材色でティント",
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "anvil:item/part/hook"
+  }
+}
