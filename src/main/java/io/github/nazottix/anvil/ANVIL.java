@@ -8,6 +8,7 @@ import io.github.nazottix.anvil.block.AnvilBlocks;
 import io.github.nazottix.anvil.block.entity.AnvilBlockEntities;
 import io.github.nazottix.anvil.data.AnvilDataComponents;
 import io.github.nazottix.anvil.item.AnvilItems;
+import io.github.nazottix.anvil.loot.AnvilLootModifiers;
 import io.github.nazottix.anvil.material.MaterialRegistry;
 import io.github.nazottix.anvil.menu.AnvilMenuTypes;
 import io.github.nazottix.anvil.skill.SkillTreeRegistry;
@@ -106,6 +107,9 @@ public class ANVIL {
 
         // Data Componentsを登録（ツールデータ保存用）
         AnvilDataComponents.register(modEventBus);
+
+        // Loot Modifiersを登録（ジュエルドロップ用）
+        AnvilLootModifiers.register(modEventBus);
 
         // ゲームイベント（サーバー起動など）を受け取るために登録
         NeoForge.EVENT_BUS.register(this);

@@ -158,6 +158,98 @@ public class Config {
     }
 
     // ============================================
+    // ジュエルドロップ設定 (Jewel Drop) - Phase 3で有効化
+    // ============================================
+
+    static {
+        BUILDER.comment("ジュエルドロップシステムの設定 (Phase 3で有効化)").push("jewel_drop");
+    }
+
+    /**
+     * ジュエルドロップシステムの有効化
+     */
+    public static final ModConfigSpec.BooleanValue ENABLE_JEWEL_DROP = BUILDER
+            .comment("ジュエルドロップシステムを有効にするか")
+            .translation("config.anvil.jewel_drop.enable")
+            .define("enableJewelDrop", true);
+
+    /**
+     * 通常モブのジュエルドロップ確率（%）
+     */
+    public static final ModConfigSpec.DoubleValue JEWEL_DROP_CHANCE_NORMAL = BUILDER
+            .comment("通常モブからのジュエルドロップ確率 (0.0-100.0)")
+            .translation("config.anvil.jewel_drop.chance_normal")
+            .defineInRange("dropChanceNormal", 1.0, 0.0, 100.0);
+
+    /**
+     * 強敵モブのジュエルドロップ確率（%）
+     */
+    public static final ModConfigSpec.DoubleValue JEWEL_DROP_CHANCE_STRONG = BUILDER
+            .comment("強敵モブ（エンダーマン、ウィッチ等）からのドロップ確率 (0.0-100.0)")
+            .translation("config.anvil.jewel_drop.chance_strong")
+            .defineInRange("dropChanceStrong", 3.0, 0.0, 100.0);
+
+    /**
+     * ボスモブのジュエルドロップ確率（%）
+     */
+    public static final ModConfigSpec.DoubleValue JEWEL_DROP_CHANCE_BOSS = BUILDER
+            .comment("ボスモブ（ドラゴン、ウィザー等）からのドロップ確率 (0.0-100.0)")
+            .translation("config.anvil.jewel_drop.chance_boss")
+            .defineInRange("dropChanceBoss", 50.0, 0.0, 100.0);
+
+    /**
+     * 釣りでのジュエルドロップ確率（%）
+     */
+    public static final ModConfigSpec.DoubleValue JEWEL_DROP_CHANCE_FISHING = BUILDER
+            .comment("釣りでのジュエルドロップ確率 (0.0-100.0)")
+            .translation("config.anvil.jewel_drop.chance_fishing")
+            .defineInRange("dropChanceFishing", 5.0, 0.0, 100.0);
+
+    /**
+     * チェストからのジュエルドロップ確率（%）
+     */
+    public static final ModConfigSpec.DoubleValue JEWEL_DROP_CHANCE_CHEST = BUILDER
+            .comment("ダンジョンチェストからのジュエルドロップ確率 (0.0-100.0)")
+            .translation("config.anvil.jewel_drop.chance_chest")
+            .defineInRange("dropChanceChest", 10.0, 0.0, 100.0);
+
+    /**
+     * 強敵からのレアリティボーナス（%）
+     */
+    public static final ModConfigSpec.DoubleValue RARITY_BONUS_STRONG = BUILDER
+            .comment("強敵モブからのレアリティボーナス (0.0-50.0)")
+            .translation("config.anvil.jewel_drop.rarity_bonus_strong")
+            .defineInRange("rarityBonusStrong", 5.0, 0.0, 50.0);
+
+    /**
+     * ボスからのレアリティボーナス（%）
+     */
+    public static final ModConfigSpec.DoubleValue RARITY_BONUS_BOSS = BUILDER
+            .comment("ボスモブからのレアリティボーナス (0.0-50.0)")
+            .translation("config.anvil.jewel_drop.rarity_bonus_boss")
+            .defineInRange("rarityBonusBoss", 15.0, 0.0, 50.0);
+
+    /**
+     * 釣りでのレアリティボーナス（%）
+     */
+    public static final ModConfigSpec.DoubleValue RARITY_BONUS_FISHING = BUILDER
+            .comment("釣りでのレアリティボーナス (0.0-50.0)")
+            .translation("config.anvil.jewel_drop.rarity_bonus_fishing")
+            .defineInRange("rarityBonusFishing", 5.0, 0.0, 50.0);
+
+    /**
+     * チェストからのレアリティボーナス（%）
+     */
+    public static final ModConfigSpec.DoubleValue RARITY_BONUS_CHEST = BUILDER
+            .comment("チェストからのレアリティボーナス (0.0-50.0)")
+            .translation("config.anvil.jewel_drop.rarity_bonus_chest")
+            .defineInRange("rarityBonusChest", 10.0, 0.0, 50.0);
+
+    static {
+        BUILDER.pop();
+    }
+
+    // ============================================
     // バランス設定 (Balance)
     // ============================================
 

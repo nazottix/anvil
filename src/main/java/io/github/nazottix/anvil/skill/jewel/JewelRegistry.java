@@ -503,6 +503,10 @@ public final class JewelRegistry {
 
     /**
      * ランダムなジュエルを取得（ドロップ用）
+     *
+     * @param random 乱数ジェネレータ
+     * @param rarityBonus レアリティボーナス（%）
+     * @return ランダムに選択されたジュエル
      */
     public static Optional<JewelData> getRandomJewel(Random random, float rarityBonus) {
         if (JEWELS.isEmpty()) {
@@ -511,23 +515,52 @@ public final class JewelRegistry {
 
         // レアリティ決定
         float roll = random.nextFloat() * 100 + rarityBonus;
+        return getJewelByRoll(roll, random::nextInt);
+    }
+
+    /**
+     * ランダムなジュエルを取得（RandomSource版・Loot Modifier用）
+     *
+     * @param randomSource NeoForgeの乱数ソース
+     * @param rarityBonus レアリティボーナス（%）
+     * @return ランダムに選択されたジュエル
+     */
+    public static Optional<JewelData> getRandomJewel(net.minecraft.util.RandomSource randomSource, float rarityBonus) {
+        if (JEWELS.isEmpty()) {
+            return Optional.empty();
+        }
+
+        // レアリティ決定
+        float roll = randomSource.nextFloat() * 100 + rarityBonus;
+        return getJewelByRoll(roll, randomSource::nextInt);
+    }
+
+    /**
+     * ロール値に基づいてジュエルを選択する内部メソッド
+     *
+     * @param roll ロール値（0-100+ボーナス）
+     * @param nextInt 整数乱数関数
+     * @return 選択されたジュエル
+     */
+    private static Optional<JewelData> getJewelByRoll(float roll, java.util.function.IntFunction<Integer> nextInt) {
         JewelData.JewelRarity rarity;
 
+        // レアリティ判定（確率はドキュメント仕様書に基づく）
         if (roll >= 99) {
-            rarity = JewelData.JewelRarity.PRIMORDIAL;
+            rarity = JewelData.JewelRarity.PRIMORDIAL;  // 1%
         } else if (roll >= 95) {
-            rarity = JewelData.JewelRarity.UNIQUE;
+            rarity = JewelData.JewelRarity.UNIQUE;      // 4%
         } else if (roll >= 85) {
-            rarity = JewelData.JewelRarity.RARE;
+            rarity = JewelData.JewelRarity.RARE;        // 10%
         } else if (roll >= 60) {
-            rarity = JewelData.JewelRarity.MAGIC;
+            rarity = JewelData.JewelRarity.MAGIC;       // 25%
         } else {
-            rarity = JewelData.JewelRarity.NORMAL;
+            rarity = JewelData.JewelRarity.NORMAL;      // 60%
         }
 
         List<JewelData> candidates = BY_RARITY.getOrDefault(rarity, List.of());
         if (candidates.isEmpty()) {
-            // フォールバック
+            // フォールバック：該当レアリティがなければNormalを使用
             candidates = BY_RARITY.getOrDefault(JewelData.JewelRarity.NORMAL, List.of());
         }
 
@@ -535,7 +568,7 @@ public final class JewelRegistry {
             return Optional.empty();
         }
 
-        return Optional.of(candidates.get(random.nextInt(candidates.size())));
+        return Optional.of(candidates.get(nextInt.apply(candidates.size())));
     }
 
     // ============================================

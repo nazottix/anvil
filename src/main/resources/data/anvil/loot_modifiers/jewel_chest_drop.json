@@ -1,0 +1,59 @@
+{
+  "type": "anvil:jewel_drop",
+  "source": "chest",
+  "conditions": [
+    {
+      "condition": "minecraft:any_of",
+      "terms": [
+        {
+          "condition": "minecraft:location_check",
+          "predicate": {
+            "structure": "minecraft:mineshaft"
+          }
+        },
+        {
+          "condition": "minecraft:location_check",
+          "predicate": {
+            "structure": "minecraft:stronghold"
+          }
+        },
+        {
+          "condition": "minecraft:location_check",
+          "predicate": {
+            "structure": "minecraft:fortress"
+          }
+        },
+        {
+          "condition": "minecraft:location_check",
+          "predicate": {
+            "structure": "minecraft:end_city"
+          }
+        },
+        {
+          "condition": "minecraft:location_check",
+          "predicate": {
+            "structure": "minecraft:bastion_remnant"
+          }
+        },
+        {
+          "condition": "minecraft:location_check",
+          "predicate": {
+            "structure": "minecraft:ancient_city"
+          }
+        },
+        {
+          "condition": "minecraft:location_check",
+          "predicate": {
+            "structure": "minecraft:desert_pyramid"
+          }
+        },
+        {
+          "condition": "minecraft:location_check",
+          "predicate": {
+            "structure": "minecraft:jungle_pyramid"
+          }
+        }
+      ]
+    }
+  ]
+}

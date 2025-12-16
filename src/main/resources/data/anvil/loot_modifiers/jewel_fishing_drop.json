@@ -1,0 +1,12 @@
+{
+  "type": "anvil:jewel_drop",
+  "source": "fishing",
+  "conditions": [
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "items": "minecraft:fishing_rod"
+      }
+    }
+  ]
+}

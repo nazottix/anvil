@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "entries": [
+    "anvil:jewel_mob_drop_normal",
+    "anvil:jewel_mob_drop_strong",
+    "anvil:jewel_mob_drop_boss",
+    "anvil:jewel_fishing_drop",
+    "anvil:jewel_chest_drop"
+  ]
+}

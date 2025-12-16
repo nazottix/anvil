@@ -1,0 +1,16 @@
+{
+  "type": "anvil:jewel_drop",
+  "source": "normal_mob",
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "type": "#minecraft:undead"
+      }
+    },
+    {
+      "condition": "minecraft:killed_by_player"
+    }
+  ]
+}
