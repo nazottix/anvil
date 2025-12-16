@@ -11,6 +11,7 @@ import io.github.nazottix.anvil.item.PartItem;
 import io.github.nazottix.anvil.material.Grade;
 import io.github.nazottix.anvil.material.Material;
 import io.github.nazottix.anvil.material.MaterialRegistry;
+import io.github.nazottix.anvil.tool.PartType;
 import io.github.nazottix.anvil.tool.ToolType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
@@ -112,6 +113,20 @@ public class ToolStationMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return container.stillValid(player);
+    }
+
+    /**
+     * カスタムボタンクリック処理（サーバー側で実行）
+     * ボタンID 0: ツール作成
+     */
+    @Override
+    public boolean clickMenuButton(Player player, int buttonId) {
+        // ボタンID 0 = クラフトボタン
+        if (buttonId == 0) {
+            craftTool();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -304,23 +319,66 @@ public class ToolStationMenu extends AbstractContainerMenu {
         data.set(0, index);
     }
 
+    /**
+     * 指定スロットインデックスに必要なパーツタイプを取得
+     * 選択されたツールタイプに基づいて、各スロットに許可されるパーツタイプを返す
+     *
+     * @param slotIndex スロットインデックス（0-3）
+     * @return 許可されるパーツタイプ、ツールタイプ未選択またはスロット不要の場合はnull
+     */
+    @Nullable
+    public PartType getRequiredPartTypeForSlot(int slotIndex) {
+        ToolType toolType = getSelectedToolType();
+        if (toolType == null) {
+            return null;
+        }
+
+        var requiredParts = toolType.getRequiredParts();
+        if (slotIndex < 0 || slotIndex >= requiredParts.size()) {
+            return null;
+        }
+
+        return requiredParts.get(slotIndex);
+    }
+
     // ============================================
     // カスタムスロットクラス
     // ============================================
 
     /**
      * パーツ入力スロット
-     * パーツアイテム（有効なToolPartデータを持つもの）のみ受け入れる
+     * 選択されたツールタイプに応じて、指定のパーツタイプのみ受け入れる
      */
-    private static class PartInputSlot extends Slot {
-        public PartInputSlot(Container container, int index, int x, int y) {
-            super(container, index, x, y);
+    private class PartInputSlot extends Slot {
+        // スロット番号（0-3、パーツスロット用）
+        private final int partSlotIndex;
+
+        public PartInputSlot(Container container, int containerIndex, int x, int y) {
+            super(container, containerIndex, x, y);
+            // containerIndexは0,1,2,3なのでそのままpartSlotIndexとして使用
+            this.partSlotIndex = containerIndex;
         }
 
         @Override
         public boolean mayPlace(ItemStack stack) {
             // パーツアイテムかつ有効なパーツデータを持つ場合のみ受け入れる
-            return PartItem.hasValidPartData(stack);
+            if (!PartItem.hasValidPartData(stack)) {
+                return false;
+            }
+
+            // 選択されたツールタイプに基づいてパーツタイプを制限
+            PartType requiredType = getRequiredPartTypeForSlot(partSlotIndex);
+            if (requiredType == null) {
+                // ツールタイプ未選択、または不要なスロット
+                return false;
+            }
+
+            // パーツアイテムのパーツタイプを取得
+            if (stack.getItem() instanceof PartItem partItem) {
+                return partItem.getPartType() == requiredType;
+            }
+
+            return false;
         }
 
         @Override

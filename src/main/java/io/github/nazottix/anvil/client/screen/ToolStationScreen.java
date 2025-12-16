@@ -4,9 +4,12 @@ import io.github.nazottix.anvil.ANVIL;
 import io.github.nazottix.anvil.client.ui.AnvilColors;
 import io.github.nazottix.anvil.menu.ToolStationMenu;
 import io.github.nazottix.anvil.tool.ToolType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 
 /**
@@ -320,13 +323,19 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         int guiX = this.leftPos;
         int guiY = this.topPos;
+        Minecraft mc = Minecraft.getInstance();
 
         if (button == 0) {
             // Craftボタンのクリック判定
             int craftBtnX = guiX + CRAFT_BUTTON_X;
             int craftBtnY = guiY + CRAFT_BUTTON_Y;
             if (isMouseOver((int) mouseX, (int) mouseY, craftBtnX, craftBtnY, CRAFT_BUTTON_WIDTH, CRAFT_BUTTON_HEIGHT)) {
-                this.menu.craftTool();
+                // サーバーにボタンクリックを送信（ボタンID 0 = クラフト）
+                if (mc.gameMode != null) {
+                    mc.gameMode.handleInventoryButtonClick(this.menu.containerId, 0);
+                }
+                // クラフト音を再生
+                mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.ANVIL_USE, 1.0F, 0.5F));
                 ANVIL.LOGGER.info("ツール作成を実行");
                 return true;
             }
@@ -341,6 +350,8 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
 
                 if (isMouseOver((int) mouseX, (int) mouseY, btnX, btnY, TOOL_BUTTON_SIZE, TOOL_BUTTON_SIZE)) {
                     this.menu.setSelectedToolType(i);
+                    // ツールタイプ選択音を再生
+                    mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK.value(), 1.0F));
                     ANVIL.LOGGER.info("ツールタイプを選択: {}", types[i].getId());
                     return true;
                 }
