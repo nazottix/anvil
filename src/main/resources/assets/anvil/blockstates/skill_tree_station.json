@@ -1,0 +1,9 @@
+{
+  "_comment": "スキルツリーステーションブロックステート - 方向対応",
+  "variants": {
+    "facing=north": { "model": "anvil:block/skill_tree_station" },
+    "facing=south": { "model": "anvil:block/skill_tree_station", "y": 180 },
+    "facing=west": { "model": "anvil:block/skill_tree_station", "y": 270 },
+    "facing=east": { "model": "anvil:block/skill_tree_station", "y": 90 }
+  }
+}

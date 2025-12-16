@@ -1,0 +1,9 @@
+{
+  "_comment": "MODステーションブロックステート - 方向対応",
+  "variants": {
+    "facing=north": { "model": "anvil:block/mod_station" },
+    "facing=south": { "model": "anvil:block/mod_station", "y": 180 },
+    "facing=west": { "model": "anvil:block/mod_station", "y": 270 },
+    "facing=east": { "model": "anvil:block/mod_station", "y": 90 }
+  }
+}

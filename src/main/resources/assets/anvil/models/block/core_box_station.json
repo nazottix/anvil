@@ -1,0 +1,9 @@
+{
+  "_comment": "コアボックスステーションブロックモデル - シアン系グリッドテーマ",
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "anvil:block/core_box_station_top",
+    "bottom": "anvil:block/station_bottom",
+    "side": "anvil:block/core_box_station_side"
+  }
+}

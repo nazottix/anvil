@@ -1,0 +1,4 @@
+{
+  "_comment": "ジュエルステーションアイテムモデル",
+  "parent": "anvil:block/jewel_station"
+}

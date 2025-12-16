@@ -1,0 +1,4 @@
+{
+  "_comment": "コアボックスステーションアイテムモデル",
+  "parent": "anvil:block/core_box_station"
+}

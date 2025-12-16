@@ -1,0 +1,4 @@
+{
+  "_comment": "MODステーションアイテムモデル",
+  "parent": "anvil:block/mod_station"
+}

@@ -1,0 +1,9 @@
+{
+  "_comment": "スキルツリーステーションブロックモデル - 紫系テーマ",
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "anvil:block/skill_tree_station_top",
+    "bottom": "anvil:block/station_bottom",
+    "side": "anvil:block/skill_tree_station_side"
+  }
+}

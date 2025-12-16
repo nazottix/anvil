@@ -1,0 +1,4 @@
+{
+  "_comment": "スキルツリーステーションアイテムモデル",
+  "parent": "anvil:block/skill_tree_station"
+}

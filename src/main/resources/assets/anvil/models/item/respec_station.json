@@ -1,0 +1,4 @@
+{
+  "_comment": "リスペックステーションアイテムモデル",
+  "parent": "anvil:block/respec_station"
+}
