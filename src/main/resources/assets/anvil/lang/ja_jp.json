@@ -468,6 +468,8 @@
   "_comment_station_ui": "ステーションUI要素",
   "gui.anvil.skill_tree_station.insert_tool": "ツールを入れてスキルツリーを表示",
   "gui.anvil.jewel_station.desc": "ツールにジュエルを装着",
+  "gui.anvil.jewel_station.equip_button": "全てのジュエルを装着",
+  "gui.anvil.jewel_station.equipped": "装着済み:",
   "gui.anvil.respec_station.respec": "リスペック",
   "gui.anvil.respec_station.tool": "ツール",
   "gui.anvil.respec_station.item": "アイテム",

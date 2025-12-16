@@ -9,7 +9,11 @@
       "Bash(Select-String -Pattern \"error:|Error:|cannot find|symbol:\")",
       "Bash(./gradlew.bat build --console=plain)",
       "Bash(uvx serena:*)",
-      "Bash(uvx serena-mcp:*)"
+      "Bash(uvx serena-mcp:*)",
+      "mcp__serena__get_symbols_overview",
+      "mcp__serena__list_memories",
+      "mcp__serena__list_dir",
+      "mcp__serena__find_symbol"
     ]
   }
 }

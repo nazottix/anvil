@@ -2,10 +2,15 @@ package io.github.nazottix.anvil.client.screen;
 
 import io.github.nazottix.anvil.client.ui.AnvilColors;
 import io.github.nazottix.anvil.menu.JewelStationMenu;
+import io.github.nazottix.anvil.skill.jewel.JewelData;
+import io.github.nazottix.anvil.skill.jewel.JewelRegistry;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+
+import java.util.List;
 
 /**
  * ジュエルステーションスクリーン
@@ -31,6 +36,12 @@ public class JewelStationScreen extends AbstractContainerScreen<JewelStationMenu
     private static final int JEWEL_SLOT_Y = 70;
     private static final int JEWEL_SLOT_SPACING = 36;
     private static final int JEWEL_SLOT_COUNT = 4;
+
+    // 装着ボタン
+    private static final int EQUIP_BUTTON_X = 152;
+    private static final int EQUIP_BUTTON_Y = 35;
+    private static final int EQUIP_BUTTON_WIDTH = 16;
+    private static final int EQUIP_BUTTON_HEIGHT = 16;
 
     /**
      * コンストラクタ
@@ -76,8 +87,14 @@ public class JewelStationScreen extends AbstractContainerScreen<JewelStationMenu
         // ジュエルスロット背景
         renderJewelSlots(guiGraphics, x, y);
 
+        // 装着ボタン
+        renderEquipButton(guiGraphics, x, y, mouseX, mouseY);
+
+        // 装着済みジュエル表示
+        renderEquippedJewels(guiGraphics, x, y);
+
         // 区切り線
-        guiGraphics.fill(x + 8, y + 88, x + this.imageWidth - 8, y + 89, 0xFF444444);
+        guiGraphics.fill(x + 8, y + 90, x + this.imageWidth - 8, y + 91, 0xFF444444);
 
         // プレイヤーインベントリ境界線とスロット背景を描画
         renderInventoryBackground(guiGraphics, x, y);
@@ -180,5 +197,117 @@ public class JewelStationScreen extends AbstractContainerScreen<JewelStationMenu
         // 説明テキスト
         Component description = Component.translatable("gui.anvil.jewel_station.desc");
         guiGraphics.drawString(this.font, description, 8, 20, 0x888888, false);
+    }
+
+    // ============================================
+    // 装着ボタン・装着済みジュエル表示
+    // ============================================
+
+    /**
+     * 装着ボタンを描画
+     * クリックするとスロット内のジュエルをツールに装着
+     */
+    private void renderEquipButton(GuiGraphics guiGraphics, int guiX, int guiY, int mouseX, int mouseY) {
+        int buttonX = guiX + EQUIP_BUTTON_X;
+        int buttonY = guiY + EQUIP_BUTTON_Y;
+
+        // マウスホバー判定
+        boolean hovered = mouseX >= buttonX && mouseX < buttonX + EQUIP_BUTTON_WIDTH
+                && mouseY >= buttonY && mouseY < buttonY + EQUIP_BUTTON_HEIGHT;
+
+        // ボタン背景色（ホバー時は明るく）
+        int bgColor = hovered ? 0xFF6BCB77 : 0xFF4A9A5A;
+        int borderColor = hovered ? 0xFF8AE99A : 0xFF5AAF6A;
+
+        // ボタン外枠
+        guiGraphics.fill(buttonX - 1, buttonY - 1, buttonX + EQUIP_BUTTON_WIDTH + 1,
+                buttonY + EQUIP_BUTTON_HEIGHT + 1, borderColor);
+        // ボタン背景
+        guiGraphics.fill(buttonX, buttonY, buttonX + EQUIP_BUTTON_WIDTH,
+                buttonY + EQUIP_BUTTON_HEIGHT, bgColor);
+
+        // 「+」記号を描画（装着を示す）
+        guiGraphics.drawString(this.font, "+", buttonX + 5, buttonY + 4, 0xFFFFFF, false);
+
+        // ツールチップ表示
+        if (hovered) {
+            guiGraphics.renderTooltip(this.font,
+                    Component.translatable("gui.anvil.jewel_station.equip_button"),
+                    mouseX, mouseY);
+        }
+    }
+
+    /**
+     * ツールに装着済みのジュエルを表示
+     */
+    private void renderEquippedJewels(GuiGraphics guiGraphics, int guiX, int guiY) {
+        // ツールに装着されているジュエルを取得
+        List<String> equippedJewels = this.menu.getEquippedJewels();
+
+        if (equippedJewels.isEmpty()) {
+            return;
+        }
+
+        // 装着済みジュエル表示エリア（ツールスロットの右側）
+        int startX = guiX + 110;
+        int startY = guiY + 20;
+
+        // ラベル
+        Component label = Component.translatable("gui.anvil.jewel_station.equipped");
+        guiGraphics.drawString(this.font, label, startX, startY, 0xAAAAAA, false);
+
+        // 装着済みジュエルのアイコン表示
+        for (int i = 0; i < equippedJewels.size(); i++) {
+            String jewelIdStr = equippedJewels.get(i);
+            ResourceLocation jewelId = ResourceLocation.parse(jewelIdStr);
+            java.util.Optional<JewelData> jewelOpt = JewelRegistry.get(jewelId);
+
+            int iconX = startX + i * 14;
+            int iconY = startY + 10;
+
+            if (jewelOpt.isPresent()) {
+                JewelData jewel = jewelOpt.get();
+                // ジュエルのレアリティ色で小さい四角を描画
+                int color = jewel.rarity().getColor();
+                guiGraphics.fill(iconX, iconY, iconX + 12, iconY + 12, color);
+                guiGraphics.fill(iconX + 1, iconY + 1, iconX + 11, iconY + 11, 0xFF222222);
+
+                // ジュエル頭文字（翻訳キーから取得）
+                String name = Component.translatable(jewel.nameKey()).getString();
+                String initial = name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase();
+                guiGraphics.drawString(this.font, initial, iconX + 3, iconY + 2, color, false);
+            } else {
+                // 不明なジュエル
+                guiGraphics.fill(iconX, iconY, iconX + 12, iconY + 12, 0xFF888888);
+            }
+        }
+    }
+
+    // ============================================
+    // マウスイベント
+    // ============================================
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        // 左クリックのみ処理
+        if (button == 0) {
+            int buttonX = this.leftPos + EQUIP_BUTTON_X;
+            int buttonY = this.topPos + EQUIP_BUTTON_Y;
+
+            // 装着ボタンがクリックされたか
+            if (mouseX >= buttonX && mouseX < buttonX + EQUIP_BUTTON_WIDTH
+                    && mouseY >= buttonY && mouseY < buttonY + EQUIP_BUTTON_HEIGHT) {
+                // 全てのジュエルスロットからツールに装着
+                int equipped = this.menu.equipAllJewels();
+                if (equipped > 0) {
+                    // 効果音（成功）
+                    this.minecraft.player.playSound(
+                            net.minecraft.sounds.SoundEvents.EXPERIENCE_ORB_PICKUP,
+                            0.5f, 1.0f);
+                }
+                return true;
+            }
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 }

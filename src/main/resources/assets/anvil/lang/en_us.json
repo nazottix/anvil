@@ -468,6 +468,8 @@
   "_comment_station_ui": "Station UI Elements",
   "gui.anvil.skill_tree_station.insert_tool": "Insert a tool to view skill tree",
   "gui.anvil.jewel_station.desc": "Attach jewels to your tool",
+  "gui.anvil.jewel_station.equip_button": "Equip All Jewels",
+  "gui.anvil.jewel_station.equipped": "Equipped:",
   "gui.anvil.respec_station.respec": "Respec",
   "gui.anvil.respec_station.tool": "Tool",
   "gui.anvil.respec_station.item": "Item",
