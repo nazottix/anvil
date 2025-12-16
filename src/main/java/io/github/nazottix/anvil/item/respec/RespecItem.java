@@ -277,10 +277,26 @@ public class RespecItem extends Item {
     }
 
     /**
-     * ツールタイプを取得（仮実装）
+     * ツールタイプを取得
+     *
+     * AnvilToolDataからツールタイプIDを取得します。
+     * AnvilToolItemの場合はアイテムのToolTypeを使用し、
+     * それ以外の場合はAnvilToolDataのtoolTypeを使用します。
      */
     private String getToolType(ItemStack toolStack) {
-        // TODO: ツールからツールタイプを取得する正式な実装
+        // AnvilToolItemの場合、直接ToolTypeを取得
+        if (toolStack.getItem() instanceof io.github.nazottix.anvil.item.AnvilToolItem anvilTool) {
+            return anvilTool.getToolType().getId();
+        }
+
+        // それ以外の場合、AnvilToolDataからtoolTypeを取得
+        if (toolStack.has(AnvilDataComponents.TOOL_DATA.get())) {
+            io.github.nazottix.anvil.data.component.AnvilToolData toolData =
+                    toolStack.get(AnvilDataComponents.TOOL_DATA.get());
+            return toolData.toolType();
+        }
+
+        // フォールバック
         return "pickaxe";
     }
 

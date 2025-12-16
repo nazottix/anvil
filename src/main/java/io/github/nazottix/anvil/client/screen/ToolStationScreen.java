@@ -1,43 +1,77 @@
 package io.github.nazottix.anvil.client.screen;
 
 import io.github.nazottix.anvil.ANVIL;
+import io.github.nazottix.anvil.client.ui.AnvilColors;
 import io.github.nazottix.anvil.menu.ToolStationMenu;
 import io.github.nazottix.anvil.tool.ToolType;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 /**
  * ツールステーションスクリーン
  *
  * ツール作成画面のクライアント側描画を行います。
+ * ツールタイプ選択、パーツ配置、作成ボタンを提供。
+ *
+ * レイアウト:
+ * - 上部: ツールタイプ選択ボタン（4x2）
+ * - 中央: パーツスロット + 作成ボタン + 出力スロット
+ * - 下部: 修理スロット + インベントリ
  *
  * 仕様書参照: docs/10_UI_UXデザイン.md
  */
 public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> {
 
-    // テクスチャのパス
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(ANVIL.MODID, "textures/gui/tool_station.png");
+    // UI定数 - ツールタイプボタン
+    private static final int TOOL_BUTTON_SIZE = 20;
+    private static final int TOOL_BUTTON_SPACING = 2;
+    private static final int TOOL_BUTTONS_X = 8;
+    private static final int TOOL_BUTTONS_Y = 18;
 
-    // ツールタイプ選択ボタンの位置
-    private static final int TOOL_BUTTON_X = 7;
-    private static final int TOOL_BUTTON_Y = 7;
-    private static final int TOOL_BUTTON_SIZE = 18;
-    private static final int TOOL_BUTTONS_PER_ROW = 4;
+    // パーツスロット位置（Menuと同期 - 4スロット対応）
+    private static final int PART_SLOT_X = 21;
+    private static final int PART_SLOT_Y = 70;
+    private static final int PART_SLOT_SPACING = 18;
+    private static final int PART_SLOT_COUNT = 4;
+
+    // 出力スロット位置（Menuと同期）
+    private static final int OUTPUT_SLOT_X = 124;
+    private static final int OUTPUT_SLOT_Y = 78;
+
+    // ツール入力スロット位置（Menuと同期）
+    private static final int TOOL_INPUT_X = 21;
+    private static final int TOOL_INPUT_Y = 96;
+
+    // ホバー中のツールタイプ
+    private ToolType hoveredToolType = null;
 
     /**
      * コンストラクタ
      */
     public ToolStationScreen(ToolStationMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-        // GUI のサイズを設定
+        // GUI のサイズを設定（縦を拡大してツールボタン用スペース確保）
         this.imageWidth = 176;
-        this.imageHeight = 166;
+        this.imageHeight = 220;
         // インベントリラベルの位置調整
-        this.inventoryLabelY = this.imageHeight - 94;
+        this.inventoryLabelY = 126;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+
+        // 作成ボタン - パーツスロットと出力スロットの間
+        this.addRenderableWidget(Button.builder(
+                Component.translatable("gui.anvil.craft"),
+                button -> {
+                    this.menu.craftTool();
+                    ANVIL.LOGGER.info("ツール作成を実行");
+                }
+        ).bounds(this.leftPos + 90, this.topPos + 72, 30, 16).build());
     }
 
     // ============================================
@@ -46,67 +80,175 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        // 背景テクスチャを描画
-        int x = (this.width - this.imageWidth) / 2;
-        int y = (this.height - this.imageHeight) / 2;
+        int x = this.leftPos;
+        int y = this.topPos;
 
-        // メインテクスチャ（仮実装：バニラのクラフティングテーブルテクスチャを使用）
-        guiGraphics.blit(
-                ResourceLocation.withDefaultNamespace("textures/gui/container/crafting_table.png"),
-                x, y,
-                0, 0,
-                this.imageWidth, this.imageHeight
-        );
+        // 背景色で塗りつぶし
+        guiGraphics.fill(x, y, x + this.imageWidth, y + this.imageHeight,
+                AnvilColors.VOID_BLACK | 0xFF000000);
 
-        // 選択されたツールタイプのハイライト
-        renderToolTypeHighlight(guiGraphics, x, y);
+        // パネル背景
+        guiGraphics.fill(x + 2, y + 2, x + this.imageWidth - 2, y + this.imageHeight - 2,
+                AnvilColors.ANVIL_STEEL | 0xFF000000);
+
+        // ツールタイプ選択ボタンを描画
+        renderToolTypeButtons(guiGraphics, x, y, mouseX, mouseY);
+
+        // 区切り線（ツールボタンとスロットの間）
+        guiGraphics.fill(x + 8, y + 64, x + this.imageWidth - 8, y + 65, 0xFF444444);
+
+        // スロットエリア背景
+        renderSlotAreas(guiGraphics, x, y);
+
+        // 矢印描画（パーツ → 出力）
+        renderArrow(guiGraphics, x + 90, y + 90);
+
+        // 区切り線（スロットとインベントリの間）
+        guiGraphics.fill(x + 8, y + 120, x + this.imageWidth - 8, y + 121, 0xFF444444);
+
+        // プレイヤーインベントリ背景
+        guiGraphics.fill(x + 7, y + 136, x + 169, y + 214, 0xFF1A1A1A);
     }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        // 背景を描画
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        // ツールチップを描画
         this.renderTooltip(guiGraphics, mouseX, mouseY);
+
+        // ツールタイプツールチップ
+        if (hoveredToolType != null) {
+            renderToolTypeTooltip(guiGraphics, mouseX, mouseY, hoveredToolType);
+        }
     }
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        // タイトルを描画
-        guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0x404040, false);
-        // インベントリラベルを描画
-        guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0x404040, false);
+        // タイトル
+        guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY,
+                AnvilColors.ETHER_WHITE, false);
 
-        // 選択されたツールタイプを表示
+        // インベントリラベル
+        guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY,
+                AnvilColors.ETHER_WHITE, false);
+
+        // 選択されたツールタイプを表示（タイトル横、ローカライズ対応）
         ToolType selectedType = this.menu.getSelectedToolType();
         if (selectedType != null) {
-            String typeName = getToolTypeName(selectedType);
-            guiGraphics.drawString(this.font, typeName, 100, 6, 0x404040, false);
+            Component typeName = Component.translatable(selectedType.getTranslationKey());
+            int color = getToolTypeColor(selectedType);
+            guiGraphics.drawString(this.font, typeName, 100, 6, color, false);
+        }
+
+        // パーツスロットラベル（選択中のツールタイプに応じて表示）
+        ToolType selectedTool = this.menu.getSelectedToolType();
+        String[] slotLabels = getPartSlotLabels(selectedTool);
+        for (int i = 0; i < PART_SLOT_COUNT; i++) {
+            String label = i < slotLabels.length ? slotLabels[i] : "";
+            guiGraphics.drawString(this.font, label, PART_SLOT_X + i * PART_SLOT_SPACING + 4, PART_SLOT_Y - 9, 0x888888, false);
+        }
+
+        // ツールスロットラベル（ローカライズ対応）
+        Component repairLabel = Component.translatable("gui.anvil.tool_station.repair");
+        guiGraphics.drawString(this.font, repairLabel, TOOL_INPUT_X + 18, TOOL_INPUT_Y + 4, 0x888888, false);
+    }
+
+    /**
+     * ツールタイプ選択ボタンを描画
+     */
+    private void renderToolTypeButtons(GuiGraphics guiGraphics, int guiX, int guiY, int mouseX, int mouseY) {
+        ToolType[] types = ToolType.values();
+        ToolType selectedType = this.menu.getSelectedToolType();
+        hoveredToolType = null;
+
+        for (int i = 0; i < types.length; i++) {
+            int row = i / 4;
+            int col = i % 4;
+            int btnX = guiX + TOOL_BUTTONS_X + col * (TOOL_BUTTON_SIZE + TOOL_BUTTON_SPACING);
+            int btnY = guiY + TOOL_BUTTONS_Y + row * (TOOL_BUTTON_SIZE + TOOL_BUTTON_SPACING);
+
+            ToolType type = types[i];
+            boolean isSelected = type == selectedType;
+            boolean isHovered = isMouseOver(mouseX, mouseY, btnX, btnY, TOOL_BUTTON_SIZE, TOOL_BUTTON_SIZE);
+
+            if (isHovered) {
+                hoveredToolType = type;
+            }
+
+            // ボタン背景
+            int bgColor = isSelected ? (getToolTypeColor(type) | 0xFF000000) :
+                    isHovered ? 0xFF444444 : AnvilColors.VOID_BLACK | 0xFF000000;
+            guiGraphics.fill(btnX, btnY, btnX + TOOL_BUTTON_SIZE, btnY + TOOL_BUTTON_SIZE, bgColor);
+
+            // 枠
+            int borderColor = isSelected ? 0xFFFFFFFF : 0xFF666666;
+            guiGraphics.renderOutline(btnX, btnY, TOOL_BUTTON_SIZE, TOOL_BUTTON_SIZE, borderColor);
+
+            // アイコン（シンボル）
+            String symbol = getToolTypeSymbol(type);
+            int symbolColor = isSelected ? 0xFFFFFF : getToolTypeColor(type);
+            guiGraphics.drawCenteredString(this.font, symbol, btnX + TOOL_BUTTON_SIZE / 2, btnY + 6, symbolColor);
         }
     }
 
     /**
-     * ツールタイプの選択ハイライトを描画
+     * スロットエリアを描画
      */
-    private void renderToolTypeHighlight(GuiGraphics guiGraphics, int guiX, int guiY) {
-        // 現在は簡易実装
-        // TODO: ツールタイプ選択UIを実装
+    private void renderSlotAreas(GuiGraphics guiGraphics, int guiX, int guiY) {
+        // パーツスロット背景（4スロット対応）
+        for (int i = 0; i < PART_SLOT_COUNT; i++) {
+            int slotX = guiX + PART_SLOT_X + i * PART_SLOT_SPACING;
+            int slotY = guiY + PART_SLOT_Y;
+            guiGraphics.fill(slotX - 1, slotY - 1, slotX + 17, slotY + 17, 0xFF3A3A3A);
+            guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+        }
+
+        // 出力スロット背景（やや大きめ）
+        guiGraphics.fill(guiX + OUTPUT_SLOT_X - 2, guiY + OUTPUT_SLOT_Y - 2,
+                guiX + OUTPUT_SLOT_X + 18, guiY + OUTPUT_SLOT_Y + 18, AnvilColors.FORGE_ORANGE | 0xFF000000);
+        guiGraphics.fill(guiX + OUTPUT_SLOT_X, guiY + OUTPUT_SLOT_Y,
+                guiX + OUTPUT_SLOT_X + 16, guiY + OUTPUT_SLOT_Y + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+
+        // ツール入力スロット背景
+        guiGraphics.fill(guiX + TOOL_INPUT_X - 1, guiY + TOOL_INPUT_Y - 1,
+                guiX + TOOL_INPUT_X + 17, guiY + TOOL_INPUT_Y + 17, 0xFF3A5A5A);
+        guiGraphics.fill(guiX + TOOL_INPUT_X, guiY + TOOL_INPUT_Y,
+                guiX + TOOL_INPUT_X + 16, guiY + TOOL_INPUT_Y + 16, AnvilColors.VOID_BLACK | 0xFF000000);
     }
 
     /**
-     * ツールタイプの表示名を取得
+     * 矢印を描画
      */
-    private String getToolTypeName(ToolType type) {
-        return switch (type) {
-            case PICKAXE -> "ピッケル";
-            case AXE -> "斧";
-            case SHOVEL -> "シャベル";
-            case SWORD -> "剣";
-            case HOE -> "クワ";
-            case BOW -> "弓";
-            case FISHING_ROD -> "釣り竿";
-            case SHEARS -> "ハサミ";
-        };
+    private void renderArrow(GuiGraphics guiGraphics, int x, int y) {
+        // 簡易矢印
+        guiGraphics.fill(x, y, x + 20, y + 2, 0xFFAAAAAA);
+        guiGraphics.fill(x + 14, y - 4, x + 20, y + 8, 0xFFAAAAAA);
+    }
+
+    /**
+     * ツールタイプのツールチップを描画（ローカライズ対応）
+     */
+    private void renderToolTypeTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY, ToolType type) {
+        java.util.List<Component> tooltip = new java.util.ArrayList<>();
+
+        // ツールタイプ名（ローカライズ）
+        tooltip.add(Component.translatable(type.getTranslationKey())
+                .withStyle(s -> s.withColor(getToolTypeColor(type))));
+
+        // ツールタイプ説明（ローカライズ）
+        tooltip.add(Component.translatable("gui.anvil.tool_station.desc." + type.getId())
+                .withStyle(s -> s.withColor(0xAAAAAA)));
+
+        // 必要パーツ（ローカライズ）
+        tooltip.add(Component.translatable("gui.anvil.tool_station.required_parts")
+                .withStyle(s -> s.withColor(0xFFFF00)));
+        for (var partType : type.getRequiredParts()) {
+            // パーツ名をローカライズキーから取得
+            tooltip.add(Component.literal("  - ")
+                    .append(Component.translatable("part.anvil." + partType.getId()))
+                    .withStyle(s -> s.withColor(0x888888)));
+        }
+
+        guiGraphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
     }
 
     // ============================================
@@ -115,11 +257,25 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        // ツールタイプ選択ボタンのクリック処理
-        int guiX = (this.width - this.imageWidth) / 2;
-        int guiY = (this.height - this.imageHeight) / 2;
+        int guiX = this.leftPos;
+        int guiY = this.topPos;
 
-        // TODO: ツールタイプ選択ボタンのクリック判定を実装
+        // ツールタイプボタンのクリック判定
+        if (button == 0) {
+            ToolType[] types = ToolType.values();
+            for (int i = 0; i < types.length; i++) {
+                int row = i / 4;
+                int col = i % 4;
+                int btnX = guiX + TOOL_BUTTONS_X + col * (TOOL_BUTTON_SIZE + TOOL_BUTTON_SPACING);
+                int btnY = guiY + TOOL_BUTTONS_Y + row * (TOOL_BUTTON_SIZE + TOOL_BUTTON_SPACING);
+
+                if (isMouseOver((int) mouseX, (int) mouseY, btnX, btnY, TOOL_BUTTON_SIZE, TOOL_BUTTON_SIZE)) {
+                    this.menu.setSelectedToolType(i);
+                    ANVIL.LOGGER.info("ツールタイプを選択: {}", types[i].getId());
+                    return true;
+                }
+            }
+        }
 
         return super.mouseClicked(mouseX, mouseY, button);
     }
@@ -137,5 +293,65 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    // ============================================
+    // ユーティリティ
+    // ============================================
+
+    /**
+     * マウスが指定領域内かチェック
+     */
+    private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
+        return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
+    }
+
+    /**
+     * ツールタイプに応じたパーツスロットラベルを取得
+     */
+    private String[] getPartSlotLabels(ToolType type) {
+        if (type == null) {
+            return new String[]{"1", "2", "3", "4"};
+        }
+        return switch (type) {
+            case PICKAXE, AXE -> new String[]{"H", "G", "B", ""};     // ヘッド、ハンドル、バインディング
+            case SHOVEL, HOE -> new String[]{"H", "G", "", ""};       // ヘッド、ハンドル
+            case SWORD -> new String[]{"B", "G", "D", ""};            // ブレード、ハンドル、ガード
+            case BOW -> new String[]{"L", "G", "L", "S"};             // ボウリム、ハンドル、ボウリム、ストリング
+            case FISHING_ROD -> new String[]{"R", "H", "L", ""};      // ロッド、フック、ライン
+            case SHEARS -> new String[]{"B", "B", "P", ""};           // ブレード×2、ピボット
+        };
+    }
+
+    /**
+     * ツールタイプのシンボルを取得
+     */
+    private String getToolTypeSymbol(ToolType type) {
+        return switch (type) {
+            case PICKAXE -> "P";
+            case AXE -> "A";
+            case SHOVEL -> "S";
+            case SWORD -> "W";
+            case HOE -> "H";
+            case BOW -> "B";
+            case FISHING_ROD -> "F";
+            case SHEARS -> "C";
+        };
+    }
+
+    /**
+     * ツールタイプの色を取得
+     */
+    private int getToolTypeColor(ToolType type) {
+        return switch (type) {
+            case PICKAXE -> AnvilColors.FORGE_ORANGE;
+            case AXE -> 0x8B4513;        // 茶色
+            case SHOVEL -> 0x808080;      // 灰色
+            case SWORD -> 0xFF4444;       // 赤
+            case HOE -> 0x228B22;         // 緑
+            case BOW -> 0x8B008B;         // 紫
+            case FISHING_ROD -> 0x4169E1; // 青
+            case SHEARS -> 0xC0C0C0;      // 銀
+        };
     }
 }

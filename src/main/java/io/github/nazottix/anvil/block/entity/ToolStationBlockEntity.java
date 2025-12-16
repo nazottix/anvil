@@ -27,21 +27,22 @@ import org.jetbrains.annotations.Nullable;
  * ツール作成用のインベントリとデータを管理します。
  *
  * スロット構成:
- * - スロット0-2: パーツ入力スロット（ヘッド、ハンドル、バインディング等）
- * - スロット3: 出力スロット（完成したツール）
- * - スロット4: ツール入力スロット（修理・改造用）
+ * - スロット0-3: パーツ入力スロット（最大4パーツ対応、弓等）
+ * - スロット4: 出力スロット（完成したツール）
+ * - スロット5: ツール入力スロット（修理・改造用）
  *
  * 仕様書参照: docs/08_入手_リスペックシステム.md
  */
 public class ToolStationBlockEntity extends BlockEntity implements Container, MenuProvider {
 
-    // インベントリサイズ
-    public static final int SLOT_PART_1 = 0;       // パーツスロット1（ヘッド）
-    public static final int SLOT_PART_2 = 1;       // パーツスロット2（ハンドル）
-    public static final int SLOT_PART_3 = 2;       // パーツスロット3（バインディング等）
-    public static final int SLOT_OUTPUT = 3;       // 出力スロット
-    public static final int SLOT_TOOL_INPUT = 4;   // ツール入力スロット（修理用）
-    public static final int INVENTORY_SIZE = 5;
+    // インベントリサイズ（4パーツスロット対応に拡張）
+    public static final int SLOT_PART_1 = 0;       // パーツスロット1（ヘッド/ボウリム等）
+    public static final int SLOT_PART_2 = 1;       // パーツスロット2（ハンドル等）
+    public static final int SLOT_PART_3 = 2;       // パーツスロット3（バインディング/ボウリム等）
+    public static final int SLOT_PART_4 = 3;       // パーツスロット4（ボウストリング等）
+    public static final int SLOT_OUTPUT = 4;       // 出力スロット
+    public static final int SLOT_TOOL_INPUT = 5;   // ツール入力スロット（修理用）
+    public static final int INVENTORY_SIZE = 6;    // 合計6スロット
 
     // インベントリ
     private NonNullList<ItemStack> items = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);

@@ -100,9 +100,14 @@ public class SkillTreeMenu extends AbstractContainerMenu {
             // ツールデータからツールタイプを取得してスキルツリーを設定
             AnvilToolData toolData = toolStack.get(AnvilDataComponents.TOOL_DATA.get());
 
-            // TODO: ツールタイプを取得する方法を実装
-            // 現在は仮でpickaxeを使用
-            String toolType = "pickaxe";
+            // ツールタイプを取得
+            // AnvilToolItemの場合は直接取得、それ以外はAnvilToolDataから取得
+            String toolType;
+            if (toolStack.getItem() instanceof io.github.nazottix.anvil.item.AnvilToolItem anvilTool) {
+                toolType = anvilTool.getToolType().getId();
+            } else {
+                toolType = toolData.toolType();
+            }
             this.currentTree = SkillTreeRegistry.getForToolType(toolType);
 
             // スキル配分を読み込み
