@@ -90,16 +90,16 @@ public class ToolStationMenu extends AbstractContainerMenu {
         // ツール入力スロット（修理用） - 位置 (21, 96)
         this.addSlot(new ToolInputSlot(container, ToolStationBlockEntity.SLOT_TOOL_INPUT, 21, 96));
 
-        // プレイヤーインベントリ（3行9列）- y=137から
+        // プレイヤーインベントリ（3行9列）- y=151から（14ピクセル下にずらした）
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 137 + row * 18));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 151 + row * 18));
             }
         }
 
-        // ホットバー（1行9列）- y=195
+        // ホットバー（1行9列）- y=209（14ピクセル下にずらした）
         for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 195));
+            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 209));
         }
     }
 

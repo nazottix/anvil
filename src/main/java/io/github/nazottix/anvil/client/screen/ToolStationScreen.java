@@ -5,7 +5,6 @@ import io.github.nazottix.anvil.client.ui.AnvilColors;
 import io.github.nazottix.anvil.menu.ToolStationMenu;
 import io.github.nazottix.anvil.tool.ToolType;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -48,30 +47,28 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
     // ホバー中のツールタイプ
     private ToolType hoveredToolType = null;
 
+    // Craftボタン
+    private static final int CRAFT_BUTTON_X = 93;
+    private static final int CRAFT_BUTTON_Y = 78;
+    private static final int CRAFT_BUTTON_WIDTH = 26;
+    private static final int CRAFT_BUTTON_HEIGHT = 16;
+
     /**
      * コンストラクタ
      */
     public ToolStationScreen(ToolStationMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-        // GUI のサイズを設定（縦を拡大してツールボタン用スペース確保）
+        // GUI のサイズを設定（縦を拡大してツールボタン用スペース確保 + Inventoryラベルとの間にスペース確保）
         this.imageWidth = 176;
-        this.imageHeight = 220;
-        // インベントリラベルの位置調整
-        this.inventoryLabelY = 126;
+        this.imageHeight = 234;
+        // インベントリラベルの位置調整（14ピクセル下にずらした）
+        this.inventoryLabelY = 140;
     }
 
     @Override
     protected void init() {
         super.init();
-
-        // 作成ボタン - パーツスロットと出力スロットの間
-        this.addRenderableWidget(Button.builder(
-                Component.translatable("gui.anvil.craft"),
-                button -> {
-                    this.menu.craftTool();
-                    ANVIL.LOGGER.info("ツール作成を実行");
-                }
-        ).bounds(this.leftPos + 90, this.topPos + 72, 30, 16).build());
+        // Craftボタンはカスタム描画で実装（initでウィジェット追加しない）
     }
 
     // ============================================
@@ -100,14 +97,50 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
         // スロットエリア背景
         renderSlotAreas(guiGraphics, x, y);
 
+        // Craftボタンを描画
+        renderCraftButton(guiGraphics, x, y, mouseX, mouseY);
+
         // 矢印描画（パーツ → 出力）
-        renderArrow(guiGraphics, x + 90, y + 90);
+        renderArrow(guiGraphics, x + 93, y + 96);
 
         // 区切り線（スロットとインベントリの間）
         guiGraphics.fill(x + 8, y + 120, x + this.imageWidth - 8, y + 121, 0xFF444444);
 
-        // プレイヤーインベントリ背景
-        guiGraphics.fill(x + 7, y + 136, x + 169, y + 214, 0xFF1A1A1A);
+        // プレイヤーインベントリ境界線とスロット背景を描画
+        renderInventoryBackground(guiGraphics, x, y);
+    }
+
+    /**
+     * プレイヤーインベントリ背景とスロット境界線を描画
+     */
+    private void renderInventoryBackground(GuiGraphics guiGraphics, int guiX, int guiY) {
+        // インベントリスロット（3行9列）- y=151から（14ピクセル下にずらした）
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 9; col++) {
+                int slotX = guiX + 8 + col * 18;
+                int slotY = guiY + 151 + row * 18;
+                // スロット枠
+                guiGraphics.fill(slotX - 1, slotY - 1, slotX + 17, slotY + 17, 0xFF373737);
+                // スロット背景
+                guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 16, 0xFF8B8B8B);
+                // スロット内側の影
+                guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 1, 0xFF555555);
+                guiGraphics.fill(slotX, slotY, slotX + 1, slotY + 16, 0xFF555555);
+            }
+        }
+
+        // ホットバー（1行9列）- y=209（14ピクセル下にずらした）
+        for (int col = 0; col < 9; col++) {
+            int slotX = guiX + 8 + col * 18;
+            int slotY = guiY + 209;
+            // スロット枠
+            guiGraphics.fill(slotX - 1, slotY - 1, slotX + 17, slotY + 17, 0xFF373737);
+            // スロット背景
+            guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 16, 0xFF8B8B8B);
+            // スロット内側の影
+            guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 1, 0xFF555555);
+            guiGraphics.fill(slotX, slotY, slotX + 1, slotY + 16, 0xFF555555);
+        }
     }
 
     @Override
@@ -216,6 +249,34 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
     }
 
     /**
+     * Craftボタンを描画
+     */
+    private void renderCraftButton(GuiGraphics guiGraphics, int guiX, int guiY, int mouseX, int mouseY) {
+        int btnX = guiX + CRAFT_BUTTON_X;
+        int btnY = guiY + CRAFT_BUTTON_Y;
+
+        boolean isHovered = isMouseOver(mouseX, mouseY, btnX, btnY, CRAFT_BUTTON_WIDTH, CRAFT_BUTTON_HEIGHT);
+
+        // ボタン背景（周りのUIに合わせたスタイル）
+        int bgColor = isHovered ? (AnvilColors.FORGE_ORANGE | 0xFF000000) : (AnvilColors.VOID_BLACK | 0xFF000000);
+        int borderColor = isHovered ? 0xFFFFFFFF : AnvilColors.FORGE_ORANGE;
+
+        // 枠を描画
+        guiGraphics.fill(btnX - 1, btnY - 1, btnX + CRAFT_BUTTON_WIDTH + 1, btnY + CRAFT_BUTTON_HEIGHT + 1, borderColor);
+        // 背景を描画
+        guiGraphics.fill(btnX, btnY, btnX + CRAFT_BUTTON_WIDTH, btnY + CRAFT_BUTTON_HEIGHT, bgColor);
+
+        // テキストを描画
+        Component craftText = Component.translatable("gui.anvil.craft");
+        int textColor = isHovered ? 0xFFFFFF : AnvilColors.FORGE_ORANGE;
+        int textWidth = this.font.width(craftText);
+        guiGraphics.drawString(this.font, craftText,
+                btnX + (CRAFT_BUTTON_WIDTH - textWidth) / 2,
+                btnY + (CRAFT_BUTTON_HEIGHT - 8) / 2,
+                textColor, false);
+    }
+
+    /**
      * 矢印を描画
      */
     private void renderArrow(GuiGraphics guiGraphics, int x, int y) {
@@ -260,8 +321,17 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
         int guiX = this.leftPos;
         int guiY = this.topPos;
 
-        // ツールタイプボタンのクリック判定
         if (button == 0) {
+            // Craftボタンのクリック判定
+            int craftBtnX = guiX + CRAFT_BUTTON_X;
+            int craftBtnY = guiY + CRAFT_BUTTON_Y;
+            if (isMouseOver((int) mouseX, (int) mouseY, craftBtnX, craftBtnY, CRAFT_BUTTON_WIDTH, CRAFT_BUTTON_HEIGHT)) {
+                this.menu.craftTool();
+                ANVIL.LOGGER.info("ツール作成を実行");
+                return true;
+            }
+
+            // ツールタイプボタンのクリック判定
             ToolType[] types = ToolType.values();
             for (int i = 0; i < types.length; i++) {
                 int row = i / 4;

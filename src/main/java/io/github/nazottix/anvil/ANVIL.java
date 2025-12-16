@@ -65,8 +65,13 @@ public class ANVIL {
                     .icon(() -> AnvilItems.ANVIL_PICKAXE.get().getDefaultInstance())
                     // タブに表示するアイテム（ブロックとツール）
                     .displayItems((parameters, output) -> {
-                        // ツールステーションブロック
+                        // ステーションブロック（6種）
                         output.accept(AnvilBlocks.TOOL_STATION_ITEM.get());
+                        output.accept(AnvilBlocks.SKILL_TREE_STATION_ITEM.get());
+                        output.accept(AnvilBlocks.JEWEL_STATION_ITEM.get());
+                        output.accept(AnvilBlocks.RESPEC_STATION_ITEM.get());
+                        output.accept(AnvilBlocks.CORE_BOX_STATION_ITEM.get());
+                        output.accept(AnvilBlocks.MOD_STATION_ITEM.get());
 
                         // 全ANVILツールをタブに追加
                         output.accept(AnvilItems.ANVIL_PICKAXE.get());

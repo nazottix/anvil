@@ -34,6 +34,61 @@ public class AnvilBlockEntities {
                     ).build(null)
             );
 
+    /**
+     * スキルツリーステーションブロックエンティティタイプ
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SkillTreeStationBlockEntity>> SKILL_TREE_STATION =
+            BLOCK_ENTITIES.register("skill_tree_station",
+                    () -> BlockEntityType.Builder.of(
+                            SkillTreeStationBlockEntity::new,
+                            AnvilBlocks.SKILL_TREE_STATION.get()
+                    ).build(null)
+            );
+
+    /**
+     * ジュエルステーションブロックエンティティタイプ
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<JewelStationBlockEntity>> JEWEL_STATION =
+            BLOCK_ENTITIES.register("jewel_station",
+                    () -> BlockEntityType.Builder.of(
+                            JewelStationBlockEntity::new,
+                            AnvilBlocks.JEWEL_STATION.get()
+                    ).build(null)
+            );
+
+    /**
+     * リスペックステーションブロックエンティティタイプ
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RespecStationBlockEntity>> RESPEC_STATION =
+            BLOCK_ENTITIES.register("respec_station",
+                    () -> BlockEntityType.Builder.of(
+                            RespecStationBlockEntity::new,
+                            AnvilBlocks.RESPEC_STATION.get()
+                    ).build(null)
+            );
+
+    /**
+     * コアボックスステーションブロックエンティティタイプ
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CoreBoxStationBlockEntity>> CORE_BOX_STATION =
+            BLOCK_ENTITIES.register("core_box_station",
+                    () -> BlockEntityType.Builder.of(
+                            CoreBoxStationBlockEntity::new,
+                            AnvilBlocks.CORE_BOX_STATION.get()
+                    ).build(null)
+            );
+
+    /**
+     * MODステーションブロックエンティティタイプ
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ModStationBlockEntity>> MOD_STATION =
+            BLOCK_ENTITIES.register("mod_station",
+                    () -> BlockEntityType.Builder.of(
+                            ModStationBlockEntity::new,
+                            AnvilBlocks.MOD_STATION.get()
+                    ).build(null)
+            );
+
     // ============================================
     // 登録
     // ============================================

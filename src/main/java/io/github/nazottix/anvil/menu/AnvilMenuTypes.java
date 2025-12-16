@@ -68,6 +68,61 @@ public class AnvilMenuTypes {
                     () -> IMenuTypeExtension.create(SkillTreeMenu::new)
             );
 
+    /**
+     * スキルツリーステーションメニュータイプ
+     *
+     * スキルツリーステーションブロックのメニュータイプです。
+     * ツールのスキルポイント割り振りを行います。
+     */
+    public static final DeferredHolder<MenuType<?>, MenuType<SkillTreeStationMenu>> SKILL_TREE_STATION =
+            MENU_TYPES.register("skill_tree_station",
+                    () -> IMenuTypeExtension.create(SkillTreeStationMenu::new)
+            );
+
+    /**
+     * ジュエルステーションメニュータイプ
+     *
+     * ジュエルステーションブロックのメニュータイプです。
+     * ツールへのジュエル装着・取り外しを行います。
+     */
+    public static final DeferredHolder<MenuType<?>, MenuType<JewelStationMenu>> JEWEL_STATION =
+            MENU_TYPES.register("jewel_station",
+                    () -> IMenuTypeExtension.create(JewelStationMenu::new)
+            );
+
+    /**
+     * リスペックステーションメニュータイプ
+     *
+     * リスペックステーションブロックのメニュータイプです。
+     * ツールのスキルポイントリセットを行います。
+     */
+    public static final DeferredHolder<MenuType<?>, MenuType<RespecStationMenu>> RESPEC_STATION =
+            MENU_TYPES.register("respec_station",
+                    () -> IMenuTypeExtension.create(RespecStationMenu::new)
+            );
+
+    /**
+     * コアボックスステーションメニュータイプ
+     *
+     * コアボックスステーションブロックのメニュータイプです。
+     * テトリス風のモジュール配置を行います。
+     */
+    public static final DeferredHolder<MenuType<?>, MenuType<CoreBoxStationMenu>> CORE_BOX_STATION =
+            MENU_TYPES.register("core_box_station",
+                    () -> IMenuTypeExtension.create(CoreBoxStationMenu::new)
+            );
+
+    /**
+     * MODステーションメニュータイプ
+     *
+     * MODステーションブロックのメニュータイプです。
+     * ツールへのMOD装着・取り外しを行います。
+     */
+    public static final DeferredHolder<MenuType<?>, MenuType<ModStationMenu>> MOD_STATION =
+            MENU_TYPES.register("mod_station",
+                    () -> IMenuTypeExtension.create(ModStationMenu::new)
+            );
+
     // ============================================
     // 登録
     // ============================================

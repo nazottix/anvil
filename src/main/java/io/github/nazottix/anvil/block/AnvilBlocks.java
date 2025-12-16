@@ -39,6 +39,81 @@ public class AnvilBlocks {
             )
     );
 
+    /**
+     * スキルツリーステーションブロック
+     *
+     * ANVILツールのスキルポイント割り振りに使用するワークベンチです。
+     * プレイヤーはこのブロックでスキルツリーを閲覧・スキルを取得できます。
+     */
+    public static final DeferredBlock<SkillTreeStationBlock> SKILL_TREE_STATION = ANVIL.BLOCKS.register(
+            "skill_tree_station",
+            () -> new SkillTreeStationBlock(BlockBehaviour.Properties.of()
+                    .strength(2.5f, 2.5f)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()
+            )
+    );
+
+    /**
+     * ジュエルステーションブロック
+     *
+     * ANVILツールへのジュエル装着に使用するワークベンチです。
+     * プレイヤーはこのブロックでジュエルの装着・取り外しができます。
+     */
+    public static final DeferredBlock<JewelStationBlock> JEWEL_STATION = ANVIL.BLOCKS.register(
+            "jewel_station",
+            () -> new JewelStationBlock(BlockBehaviour.Properties.of()
+                    .strength(2.5f, 2.5f)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()
+            )
+    );
+
+    /**
+     * リスペックステーションブロック
+     *
+     * ANVILツールのスキルリセットに使用するワークベンチです。
+     * プレイヤーはこのブロックでリスペックアイテムを使用してスキルをリセットできます。
+     */
+    public static final DeferredBlock<RespecStationBlock> RESPEC_STATION = ANVIL.BLOCKS.register(
+            "respec_station",
+            () -> new RespecStationBlock(BlockBehaviour.Properties.of()
+                    .strength(2.5f, 2.5f)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()
+            )
+    );
+
+    /**
+     * コアボックスステーションブロック
+     *
+     * ANVILツールのグリッドモジュール配置に使用するワークベンチです。
+     * プレイヤーはこのブロックでテトリス風のモジュール配置ができます。
+     */
+    public static final DeferredBlock<CoreBoxStationBlock> CORE_BOX_STATION = ANVIL.BLOCKS.register(
+            "core_box_station",
+            () -> new CoreBoxStationBlock(BlockBehaviour.Properties.of()
+                    .strength(2.5f, 2.5f)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()
+            )
+    );
+
+    /**
+     * MODステーションブロック
+     *
+     * ANVILツールへのMOD装着に使用するワークベンチです。
+     * プレイヤーはこのブロックでMODの装着・管理ができます。
+     */
+    public static final DeferredBlock<ModStationBlock> MOD_STATION = ANVIL.BLOCKS.register(
+            "mod_station",
+            () -> new ModStationBlock(BlockBehaviour.Properties.of()
+                    .strength(2.5f, 2.5f)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()
+            )
+    );
+
     // ============================================
     // アイテム登録（ブロックアイテム）
     // ============================================
@@ -49,6 +124,46 @@ public class AnvilBlocks {
     public static final DeferredItem<BlockItem> TOOL_STATION_ITEM = ANVIL.ITEMS.register(
             "tool_station",
             () -> new BlockItem(TOOL_STATION.get(), new Item.Properties())
+    );
+
+    /**
+     * スキルツリーステーションのブロックアイテム
+     */
+    public static final DeferredItem<BlockItem> SKILL_TREE_STATION_ITEM = ANVIL.ITEMS.register(
+            "skill_tree_station",
+            () -> new BlockItem(SKILL_TREE_STATION.get(), new Item.Properties())
+    );
+
+    /**
+     * ジュエルステーションのブロックアイテム
+     */
+    public static final DeferredItem<BlockItem> JEWEL_STATION_ITEM = ANVIL.ITEMS.register(
+            "jewel_station",
+            () -> new BlockItem(JEWEL_STATION.get(), new Item.Properties())
+    );
+
+    /**
+     * リスペックステーションのブロックアイテム
+     */
+    public static final DeferredItem<BlockItem> RESPEC_STATION_ITEM = ANVIL.ITEMS.register(
+            "respec_station",
+            () -> new BlockItem(RESPEC_STATION.get(), new Item.Properties())
+    );
+
+    /**
+     * コアボックスステーションのブロックアイテム
+     */
+    public static final DeferredItem<BlockItem> CORE_BOX_STATION_ITEM = ANVIL.ITEMS.register(
+            "core_box_station",
+            () -> new BlockItem(CORE_BOX_STATION.get(), new Item.Properties())
+    );
+
+    /**
+     * MODステーションのブロックアイテム
+     */
+    public static final DeferredItem<BlockItem> MOD_STATION_ITEM = ANVIL.ITEMS.register(
+            "mod_station",
+            () -> new BlockItem(MOD_STATION.get(), new Item.Properties())
     );
 
     // ============================================

@@ -1,8 +1,13 @@
 package io.github.nazottix.anvil;
 
+import io.github.nazottix.anvil.client.screen.CoreBoxStationScreen;
 import io.github.nazottix.anvil.client.screen.GridCustomizationScreen;
+import io.github.nazottix.anvil.client.screen.JewelStationScreen;
 import io.github.nazottix.anvil.client.screen.ModCustomizationScreen;
+import io.github.nazottix.anvil.client.screen.ModStationScreen;
+import io.github.nazottix.anvil.client.screen.RespecStationScreen;
 import io.github.nazottix.anvil.client.screen.SkillTreeScreen;
+import io.github.nazottix.anvil.client.screen.SkillTreeStationScreen;
 import io.github.nazottix.anvil.client.screen.ToolStationScreen;
 import io.github.nazottix.anvil.menu.AnvilMenuTypes;
 import net.neoforged.api.distmarker.Dist;
@@ -63,6 +68,13 @@ public class ANVILClient {
         // スキルツリースクリーンを登録
         event.register(AnvilMenuTypes.SKILL_TREE.get(), SkillTreeScreen::new);
 
-        ANVIL.LOGGER.info("ANVIL: メニュースクリーンを登録（4種）");
+        // ステーションスクリーンを登録（5種）
+        event.register(AnvilMenuTypes.SKILL_TREE_STATION.get(), SkillTreeStationScreen::new);
+        event.register(AnvilMenuTypes.JEWEL_STATION.get(), JewelStationScreen::new);
+        event.register(AnvilMenuTypes.RESPEC_STATION.get(), RespecStationScreen::new);
+        event.register(AnvilMenuTypes.CORE_BOX_STATION.get(), CoreBoxStationScreen::new);
+        event.register(AnvilMenuTypes.MOD_STATION.get(), ModStationScreen::new);
+
+        ANVIL.LOGGER.info("ANVIL: メニュースクリーンを登録（9種）");
     }
 }

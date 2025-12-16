@@ -13,6 +13,11 @@
   "item.anvil.anvil_shears": "ANVILハサミ",
 
   "block.anvil.tool_station": "ツールステーション",
+  "block.anvil.skill_tree_station": "スキルツリーステーション",
+  "block.anvil.jewel_station": "ジュエルステーション",
+  "block.anvil.respec_station": "リスペックステーション",
+  "block.anvil.core_box_station": "コアボックスステーション",
+  "block.anvil.mod_station": "MODステーション",
 
   "tool.anvil.pickaxe": "ピッケル",
   "tool.anvil.axe": "斧",
@@ -459,6 +464,16 @@
   "gui.anvil.grid_customization": "コアボックスカスタマイズ",
   "gui.anvil.tool_station": "ツールステーション",
   "gui.anvil.skill_tree": "スキルツリー",
+
+  "_comment_station_ui": "ステーションUI要素",
+  "gui.anvil.skill_tree_station.insert_tool": "ツールを入れてスキルツリーを表示",
+  "gui.anvil.jewel_station.desc": "ツールにジュエルを装着",
+  "gui.anvil.respec_station.respec": "リスペック",
+  "gui.anvil.respec_station.tool": "ツール",
+  "gui.anvil.respec_station.item": "アイテム",
+  "gui.anvil.core_box_station.insert_tool": "ツールを入れてください",
+  "gui.anvil.core_box_station.weight": "重量: %d/%d",
+  "gui.anvil.mod_station.capacity": "容量: %d/%d",
 
   "_comment_skill_tree": "=== スキルツリーシステム ===",
 

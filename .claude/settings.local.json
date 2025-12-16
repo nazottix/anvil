@@ -7,7 +7,9 @@
       "Bash(powershell -Command:*)",
       "Bash(.gradlew.bat build --console=plain)",
       "Bash(Select-String -Pattern \"error:|Error:|cannot find|symbol:\")",
-      "Bash(./gradlew.bat build --console=plain)"
+      "Bash(./gradlew.bat build --console=plain)",
+      "Bash(uvx serena:*)",
+      "Bash(uvx serena-mcp:*)"
     ]
   }
 }

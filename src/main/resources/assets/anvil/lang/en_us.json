@@ -13,6 +13,11 @@
   "item.anvil.anvil_shears": "ANVIL Shears",
 
   "block.anvil.tool_station": "Tool Station",
+  "block.anvil.skill_tree_station": "Skill Tree Station",
+  "block.anvil.jewel_station": "Jewel Station",
+  "block.anvil.respec_station": "Respec Station",
+  "block.anvil.core_box_station": "Core Box Station",
+  "block.anvil.mod_station": "MOD Station",
 
   "tool.anvil.pickaxe": "Pickaxe",
   "tool.anvil.axe": "Axe",
@@ -459,6 +464,16 @@
   "gui.anvil.grid_customization": "Core Box Customization",
   "gui.anvil.tool_station": "Tool Station",
   "gui.anvil.skill_tree": "Skill Tree",
+
+  "_comment_station_ui": "Station UI Elements",
+  "gui.anvil.skill_tree_station.insert_tool": "Insert a tool to view skill tree",
+  "gui.anvil.jewel_station.desc": "Attach jewels to your tool",
+  "gui.anvil.respec_station.respec": "Respec",
+  "gui.anvil.respec_station.tool": "Tool",
+  "gui.anvil.respec_station.item": "Item",
+  "gui.anvil.core_box_station.insert_tool": "Insert a tool",
+  "gui.anvil.core_box_station.weight": "Weight: %d/%d",
+  "gui.anvil.mod_station.capacity": "Capacity: %d/%d",
 
   "_comment_skill_tree": "=== Skill Tree System ===",
 
