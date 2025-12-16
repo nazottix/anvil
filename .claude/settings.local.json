@@ -18,7 +18,8 @@
       "Bash(pip install:*)",
       "mcp__serena__search_for_pattern",
       "mcp__serena__think_about_task_adherence",
-      "mcp__serena__think_about_whether_you_are_done"
+      "mcp__serena__think_about_whether_you_are_done",
+      "Bash(python generate_part_textures.py:*)"
     ]
   }
 }
