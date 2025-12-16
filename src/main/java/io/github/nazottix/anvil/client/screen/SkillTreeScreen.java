@@ -2,17 +2,22 @@ package io.github.nazottix.anvil.client.screen;
 
 import io.github.nazottix.anvil.ANVIL;
 import io.github.nazottix.anvil.client.ui.AnvilColors;
+import io.github.nazottix.anvil.item.JewelItem;
 import io.github.nazottix.anvil.menu.SkillTreeMenu;
 import io.github.nazottix.anvil.skill.*;
+import io.github.nazottix.anvil.skill.jewel.JewelData;
+import io.github.nazottix.anvil.skill.jewel.JewelRegistry;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * スキルツリースクリーン
@@ -37,13 +42,20 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
     private static final float MIN_ZOOM = 0.5f;
     private static final float MAX_ZOOM = 2.0f;
 
-    // ドラッグ状態
+    // ドラッグ状態（ビューパン用）
     private boolean isDragging = false;
     private int dragStartX, dragStartY;
     private float dragStartViewX, dragStartViewY;
 
     // ホバー中のノード
     private SkillNode hoveredNode = null;
+
+    // ジュエルドラッグ状態
+    private ItemStack draggingJewel = ItemStack.EMPTY;
+    private int draggingSourceSlot = -1;
+
+    // ホバー中のジュエルソケット
+    private SkillNode hoveredSocket = null;
 
     /**
      * コンストラクタ
@@ -130,9 +142,36 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
 
-        // ノードツールチップ
-        if (hoveredNode != null) {
+        // ノードツールチップ（ドラッグ中は非表示）
+        if (hoveredNode != null && draggingJewel.isEmpty()) {
             renderNodeTooltip(guiGraphics, mouseX, mouseY, hoveredNode);
+        }
+
+        // ドラッグ中のジュエルを描画
+        if (!draggingJewel.isEmpty()) {
+            renderDraggingJewel(guiGraphics, mouseX, mouseY);
+        }
+    }
+
+    /**
+     * ドラッグ中のジュエルを描画
+     */
+    private void renderDraggingJewel(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        // マウス位置にジュエルアイテムを描画
+        guiGraphics.renderItem(draggingJewel, mouseX - 8, mouseY - 8);
+
+        // ジュエル名を表示
+        JewelData data = JewelItem.getJewelData(draggingJewel);
+        if (data != null) {
+            String name = draggingJewel.getHoverName().getString();
+            int nameWidth = this.font.width(name);
+
+            // 背景
+            guiGraphics.fill(mouseX - nameWidth / 2 - 2, mouseY + 12,
+                    mouseX + nameWidth / 2 + 2, mouseY + 24, 0xCC000000);
+
+            // テキスト
+            guiGraphics.drawCenteredString(this.font, name, mouseX, mouseY + 14, data.rarity().getColor());
         }
     }
 
@@ -173,6 +212,7 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
         guiGraphics.enableScissor(treeX, treeY, treeX + TREE_AREA_WIDTH, treeY + TREE_AREA_HEIGHT);
 
         hoveredNode = null;
+        hoveredSocket = null;
 
         // 接続線を描画
         for (SkillNode node : tree.nodes()) {
@@ -227,6 +267,12 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
         boolean isAllocated = allocation.isAllocated(node.id());
         int baseColor = node.type().getDisplayColor();
 
+        // ジュエルソケットの特別な描画
+        if (node.type() == SkillNodeType.JEWEL_SOCKET) {
+            renderJewelSocket(guiGraphics, node, x, y, left, top, right, bottom, size, allocation, isAllocated, mouseX, mouseY);
+            return;
+        }
+
         if (isAllocated) {
             // 解放済み: 明るい色
             guiGraphics.fill(left, top, right, bottom, baseColor | 0xFF000000);
@@ -250,6 +296,80 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
         String symbol = getNodeSymbol(node.type());
         if (size >= 16) {
             guiGraphics.drawCenteredString(this.font, symbol, x, y - 4, 0xFFFFFF);
+        }
+    }
+
+    /**
+     * ジュエルソケットを描画
+     */
+    private void renderJewelSocket(GuiGraphics guiGraphics, SkillNode node, int x, int y,
+                                   int left, int top, int right, int bottom, int size,
+                                   SkillAllocation allocation, boolean isAllocated,
+                                   int mouseX, int mouseY) {
+        // ジュエルが装着されているか確認
+        Optional<JewelData> equippedJewelOpt = this.menu.getEquippedJewelData(node.id());
+
+        // 背景色（ソケットの状態によって変化）
+        int bgColor;
+        if (isAllocated) {
+            if (equippedJewelOpt.isPresent()) {
+                // ジュエル装着済み: ジュエルのレアリティ色
+                bgColor = equippedJewelOpt.get().rarity().getColor();
+            } else {
+                // 解放済み・空き: 暗い紫（装着可能を示す）
+                bgColor = 0x442255;
+            }
+        } else {
+            // 未解放: 暗いグレー
+            bgColor = 0x222222;
+        }
+
+        // ソケット形状（六角形風の八角形）
+        guiGraphics.fill(left + 2, top, right - 2, bottom, bgColor | 0xFF000000);
+        guiGraphics.fill(left, top + 2, right, bottom - 2, bgColor | 0xFF000000);
+
+        // 枠
+        int borderColor;
+        if (isAllocated) {
+            borderColor = equippedJewelOpt.isPresent()
+                    ? equippedJewelOpt.get().rarity().getColor() | 0xFF000000
+                    : 0xFFAA55FF; // 空きソケット：紫の枠
+        } else {
+            borderColor = 0xFF444444;
+        }
+
+        // 枠を描画（八角形風）
+        guiGraphics.fill(left + 2, top, right - 2, top + 1, borderColor);      // 上
+        guiGraphics.fill(left + 2, bottom - 1, right - 2, bottom, borderColor); // 下
+        guiGraphics.fill(left, top + 2, left + 1, bottom - 2, borderColor);     // 左
+        guiGraphics.fill(right - 1, top + 2, right, bottom - 2, borderColor);   // 右
+
+        // ホバーチェック
+        if (mouseX >= left && mouseX < right && mouseY >= top && mouseY < bottom) {
+            hoveredNode = node;
+            hoveredSocket = node;
+            guiGraphics.fill(left, top, right, bottom, 0x44FFFFFF);
+
+            // ジュエルをドラッグ中で、このソケットにドロップ可能な場合はハイライト
+            if (!draggingJewel.isEmpty() && isAllocated && equippedJewelOpt.isEmpty()) {
+                guiGraphics.fill(left, top, right, bottom, 0x4455FF55);
+            }
+        }
+
+        // ソケット内のシンボル/ジュエル名
+        if (size >= 16) {
+            if (equippedJewelOpt.isPresent()) {
+                // ジュエルのシンボル
+                String symbol = "◆";
+                guiGraphics.drawCenteredString(this.font, symbol, x, y - 4,
+                        equippedJewelOpt.get().rarity().getColor());
+            } else if (isAllocated) {
+                // 空きソケット
+                guiGraphics.drawCenteredString(this.font, "◇", x, y - 4, 0xAA55FF);
+            } else {
+                // 未解放ソケット
+                guiGraphics.drawCenteredString(this.font, "◈", x, y - 4, 0x666666);
+            }
         }
     }
 
@@ -328,13 +448,18 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
         // コスト
         tooltip.add(Component.literal("コスト: " + node.getActualCost() + " SP").withStyle(s -> s.withColor(0xFFFF00)));
 
-        // 効果
-        if (!node.effects().isEmpty()) {
-            tooltip.add(Component.literal("効果:").withStyle(s -> s.withColor(0x55FF55)));
-            for (SkillEffect effect : node.effects()) {
-                String effectText = "  " + effect.getDisplayString();
-                int effectColor = effect.isPositive() ? 0x55FF55 : 0xFF5555;
-                tooltip.add(Component.literal(effectText).withStyle(s -> s.withColor(effectColor)));
+        // ジュエルソケットの場合
+        if (node.type() == SkillNodeType.JEWEL_SOCKET) {
+            renderJewelSocketTooltip(tooltip, node);
+        } else {
+            // 通常ノードの効果
+            if (!node.effects().isEmpty()) {
+                tooltip.add(Component.literal("効果:").withStyle(s -> s.withColor(0x55FF55)));
+                for (SkillEffect effect : node.effects()) {
+                    String effectText = "  " + effect.getDisplayString();
+                    int effectColor = effect.isPositive() ? 0x55FF55 : 0xFF5555;
+                    tooltip.add(Component.literal(effectText).withStyle(s -> s.withColor(effectColor)));
+                }
             }
         }
 
@@ -357,6 +482,51 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
         }
 
         guiGraphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
+    }
+
+    /**
+     * ジュエルソケットのツールチップ情報を追加
+     */
+    private void renderJewelSocketTooltip(List<Component> tooltip, SkillNode node) {
+        SkillAllocation allocation = this.menu.getEditingAllocation();
+
+        if (!allocation.isAllocated(node.id())) {
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.literal("◈ ジュエルソケット").withStyle(s -> s.withColor(0xAA55FF)));
+            tooltip.add(Component.literal("解放するとジュエルを装着可能").withStyle(s -> s.withColor(0x888888)));
+            return;
+        }
+
+        tooltip.add(Component.literal(""));
+
+        Optional<JewelData> equippedJewelOpt = this.menu.getEquippedJewelData(node.id());
+        if (equippedJewelOpt.isPresent()) {
+            JewelData jewel = equippedJewelOpt.get();
+
+            // 装着済みジュエル名
+            tooltip.add(Component.literal("◆ 装着済み: ").withStyle(s -> s.withColor(0xAA55FF))
+                    .append(Component.translatable(jewel.nameKey()).withStyle(s -> s.withColor(jewel.rarity().getColor()))));
+
+            // レアリティ
+            tooltip.add(Component.literal("  レアリティ: " + jewel.rarity().getId().toUpperCase())
+                    .withStyle(s -> s.withColor(jewel.rarity().getColor())));
+
+            // 効果一覧
+            tooltip.add(Component.literal("  効果:").withStyle(s -> s.withColor(0x888888)));
+            for (SkillEffect effect : jewel.getScaledEffects()) {
+                String effectText = "    " + effect.getDisplayString();
+                int effectColor = effect.isPositive() ? 0x55FF55 : 0xFF5555;
+                tooltip.add(Component.literal(effectText).withStyle(s -> s.withColor(effectColor)));
+            }
+
+            // 操作説明
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.literal("クリックで取り外し").withStyle(s -> s.withColor(0xFFFF00)));
+        } else {
+            // 空きソケット
+            tooltip.add(Component.literal("◇ 空きソケット").withStyle(s -> s.withColor(0xAA55FF)));
+            tooltip.add(Component.literal("ジュエルをドラッグ＆ドロップで装着").withStyle(s -> s.withColor(0x888888)));
+        }
     }
 
     // ============================================
@@ -388,6 +558,27 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
         int mx = (int) mouseX;
         int my = (int) mouseY;
 
+        // ジュエルをドラッグ中の場合、ドロップ処理
+        if (!draggingJewel.isEmpty() && button == 0) {
+            return handleJewelDrop(mx, my);
+        }
+
+        // プレイヤーインベントリからジュエルをピックアップ
+        if (button == 0) {
+            int slotIndex = getSlotIndexAt(mx, my);
+            if (slotIndex >= 0) {
+                ItemStack slotStack = this.menu.getSlot(slotIndex).getItem();
+                if (slotStack.getItem() instanceof JewelItem && !slotStack.isEmpty()) {
+                    // ジュエルをドラッグ開始
+                    draggingJewel = slotStack.copy();
+                    draggingJewel.setCount(1);
+                    draggingSourceSlot = slotIndex;
+                    ANVIL.LOGGER.info("ジュエルをピックアップ: {}", JewelItem.getJewelId(draggingJewel));
+                    return true;
+                }
+            }
+        }
+
         // ツリーエリア内かチェック
         int treeX = this.leftPos + TREE_AREA_X;
         int treeY = this.topPos + TREE_AREA_Y;
@@ -397,13 +588,28 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
 
             if (button == 0) { // 左クリック
                 if (hoveredNode != null) {
-                    // ノードを解放
+                    // ジュエルソケットの場合、装着済みジュエルの取り外しをチェック
+                    if (hoveredNode.type() == SkillNodeType.JEWEL_SOCKET) {
+                        SkillAllocation allocation = this.menu.getEditingAllocation();
+                        if (allocation.isAllocated(hoveredNode.id()) && allocation.hasJewel(hoveredNode.id())) {
+                            // ジュエルを取り外してドラッグ開始
+                            Optional<ResourceLocation> removedJewelId = this.menu.unequipJewel(hoveredNode.id());
+                            if (removedJewelId.isPresent()) {
+                                draggingJewel = JewelItem.createJewelStack(removedJewelId.get());
+                                draggingSourceSlot = -1; // ソケットから取り外し
+                                ANVIL.LOGGER.info("ジュエルをソケットから取り外し: {}", removedJewelId.get());
+                                return true;
+                            }
+                        }
+                    }
+
+                    // 通常のノード解放
                     if (this.menu.allocateNode(hoveredNode.id())) {
                         ANVIL.LOGGER.info("ノードを解放: {}", hoveredNode.id());
                     }
                     return true;
                 } else {
-                    // ドラッグ開始
+                    // ドラッグ開始（ビューパン）
                     isDragging = true;
                     dragStartX = mx;
                     dragStartY = my;
@@ -423,6 +629,75 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
         }
 
         return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    /**
+     * ジュエルドロップ処理
+     */
+    private boolean handleJewelDrop(int mx, int my) {
+        // ツリーエリア内でソケットにドロップ
+        int treeX = this.leftPos + TREE_AREA_X;
+        int treeY = this.topPos + TREE_AREA_Y;
+
+        if (mx >= treeX && mx < treeX + TREE_AREA_WIDTH &&
+                my >= treeY && my < treeY + TREE_AREA_HEIGHT) {
+
+            if (hoveredSocket != null) {
+                SkillAllocation allocation = this.menu.getEditingAllocation();
+                // ソケットが解放済みで空いている場合
+                if (allocation.isAllocated(hoveredSocket.id()) && !allocation.hasJewel(hoveredSocket.id())) {
+                    // ジュエルを装着
+                    if (this.menu.equipJewel(hoveredSocket.id(), draggingJewel)) {
+                        ANVIL.LOGGER.info("ジュエルを装着: {} -> {}", JewelItem.getJewelId(draggingJewel), hoveredSocket.id());
+
+                        // 元のスロットからジュエルを消費
+                        if (draggingSourceSlot >= 0) {
+                            ItemStack sourceStack = this.menu.getSlot(draggingSourceSlot).getItem();
+                            sourceStack.shrink(1);
+                        }
+
+                        draggingJewel = ItemStack.EMPTY;
+                        draggingSourceSlot = -1;
+                        return true;
+                    }
+                }
+            }
+        }
+
+        // インベントリスロットにドロップ（キャンセル）
+        int slotIndex = getSlotIndexAt(mx, my);
+        if (slotIndex >= 0 || draggingSourceSlot < 0) {
+            // ドロップ先のスロットにジュエルを戻す（またはソケットから取り外したジュエルをインベントリに追加）
+            if (draggingSourceSlot < 0) {
+                // ソケットから取り外したジュエル：プレイヤーに与える
+                if (this.minecraft != null && this.minecraft.player != null) {
+                    if (!this.minecraft.player.getInventory().add(draggingJewel)) {
+                        // インベントリがいっぱいの場合はドロップ
+                        this.minecraft.player.drop(draggingJewel, false);
+                    }
+                }
+            }
+            // draggingSourceSlot >= 0 の場合は元のスロットに残っているのでキャンセル
+        }
+
+        draggingJewel = ItemStack.EMPTY;
+        draggingSourceSlot = -1;
+        return true;
+    }
+
+    /**
+     * 座標からスロットインデックスを取得
+     */
+    private int getSlotIndexAt(int mx, int my) {
+        for (int i = 0; i < this.menu.slots.size(); i++) {
+            var slot = this.menu.getSlot(i);
+            int slotX = this.leftPos + slot.x;
+            int slotY = this.topPos + slot.y;
+            if (mx >= slotX && mx < slotX + 16 && my >= slotY && my < slotY + 16) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override

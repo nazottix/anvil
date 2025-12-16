@@ -2,7 +2,10 @@ package io.github.nazottix.anvil.menu;
 
 import io.github.nazottix.anvil.data.AnvilDataComponents;
 import io.github.nazottix.anvil.data.component.AnvilToolData;
+import io.github.nazottix.anvil.item.JewelItem;
 import io.github.nazottix.anvil.skill.*;
+import io.github.nazottix.anvil.skill.jewel.JewelData;
+import io.github.nazottix.anvil.skill.jewel.JewelRegistry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -12,6 +15,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -261,6 +266,119 @@ public class SkillTreeMenu extends AbstractContainerMenu {
             this.editingAllocation = SkillAllocation.create(currentTree.id());
         }
         updateSkillPoints();
+    }
+
+    // ============================================
+    // ジュエル操作
+    // ============================================
+
+    /**
+     * ジュエルをソケットに装着
+     *
+     * @param socketId ソケットノードID
+     * @param jewelStack ジュエルアイテムスタック
+     * @return 成功した場合true
+     */
+    public boolean equipJewel(ResourceLocation socketId, ItemStack jewelStack) {
+        if (currentTree == null || jewelStack.isEmpty()) {
+            return false;
+        }
+
+        // ジュエルアイテムかチェック
+        if (!(jewelStack.getItem() instanceof JewelItem)) {
+            return false;
+        }
+
+        // ジュエルIDを取得
+        ResourceLocation jewelId = JewelItem.getJewelId(jewelStack);
+        if (jewelId == null) {
+            return false;
+        }
+
+        // ソケットノードが存在するかチェック
+        Optional<SkillNode> socketNodeOpt = currentTree.getNode(socketId);
+        if (socketNodeOpt.isEmpty()) {
+            return false;
+        }
+
+        SkillNode socketNode = socketNodeOpt.get();
+
+        // ジュエルソケットタイプかチェック
+        if (socketNode.type() != SkillNodeType.JEWEL_SOCKET) {
+            return false;
+        }
+
+        // ソケットが解放済みかチェック
+        if (!editingAllocation.isAllocated(socketId)) {
+            return false;
+        }
+
+        // ジュエルがツールタイプに装着可能かチェック
+        Optional<JewelData> jewelDataOpt = JewelRegistry.get(jewelId);
+        if (jewelDataOpt.isEmpty()) {
+            return false;
+        }
+
+        JewelData jewelData = jewelDataOpt.get();
+        if (!jewelData.canEquipTo(currentTree.toolType())) {
+            return false;
+        }
+
+        // ジュエルを装着
+        editingAllocation = editingAllocation.withEquippedJewel(socketId, jewelId);
+        return true;
+    }
+
+    /**
+     * ジュエルをソケットから取り外す
+     *
+     * @param socketId ソケットノードID
+     * @return 取り外したジュエルID（なければempty）
+     */
+    public Optional<ResourceLocation> unequipJewel(ResourceLocation socketId) {
+        if (currentTree == null) {
+            return Optional.empty();
+        }
+
+        // 装着されているジュエルを取得
+        Optional<ResourceLocation> equippedJewel = editingAllocation.getEquippedJewel(socketId);
+        if (equippedJewel.isEmpty()) {
+            return Optional.empty();
+        }
+
+        // ジュエルを取り外す
+        editingAllocation = editingAllocation.withRemovedJewel(socketId);
+        return equippedJewel;
+    }
+
+    /**
+     * 解放済みのジュエルソケット一覧を取得
+     *
+     * @return ジュエルソケットノードのリスト
+     */
+    public List<SkillNode> getUnlockedJewelSockets() {
+        if (currentTree == null) {
+            return List.of();
+        }
+
+        List<SkillNode> sockets = new ArrayList<>();
+        for (SkillNode node : currentTree.nodes()) {
+            if (node.type() == SkillNodeType.JEWEL_SOCKET && editingAllocation.isAllocated(node.id())) {
+                sockets.add(node);
+            }
+        }
+        return sockets;
+    }
+
+    /**
+     * 指定ソケットに装着されているジュエルデータを取得
+     *
+     * @param socketId ソケットノードID
+     * @return ジュエルデータ（装着されていなければempty）
+     */
+    public Optional<JewelData> getEquippedJewelData(ResourceLocation socketId) {
+        return editingAllocation.getEquippedJewel(socketId)
+                .flatMap(JewelRegistry::get);
     }
 
     // ============================================
