@@ -1,9 +1,10 @@
 package io.github.nazottix.anvil.client.screen;
 
+import io.github.nazottix.anvil.ANVIL;
+import io.github.nazottix.anvil.client.ui.AnvilButtonRenderer;
 import io.github.nazottix.anvil.client.ui.AnvilColors;
 import io.github.nazottix.anvil.menu.RespecStationMenu;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.entity.player.Inventory;
@@ -31,6 +32,12 @@ public class RespecStationScreen extends AbstractContainerScreen<RespecStationMe
     private static final int RESPEC_ITEM_SLOT_X = 104;
     private static final int RESPEC_ITEM_SLOT_Y = 35;
 
+    // リスペックボタン定数（AnvilButtonRendererを使用）
+    private static final int RESPEC_BUTTON_X = 62;
+    private static final int RESPEC_BUTTON_Y = 55;
+    private static final int RESPEC_BUTTON_WIDTH = 52;
+    private static final int RESPEC_BUTTON_HEIGHT = 16;
+
     /**
      * コンストラクタ
      */
@@ -46,16 +53,7 @@ public class RespecStationScreen extends AbstractContainerScreen<RespecStationMe
     @Override
     protected void init() {
         super.init();
-
-        // リスペックボタン
-        this.addRenderableWidget(Button.builder(
-                Component.translatable("gui.anvil.respec_station.respec"),
-                button -> {
-                    if (this.menu.performRespec()) {
-                        // リスペック成功
-                    }
-                }
-        ).bounds(this.leftPos + 62, this.topPos + 55, 52, 16).build());
+        // リスペックボタンはAnvilButtonRendererでカスタム描画するため、標準Buttonは使用しない
     }
 
     // ============================================
@@ -84,11 +82,29 @@ public class RespecStationScreen extends AbstractContainerScreen<RespecStationMe
         // リスペックアイテムスロット背景
         renderRespecItemSlot(guiGraphics, x, y);
 
+        // リスペックボタンを描画（AnvilButtonRendererを使用）
+        renderRespecButton(guiGraphics, x, y, mouseX, mouseY);
+
         // 区切り線
         guiGraphics.fill(x + 8, y + 70, x + this.imageWidth - 8, y + 71, 0xFF444444);
 
         // プレイヤーインベントリ境界線とスロット背景を描画
         renderInventoryBackground(guiGraphics, x, y);
+    }
+
+    /**
+     * リスペックボタンを描画
+     * AnvilButtonRendererユーティリティを使用してテーマに統一
+     */
+    private void renderRespecButton(GuiGraphics guiGraphics, int guiX, int guiY, int mouseX, int mouseY) {
+        int btnX = guiX + RESPEC_BUTTON_X;
+        int btnY = guiY + RESPEC_BUTTON_Y;
+
+        // AnvilButtonRendererを使用してボタンを描画
+        boolean isHovered = AnvilButtonRenderer.isMouseOverButton(mouseX, mouseY, btnX, btnY, RESPEC_BUTTON_WIDTH, RESPEC_BUTTON_HEIGHT);
+        boolean canRespec = true; // 常に有効（クリック時にperformRespecで判定）
+        Component respecText = Component.translatable("gui.anvil.respec_station.respec");
+        AnvilButtonRenderer.renderButton(guiGraphics, this.font, btnX, btnY, RESPEC_BUTTON_WIDTH, RESPEC_BUTTON_HEIGHT, respecText, isHovered, canRespec);
     }
 
     /**
@@ -171,5 +187,31 @@ public class RespecStationScreen extends AbstractContainerScreen<RespecStationMe
         // インベントリラベル
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY,
                 AnvilColors.ETHER_WHITE, false);
+    }
+
+    // ============================================
+    // マウス操作
+    // ============================================
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        int guiX = this.leftPos;
+        int guiY = this.topPos;
+
+        if (button == 0) {
+            // リスペックボタンのクリック判定
+            int respecBtnX = guiX + RESPEC_BUTTON_X;
+            int respecBtnY = guiY + RESPEC_BUTTON_Y;
+            if (AnvilButtonRenderer.isMouseOverButton((int) mouseX, (int) mouseY, respecBtnX, respecBtnY, RESPEC_BUTTON_WIDTH, RESPEC_BUTTON_HEIGHT)) {
+                if (this.menu.performRespec()) {
+                    // AnvilButtonRendererを使用してリスペック音を再生
+                    AnvilButtonRenderer.playButtonSound(AnvilButtonRenderer.ButtonSound.ACTION);
+                    ANVIL.LOGGER.info("リスペックを実行");
+                }
+                return true;
+            }
+        }
+
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 }

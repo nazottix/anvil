@@ -288,8 +288,8 @@ public class JewelStationScreen extends AbstractContainerScreen<JewelStationMenu
                 // 全てのジュエルスロットからツールに装着
                 int equipped = this.menu.equipAllJewels();
                 if (equipped > 0) {
-                    // AnvilButtonRendererを使用して装備音を再生（鍛冶テーマに統一）
-                    AnvilButtonRenderer.playButtonSound(AnvilButtonRenderer.ButtonSound.EQUIP);
+                    // AnvilButtonRendererを使用してアクション音を再生（他Stationと統一）
+                    AnvilButtonRenderer.playButtonSound(AnvilButtonRenderer.ButtonSound.ACTION);
                 }
                 return true;
             }
