@@ -129,22 +129,7 @@ public class AnvilBlocks {
             )
     );
 
-    /**
-     * 精錬所ブロック
-     *
-     * バニラ素材を加工素材（ProcessedMaterial）に変換するステーションです。
-     * 燃料を消費して時間経過で素材を精錬します。
-     * 加工チェーンの最初のステップ: バニラ素材 → 精錬素材(REFINED)
-     */
-    public static final DeferredBlock<RefineryBlock> REFINERY = ANVIL.BLOCKS.register(
-            "refinery",
-            () -> new RefineryBlock(BlockBehaviour.Properties.of()
-                    .strength(3.5f, 3.5f)  // 金属製でやや硬め
-                    .requiresCorrectToolForDrops()
-                    .noOcclusion()
-                    .lightLevel(state -> state.getValue(RefineryBlock.LIT) ? 13 : 0)  // 稼働中は光を発する
-            )
-    );
+    // 削除済み: 精錬所ブロック (素材加工の簡略化のため)
 
     /**
      * パーツ鍛造所ブロック
@@ -162,39 +147,8 @@ public class AnvilBlocks {
             )
     );
 
-    /**
-     * 鍛造ステーションブロック
-     *
-     * 精錬素材(REFINED)を鍛造素材(FORGED)に変換するステーションです。
-     * ハンマーを消費して時間経過で自動処理します。
-     * 加工チェーンの2番目のステップ: 精錬素材 → 鍛造素材
-     */
-    public static final DeferredBlock<ForgingStationBlock> FORGING_STATION = ANVIL.BLOCKS.register(
-            "forging_station",
-            () -> new ForgingStationBlock(BlockBehaviour.Properties.of()
-                    .strength(3.5f, 3.5f)  // 金属製でやや硬め
-                    .requiresCorrectToolForDrops()
-                    .noOcclusion()
-                    .lightLevel(state -> state.getValue(ForgingStationBlock.LIT) ? 13 : 0)  // 稼働中は光を発する
-            )
-    );
-
-    /**
-     * 研磨ステーションブロック
-     *
-     * 鍛造素材(FORGED)を研磨素材(POLISHED)に変換するステーションです。
-     * 研磨剤を消費して品質ボーナスを付与します。
-     * 加工チェーンの3番目のステップ: 鍛造素材 → 研磨素材
-     */
-    public static final DeferredBlock<PolishingStationBlock> POLISHING_STATION = ANVIL.BLOCKS.register(
-            "polishing_station",
-            () -> new PolishingStationBlock(BlockBehaviour.Properties.of()
-                    .strength(3.5f, 3.5f)  // 金属製でやや硬め
-                    .requiresCorrectToolForDrops()
-                    .noOcclusion()
-                    .lightLevel(state -> state.getValue(PolishingStationBlock.LIT) ? 10 : 0)  // 稼働中は輝く
-            )
-    );
+    // 削除済み: 鍛造ステーションブロック (素材加工の簡略化のため)
+    // 削除済み: 研磨ステーションブロック (素材加工の簡略化のため)
 
     // ============================================
     // アイテム登録（ブロックアイテム）
@@ -256,13 +210,7 @@ public class AnvilBlocks {
             () -> new BlockItem(REPAIR_STATION.get(), new Item.Properties())
     );
 
-    /**
-     * 精錬所のブロックアイテム
-     */
-    public static final DeferredItem<BlockItem> REFINERY_ITEM = ANVIL.ITEMS.register(
-            "refinery",
-            () -> new BlockItem(REFINERY.get(), new Item.Properties())
-    );
+    // 削除済み: 精錬所のブロックアイテム (素材加工の簡略化のため)
 
     /**
      * パーツ鍛造所のブロックアイテム
@@ -272,21 +220,8 @@ public class AnvilBlocks {
             () -> new BlockItem(PART_FORGE.get(), new Item.Properties())
     );
 
-    /**
-     * 鍛造ステーションのブロックアイテム
-     */
-    public static final DeferredItem<BlockItem> FORGING_STATION_ITEM = ANVIL.ITEMS.register(
-            "forging_station",
-            () -> new BlockItem(FORGING_STATION.get(), new Item.Properties())
-    );
-
-    /**
-     * 研磨ステーションのブロックアイテム
-     */
-    public static final DeferredItem<BlockItem> POLISHING_STATION_ITEM = ANVIL.ITEMS.register(
-            "polishing_station",
-            () -> new BlockItem(POLISHING_STATION.get(), new Item.Properties())
-    );
+    // 削除済み: 鍛造ステーションのブロックアイテム (素材加工の簡略化のため)
+    // 削除済み: 研磨ステーションのブロックアイテム (素材加工の簡略化のため)
 
     // ============================================
     // 初期化

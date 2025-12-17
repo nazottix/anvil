@@ -1,12 +1,13 @@
 package io.github.nazottix.anvil.block.entity;
 
-import io.github.nazottix.anvil.data.AnvilDataComponents;
-import io.github.nazottix.anvil.data.component.ProcessedMaterialData;
 import io.github.nazottix.anvil.item.PartItem;
-import io.github.nazottix.anvil.item.ProcessedMaterialItem;
 import io.github.nazottix.anvil.menu.PartForgeMenu;
 import io.github.nazottix.anvil.material.Grade;
+import io.github.nazottix.anvil.material.Material;
+import io.github.nazottix.anvil.material.MaterialRegistry;
 import io.github.nazottix.anvil.tool.PartType;
+import java.util.Optional;
+import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -28,11 +29,12 @@ import org.jetbrains.annotations.Nullable;
 /**
  * パーツ鍛造所ブロックエンティティ
  *
- * 加工済み素材をパーツアイテムに変換します。
- * プレイヤーがパーツタイプを選択して鋳造を実行します。
+ * バニラ素材（鉄インゴット、ダイヤモンドなど）を直接パーツに変換します。
+ * 素材加工の簡略化により、精錬・鍛造・研磨の工程を省略して
+ * 原材料から直接パーツを作成できます。
  *
  * スロット構成:
- * - 0: 入力スロット（加工済み素材）
+ * - 0: 入力スロット（バニラ素材）
  * - 1: 出力スロット（パーツ）
  */
 public class PartForgeBlockEntity extends BlockEntity implements Container, MenuProvider {
@@ -49,6 +51,9 @@ public class PartForgeBlockEntity extends BlockEntity implements Container, Menu
 
     // 選択中のパーツタイプインデックス（PartType.values()のインデックス）
     private int selectedPartTypeIndex = 0;
+
+    // グレードロール用の乱数ジェネレーター
+    private final Random random = new Random();
 
     // ContainerData（GUI同期用）
     private final ContainerData containerData = new ContainerData() {
@@ -93,14 +98,14 @@ public class PartForgeBlockEntity extends BlockEntity implements Container, Menu
         ItemStack input = items.get(SLOT_INPUT);
         ItemStack output = items.get(SLOT_OUTPUT);
 
-        // 入力チェック: 加工済み素材が必要
-        if (input.isEmpty() || !(input.getItem() instanceof ProcessedMaterialItem)) {
+        // 入力チェック: 有効な素材原料が必要
+        if (input.isEmpty()) {
             return false;
         }
 
-        // 加工済み素材データを取得
-        ProcessedMaterialData materialData = input.get(AnvilDataComponents.PROCESSED_MATERIAL_DATA.get());
-        if (materialData == null) {
+        // 素材レジストリから対応する素材を検索
+        Optional<Material> materialOpt = MaterialRegistry.getInstance().getByRepairItem(input.getItem());
+        if (materialOpt.isEmpty()) {
             return false;
         }
 
@@ -123,6 +128,9 @@ public class PartForgeBlockEntity extends BlockEntity implements Container, Menu
     /**
      * 鋳造を実行
      *
+     * バニラ素材から直接パーツを作成します。
+     * グレードは確率に基づいてランダムに決定されます。
+     *
      * @return 鋳造成功した場合true
      */
     public boolean forge() {
@@ -131,14 +139,21 @@ public class PartForgeBlockEntity extends BlockEntity implements Container, Menu
         }
 
         ItemStack input = items.get(SLOT_INPUT);
-        ProcessedMaterialData materialData = input.get(AnvilDataComponents.PROCESSED_MATERIAL_DATA.get());
         PartType partType = getSelectedPartType();
 
-        // グレードを計算
-        Grade grade = materialData.calculateGrade();
+        // 素材レジストリから対応する素材を検索
+        Optional<Material> materialOpt = MaterialRegistry.getInstance().getByRepairItem(input.getItem());
+        if (materialOpt.isEmpty()) {
+            return false;
+        }
+
+        Material material = materialOpt.get();
+
+        // グレードをランダムに決定（確率に基づく）
+        Grade grade = Grade.rollGrade(random);
 
         // パーツを作成
-        ItemStack result = PartItem.createPartStack(partType, materialData.materialId(), grade);
+        ItemStack result = PartItem.createPartStack(partType, material.getId().toString(), grade);
 
         // 結果をセット
         items.set(SLOT_OUTPUT, result);
@@ -176,10 +191,12 @@ public class PartForgeBlockEntity extends BlockEntity implements Container, Menu
 
     /**
      * アイテムが入力スロットに置けるかチェック
+     *
+     * MaterialRegistryに登録されている素材の原料アイテムのみ受け入れます。
      */
     public static boolean canInsertInput(ItemStack stack) {
-        // ProcessedMaterialItemのみ受け入れ
-        return stack.getItem() instanceof ProcessedMaterialItem;
+        // 有効な素材原料のみ受け入れ
+        return MaterialRegistry.getInstance().isValidMaterialIngredient(stack.getItem());
     }
 
     // ============================================

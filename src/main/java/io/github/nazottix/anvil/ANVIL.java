@@ -78,10 +78,7 @@ public class ANVIL {
                         output.accept(AnvilBlocks.MOD_STATION_ITEM.get());
                         output.accept(AnvilBlocks.REPAIR_STATION_ITEM.get());
 
-                        // 素材加工ステーション（4種）
-                        output.accept(AnvilBlocks.REFINERY_ITEM.get());
-                        output.accept(AnvilBlocks.FORGING_STATION_ITEM.get());
-                        output.accept(AnvilBlocks.POLISHING_STATION_ITEM.get());
+                        // パーツ鍛造ステーション（素材加工の簡略化により1種に統合）
                         output.accept(AnvilBlocks.PART_FORGE_ITEM.get());
 
                         // 全ANVILツールをタブに追加
@@ -99,13 +96,7 @@ public class ANVIL {
                         output.accept(AnvilItems.MEMORY_CRYSTAL.get());
                         output.accept(AnvilItems.OBLIVION_ORB.get());
 
-                        // 素材加工アイテム
-                        output.accept(AnvilItems.SMITHING_HAMMER.get());
-                        output.accept(AnvilItems.POLISHING_AGENT_BASIC.get());
-                        output.accept(AnvilItems.POLISHING_AGENT_FINE.get());
-                        output.accept(AnvilItems.POLISHING_AGENT_SUPERIOR.get());
-                        output.accept(AnvilItems.POLISHING_AGENT_PERFECT.get());
-                        output.accept(AnvilItems.PROCESSED_MATERIAL.get());
+                        // 削除済み: 素材加工アイテム（素材加工の簡略化のため）
                     })
                     .build());
 

@@ -134,16 +134,7 @@ public class AnvilMenuTypes {
                     () -> IMenuTypeExtension.create(RepairStationMenu::new)
             );
 
-    /**
-     * 精錬所メニュータイプ
-     *
-     * 精錬所ブロックのメニュータイプです。
-     * バニラ素材を加工素材に精錬します。
-     */
-    public static final DeferredHolder<MenuType<?>, MenuType<RefineryMenu>> REFINERY =
-            MENU_TYPES.register("refinery",
-                    () -> IMenuTypeExtension.create(RefineryMenu::new)
-            );
+    // 削除済み: 精錬所メニュータイプ (素材加工の簡略化のため)
 
     /**
      * パーツ鍛造所メニュータイプ
@@ -156,27 +147,8 @@ public class AnvilMenuTypes {
                     () -> IMenuTypeExtension.create(PartForgeMenu::new)
             );
 
-    /**
-     * 鍛造ステーションメニュータイプ
-     *
-     * 鍛造ステーションブロックのメニュータイプです。
-     * 精錬素材を鍛造素材に変換します。
-     */
-    public static final DeferredHolder<MenuType<?>, MenuType<ForgingStationMenu>> FORGING_STATION =
-            MENU_TYPES.register("forging_station",
-                    () -> IMenuTypeExtension.create(ForgingStationMenu::new)
-            );
-
-    /**
-     * 研磨ステーションメニュータイプ
-     *
-     * 研磨ステーションブロックのメニュータイプです。
-     * 鍛造素材を研磨素材に変換します。
-     */
-    public static final DeferredHolder<MenuType<?>, MenuType<PolishingStationMenu>> POLISHING_STATION =
-            MENU_TYPES.register("polishing_station",
-                    () -> IMenuTypeExtension.create(PolishingStationMenu::new)
-            );
+    // 削除済み: 鍛造ステーションメニュータイプ (素材加工の簡略化のため)
+    // 削除済み: 研磨ステーションメニュータイプ (素材加工の簡略化のため)
 
     // ============================================
     // 登録

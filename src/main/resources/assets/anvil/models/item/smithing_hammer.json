@@ -1,7 +1,0 @@
-{
-  "_comment": "鍛冶ハンマーアイテムモデル",
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "minecraft:item/stone_axe"
-  }
-}

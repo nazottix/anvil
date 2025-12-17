@@ -1,9 +1,0 @@
-{
-  "_comment": "精錬所ブロックモデル（稼働中）",
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "top": "anvil:block/refinery_top",
-    "front": "anvil:block/refinery_front_on",
-    "side": "anvil:block/refinery_side"
-  }
-}

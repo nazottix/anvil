@@ -861,57 +861,11 @@
   "affix.anvil.mending": "of Mending",
   "affix.anvil.experience": "of Experience",
 
-  "_comment_processing_chain": "=== Material Processing Chain System ===",
-
-  "_comment_processing_blocks": "Processing Station Blocks",
-  "block.anvil.refinery": "Refinery",
+  "_comment_part_forge": "=== Part Forge (Simplified) ===",
   "block.anvil.part_forge": "Part Forge",
-  "block.anvil.forging_station": "Forging Station",
-  "block.anvil.polishing_station": "Polishing Station",
-
-  "_comment_processing_items": "Processing Items",
-  "item.anvil.processed_material": "Processed Material",
-  "item.anvil.smithing_hammer": "Smithing Hammer",
-  "item.anvil.polishing_agent_basic": "Basic Polishing Agent",
-  "item.anvil.polishing_agent_fine": "Fine Polishing Agent",
-  "item.anvil.polishing_agent_superior": "Superior Polishing Agent",
-  "item.anvil.polishing_agent_perfect": "Perfect Polishing Agent",
-
-  "_comment_processing_levels": "Processing Levels",
-  "processing.anvil.level.raw": "Raw",
-  "processing.anvil.level.refined": "Refined",
-  "processing.anvil.level.forged": "Forged",
-  "processing.anvil.level.polished": "Polished",
-  "processing.anvil.level.perfect": "Perfect",
-  "processing.anvil.level.masterwork": "Masterwork",
-
-  "_comment_processing_tooltips": "Processing Tooltips",
-  "tooltip.anvil.processed_material.level": "Processing Level: %s",
-  "tooltip.anvil.processed_material.quality": "Quality: %.0f%%",
-  "tooltip.anvil.processed_material.grade": "Grade: %s",
-  "tooltip.anvil.polishing_agent.quality": "Quality Bonus: %.0f%%",
-  "tooltip.anvil.smithing_hammer.durability": "Durability: %d / %d",
-
-  "_comment_processing_gui": "Processing Station GUI",
-  "gui.anvil.refinery": "Refinery",
-  "gui.anvil.refinery.fuel": "Fuel",
-  "gui.anvil.refinery.input": "Input",
-  "gui.anvil.refinery.output": "Output",
-  "gui.anvil.refinery.progress": "Refining...",
-
   "gui.anvil.part_forge": "Part Forge",
   "gui.anvil.part_forge.select_type": "Select Part Type",
   "gui.anvil.part_forge.forge": "Forge",
-  "gui.anvil.part_forge.no_material": "Insert processed material",
-  "gui.anvil.part_forge.preview": "Preview",
-
-  "gui.anvil.forging_station": "Forging Station",
-  "gui.anvil.forging_station.hammer": "Hammer",
-  "gui.anvil.forging_station.progress": "Forging...",
-  "gui.anvil.forging_station.no_hammer": "Insert hammer",
-
-  "gui.anvil.polishing_station": "Polishing Station",
-  "gui.anvil.polishing_station.agent": "Polishing Agent",
-  "gui.anvil.polishing_station.progress": "Polishing...",
-  "gui.anvil.polishing_station.no_agent": "Insert polishing agent"
+  "gui.anvil.part_forge.no_material": "Insert material",
+  "gui.anvil.part_forge.preview": "Preview"
 }

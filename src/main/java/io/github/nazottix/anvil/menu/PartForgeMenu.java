@@ -1,7 +1,6 @@
 package io.github.nazottix.anvil.menu;
 
 import io.github.nazottix.anvil.block.entity.PartForgeBlockEntity;
-import io.github.nazottix.anvil.item.ProcessedMaterialItem;
 import io.github.nazottix.anvil.tool.PartType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
@@ -20,8 +19,11 @@ import net.minecraft.world.item.ItemStack;
  * パーツ鍛造所画面のサーバー側ロジックを管理します。
  * パーツタイプの選択と鋳造処理を行います。
  *
+ * 素材加工の簡略化により、バニラ素材（鉄インゴット、ダイヤモンドなど）を
+ * 直接パーツに変換できます。
+ *
  * スロット構成:
- * - 0: 入力スロット（加工済み素材）
+ * - 0: 入力スロット（バニラ素材）
  * - 1: 出力スロット（パーツ）
  * - 2-28: プレイヤーインベントリ
  * - 29-37: ホットバー
@@ -118,7 +120,7 @@ public class PartForgeMenu extends AbstractContainerMenu {
             }
             // プレイヤーインベントリ（2-28）からの移動
             else if (index < 29) {
-                // 加工済み素材は入力スロットへ
+                // 有効な素材原料は入力スロットへ
                 if (PartForgeBlockEntity.canInsertInput(slotStack)) {
                     if (!this.moveItemStackTo(slotStack, 0, 1, false)) {
                         // ホットバーへ移動
@@ -134,7 +136,7 @@ public class PartForgeMenu extends AbstractContainerMenu {
             }
             // ホットバー（29-37）からの移動
             else {
-                // 加工済み素材は入力スロットへ
+                // 有効な素材原料は入力スロットへ
                 if (PartForgeBlockEntity.canInsertInput(slotStack)) {
                     if (!this.moveItemStackTo(slotStack, 0, 1, false)) {
                         // プレイヤーインベントリへ移動
@@ -222,7 +224,7 @@ public class PartForgeMenu extends AbstractContainerMenu {
 
     /**
      * 入力スロット
-     * 加工済み素材のみ受け入れる
+     * 有効な素材原料のみ受け入れる
      */
     private static class InputSlot extends Slot {
         public InputSlot(Container container, int index, int x, int y) {

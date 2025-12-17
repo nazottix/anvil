@@ -1,7 +1,0 @@
-{
-  "_comment": "高級研磨剤アイテムモデル",
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "minecraft:item/prismarine_shard"
-  }
-}

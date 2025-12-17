@@ -100,17 +100,7 @@ public class AnvilBlockEntities {
                     ).build(null)
             );
 
-    /**
-     * 精錬所ブロックエンティティタイプ
-     * バニラ素材を加工素材に精錬するステーション
-     */
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RefineryBlockEntity>> REFINERY =
-            BLOCK_ENTITIES.register("refinery",
-                    () -> BlockEntityType.Builder.of(
-                            RefineryBlockEntity::new,
-                            AnvilBlocks.REFINERY.get()
-                    ).build(null)
-            );
+    // 削除済み: 精錬所ブロックエンティティタイプ (素材加工の簡略化のため)
 
     /**
      * パーツ鍛造所ブロックエンティティタイプ
@@ -124,29 +114,8 @@ public class AnvilBlockEntities {
                     ).build(null)
             );
 
-    /**
-     * 鍛造ステーションブロックエンティティタイプ
-     * 精錬素材を鍛造素材に変換するステーション
-     */
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ForgingStationBlockEntity>> FORGING_STATION =
-            BLOCK_ENTITIES.register("forging_station",
-                    () -> BlockEntityType.Builder.of(
-                            ForgingStationBlockEntity::new,
-                            AnvilBlocks.FORGING_STATION.get()
-                    ).build(null)
-            );
-
-    /**
-     * 研磨ステーションブロックエンティティタイプ
-     * 鍛造素材を研磨素材に変換するステーション
-     */
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PolishingStationBlockEntity>> POLISHING_STATION =
-            BLOCK_ENTITIES.register("polishing_station",
-                    () -> BlockEntityType.Builder.of(
-                            PolishingStationBlockEntity::new,
-                            AnvilBlocks.POLISHING_STATION.get()
-                    ).build(null)
-            );
+    // 削除済み: 鍛造ステーションブロックエンティティタイプ (素材加工の簡略化のため)
+    // 削除済み: 研磨ステーションブロックエンティティタイプ (素材加工の簡略化のため)
 
     // ============================================
     // 登録

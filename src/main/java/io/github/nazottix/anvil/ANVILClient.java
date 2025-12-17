@@ -1,14 +1,11 @@
 package io.github.nazottix.anvil;
 
 import io.github.nazottix.anvil.client.screen.CoreBoxStationScreen;
-import io.github.nazottix.anvil.client.screen.ForgingStationScreen;
 import io.github.nazottix.anvil.client.screen.GridCustomizationScreen;
 import io.github.nazottix.anvil.client.screen.JewelStationScreen;
 import io.github.nazottix.anvil.client.screen.ModCustomizationScreen;
 import io.github.nazottix.anvil.client.screen.ModStationScreen;
 import io.github.nazottix.anvil.client.screen.PartForgeScreen;
-import io.github.nazottix.anvil.client.screen.PolishingStationScreen;
-import io.github.nazottix.anvil.client.screen.RefineryScreen;
 import io.github.nazottix.anvil.client.screen.RepairStationScreen;
 import io.github.nazottix.anvil.client.screen.RespecStationScreen;
 import io.github.nazottix.anvil.client.screen.SkillTreeScreen;
@@ -81,11 +78,9 @@ public class ANVILClient {
         event.register(AnvilMenuTypes.CORE_BOX_STATION.get(), CoreBoxStationScreen::new);
         event.register(AnvilMenuTypes.MOD_STATION.get(), ModStationScreen::new);
         event.register(AnvilMenuTypes.REPAIR_STATION.get(), RepairStationScreen::new);
-        event.register(AnvilMenuTypes.REFINERY.get(), RefineryScreen::new);
+        // 削除済み: RefineryScreen, ForgingStationScreen, PolishingStationScreen (素材加工の簡略化のため)
         event.register(AnvilMenuTypes.PART_FORGE.get(), PartForgeScreen::new);
-        event.register(AnvilMenuTypes.FORGING_STATION.get(), ForgingStationScreen::new);
-        event.register(AnvilMenuTypes.POLISHING_STATION.get(), PolishingStationScreen::new);
 
-        ANVIL.LOGGER.info("ANVIL: メニュースクリーンを登録（14種）");
+        ANVIL.LOGGER.info("ANVIL: メニュースクリーンを登録（11種）");
     }
 }

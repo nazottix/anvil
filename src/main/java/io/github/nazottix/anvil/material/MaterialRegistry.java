@@ -213,6 +213,31 @@ public class MaterialRegistry {
     }
 
     /**
+     * 修理アイテム（素材原料）から素材を検索
+     *
+     * パーツ鍛造所で使用します。バニラアイテム（鉄インゴット、ダイヤモンドなど）
+     * から対応する素材を特定します。
+     *
+     * @param item 検索するアイテム
+     * @return 対応する素材（見つからない場合はOptional.empty()）
+     */
+    public Optional<Material> getByRepairItem(net.minecraft.world.item.Item item) {
+        return materials.values().stream()
+                .filter(m -> m.getRepairItem() == item)
+                .findFirst();
+    }
+
+    /**
+     * 指定アイテムが有効な素材原料かチェック
+     *
+     * @param item チェックするアイテム
+     * @return 有効な素材原料の場合true
+     */
+    public boolean isValidMaterialIngredient(net.minecraft.world.item.Item item) {
+        return getByRepairItem(item).isPresent();
+    }
+
+    /**
      * レジストリをクリア（テスト用）
      *
      * 通常のゲームプレイでは使用しないでください。

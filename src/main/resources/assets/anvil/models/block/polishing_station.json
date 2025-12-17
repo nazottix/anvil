@@ -1,9 +1,0 @@
-{
-  "_comment": "研磨ステーションブロックモデル - 鍛造素材を研磨素材に変換",
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "top": "anvil:block/polishing_station_top",
-    "front": "anvil:block/polishing_station_front",
-    "side": "anvil:block/polishing_station_side"
-  }
-}

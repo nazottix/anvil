@@ -821,57 +821,11 @@
   "message.anvil.respec.success": "リスペック成功！ %d スキルポイントを還元しました",
   "message.anvil.respec.fail": "リスペック失敗 - リセットするスキルがありません",
 
-  "_comment_processing_chain": "=== 素材加工チェーンシステム ===",
-
-  "_comment_processing_blocks": "加工ステーションブロック",
-  "block.anvil.refinery": "精錬所",
+  "_comment_part_forge": "=== パーツ鍛造所（簡略化） ===",
   "block.anvil.part_forge": "パーツ鍛造所",
-  "block.anvil.forging_station": "鍛造ステーション",
-  "block.anvil.polishing_station": "研磨ステーション",
-
-  "_comment_processing_items": "加工アイテム",
-  "item.anvil.processed_material": "加工素材",
-  "item.anvil.smithing_hammer": "鍛冶ハンマー",
-  "item.anvil.polishing_agent_basic": "基本研磨剤",
-  "item.anvil.polishing_agent_fine": "高級研磨剤",
-  "item.anvil.polishing_agent_superior": "極上研磨剤",
-  "item.anvil.polishing_agent_perfect": "至高研磨剤",
-
-  "_comment_processing_levels": "加工レベル",
-  "processing.anvil.level.raw": "未加工",
-  "processing.anvil.level.refined": "精錬済",
-  "processing.anvil.level.forged": "鍛造済",
-  "processing.anvil.level.polished": "研磨済",
-  "processing.anvil.level.perfect": "完璧",
-  "processing.anvil.level.masterwork": "傑作",
-
-  "_comment_processing_tooltips": "加工ツールチップ",
-  "tooltip.anvil.processed_material.level": "加工レベル: %s",
-  "tooltip.anvil.processed_material.quality": "品質: %.0f%%",
-  "tooltip.anvil.processed_material.grade": "グレード: %s",
-  "tooltip.anvil.polishing_agent.quality": "品質ボーナス: %.0f%%",
-  "tooltip.anvil.smithing_hammer.durability": "耐久値: %d / %d",
-
-  "_comment_processing_gui": "加工ステーションGUI",
-  "gui.anvil.refinery": "精錬所",
-  "gui.anvil.refinery.fuel": "燃料",
-  "gui.anvil.refinery.input": "入力",
-  "gui.anvil.refinery.output": "出力",
-  "gui.anvil.refinery.progress": "精錬中...",
-
   "gui.anvil.part_forge": "パーツ鍛造所",
   "gui.anvil.part_forge.select_type": "パーツタイプを選択",
   "gui.anvil.part_forge.forge": "鋳造",
-  "gui.anvil.part_forge.no_material": "加工素材を入れてください",
-  "gui.anvil.part_forge.preview": "プレビュー",
-
-  "gui.anvil.forging_station": "鍛造ステーション",
-  "gui.anvil.forging_station.hammer": "ハンマー",
-  "gui.anvil.forging_station.progress": "鍛造中...",
-  "gui.anvil.forging_station.no_hammer": "ハンマーを入れてください",
-
-  "gui.anvil.polishing_station": "研磨ステーション",
-  "gui.anvil.polishing_station.agent": "研磨剤",
-  "gui.anvil.polishing_station.progress": "研磨中...",
-  "gui.anvil.polishing_station.no_agent": "研磨剤を入れてください"
+  "gui.anvil.part_forge.no_material": "素材を入れてください",
+  "gui.anvil.part_forge.preview": "プレビュー"
 }

@@ -156,25 +156,7 @@ public class AnvilDataComponents {
                             .build()
             );
 
-    /**
-     * 加工素材データコンポーネント
-     *
-     * 加工チェーンにおける素材の状態（素材ID、加工レベル、品質ボーナス）を保存します。
-     * 精錬所、鍛造ステーション、研磨ステーションで加工される中間素材に付与されます。
-     *
-     * 加工フロー: RAW → REFINED → FORGED → POLISHED → PERFECT → MASTERWORK
-     *
-     * 仕様書参照: docs/素材加工チェーン仕様.md
-     */
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<io.github.nazottix.anvil.data.component.ProcessedMaterialData>> PROCESSED_MATERIAL_DATA =
-            DATA_COMPONENTS.register("processed_material_data", () ->
-                    DataComponentType.<io.github.nazottix.anvil.data.component.ProcessedMaterialData>builder()
-                            // 永続化用Codec
-                            .persistent(io.github.nazottix.anvil.data.component.ProcessedMaterialData.CODEC)
-                            // ネットワーク同期用StreamCodec
-                            .networkSynchronized(io.github.nazottix.anvil.data.component.ProcessedMaterialData.STREAM_CODEC)
-                            .build()
-            );
+    // 削除済み: 加工素材データコンポーネント (素材加工の簡略化のため)
 
     /**
      * Data ComponentsをMODイベントバスに登録

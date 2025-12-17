@@ -254,65 +254,11 @@ public class AnvilItems {
     );
 
     // ============================================
-    // 加工素材アイテム
-    // 素材加工チェーンで使用される中間素材
+    // 削除済み: 加工素材アイテム（素材加工の簡略化のため）
+    // - ProcessedMaterial
+    // - SmithingHammer
+    // - PolishingAgent (Basic, Fine, Superior, Perfect)
     // ============================================
-
-    /**
-     * 加工素材
-     * 精錬所・鍛造ステーション・研磨ステーションで加工される中間素材アイテム。
-     * ProcessedMaterialDataコンポーネントで素材ID・加工レベル・品質を保持。
-     */
-    public static final DeferredItem<ProcessedMaterialItem> PROCESSED_MATERIAL = ANVIL.ITEMS.register(
-            "processed_material",
-            () -> new ProcessedMaterialItem(new Item.Properties())
-    );
-
-    /**
-     * 鍛冶ハンマーアイテム
-     * 鍛造ステーションで使用する消耗品ツール
-     * 精錬素材を鍛造素材に変換する際に耐久力を消費
-     */
-    public static final DeferredItem<SmithingHammerItem> SMITHING_HAMMER = ANVIL.ITEMS.register(
-            "smithing_hammer",
-            () -> new SmithingHammerItem(new Item.Properties())
-    );
-
-    /**
-     * 基本研磨剤（品質: 15%）
-     * 低品質だが安価で入手しやすい
-     */
-    public static final DeferredItem<PolishingAgentItem> POLISHING_AGENT_BASIC = ANVIL.ITEMS.register(
-            "polishing_agent_basic",
-            () -> new PolishingAgentItem(0.15f, new Item.Properties())
-    );
-
-    /**
-     * 高級研磨剤（品質: 35%）
-     * 中程度の品質
-     */
-    public static final DeferredItem<PolishingAgentItem> POLISHING_AGENT_FINE = ANVIL.ITEMS.register(
-            "polishing_agent_fine",
-            () -> new PolishingAgentItem(0.35f, new Item.Properties())
-    );
-
-    /**
-     * 極上研磨剤（品質: 60%）
-     * 高品質
-     */
-    public static final DeferredItem<PolishingAgentItem> POLISHING_AGENT_SUPERIOR = ANVIL.ITEMS.register(
-            "polishing_agent_superior",
-            () -> new PolishingAgentItem(0.60f, new Item.Properties())
-    );
-
-    /**
-     * 至高研磨剤（品質: 100%）
-     * 最高品質、レアアイテム
-     */
-    public static final DeferredItem<PolishingAgentItem> POLISHING_AGENT_PERFECT = ANVIL.ITEMS.register(
-            "polishing_agent_perfect",
-            () -> new PolishingAgentItem(1.0f, new Item.Properties())
-    );
 
     // パーツタイプからアイテムへのマッピング
     private static final Map<PartType, DeferredItem<PartItem>> PART_ITEM_MAP = new HashMap<>();

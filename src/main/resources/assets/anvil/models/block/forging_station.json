@@ -1,9 +1,0 @@
-{
-  "_comment": "鍛造ステーションブロックモデル - 精錬素材を鍛造素材に変換",
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "top": "anvil:block/forging_station_top",
-    "front": "anvil:block/forging_station_front",
-    "side": "anvil:block/forging_station_side"
-  }
-}
