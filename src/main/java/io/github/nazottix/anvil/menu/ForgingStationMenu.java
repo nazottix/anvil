@@ -43,6 +43,8 @@ public class ForgingStationMenu extends AbstractContainerMenu {
 
     /**
      * サーバー側コンストラクタ
+     * 
+     * スロット位置をStation Blockスタイルに合わせて配置
      */
     public ForgingStationMenu(int containerId, Inventory playerInventory, Container container, ContainerData data) {
         super(AnvilMenuTypes.FORGING_STATION.get(), containerId);
@@ -55,28 +57,28 @@ public class ForgingStationMenu extends AbstractContainerMenu {
         addDataSlots(data);
 
         // ============================================
-        // スロット配置（精錬所と同様のレイアウト）
+        // スロット配置（Station Blockスタイルに統一）
         // ============================================
 
-        // 入力スロット（精錬素材） - 位置 (56, 17)
-        this.addSlot(new InputSlot(container, ForgingStationBlockEntity.SLOT_INPUT, 56, 17));
+        // 入力スロット（精錬素材） - 位置 (56, 35) - GUIサイズ200に対応
+        this.addSlot(new InputSlot(container, ForgingStationBlockEntity.SLOT_INPUT, 56, 35));
 
-        // ハンマースロット - 位置 (56, 53)
-        this.addSlot(new HammerSlot(container, ForgingStationBlockEntity.SLOT_HAMMER, 56, 53));
+        // ハンマースロット - 位置 (56, 71) - GUIサイズ200に対応
+        this.addSlot(new HammerSlot(container, ForgingStationBlockEntity.SLOT_HAMMER, 56, 71));
 
-        // 出力スロット - 位置 (116, 35)
-        this.addSlot(new OutputSlot(container, ForgingStationBlockEntity.SLOT_OUTPUT, 116, 35));
+        // 出力スロット - 位置 (116, 53) - GUIサイズ200に対応
+        this.addSlot(new OutputSlot(container, ForgingStationBlockEntity.SLOT_OUTPUT, 116, 53));
 
-        // プレイヤーインベントリ（3行9列）- y=84から
+        // プレイヤーインベントリ（3行9列）- y=117（Station Blockスタイル）
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 117 + row * 18));
             }
         }
 
-        // ホットバー（1行9列）- y=142
+        // ホットバー（1行9列）- y=175（Station Blockスタイル）
         for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 142));
+            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 175));
         }
     }
 

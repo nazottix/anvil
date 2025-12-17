@@ -1,11 +1,14 @@
 package io.github.nazottix.anvil.client.screen;
 
 import io.github.nazottix.anvil.ANVIL;
+import io.github.nazottix.anvil.client.ui.AnvilButtonRenderer;
+import io.github.nazottix.anvil.client.ui.AnvilColors;
+import io.github.nazottix.anvil.client.ui.AnvilPanelRenderer;
 import io.github.nazottix.anvil.menu.PartForgeMenu;
 import io.github.nazottix.anvil.network.PartForgeActionPacket;
 import io.github.nazottix.anvil.tool.PartType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -15,167 +18,231 @@ import net.neoforged.neoforge.network.PacketDistributor;
  * パーツ鍛造所スクリーン
  *
  * パーツ鍛造所のクライアント側UI描画を担当します。
- * パーツタイプの選択リストと鋳造ボタンを表示します。
+ * パーツタイプの選択ドロップダウンと鋳造ボタンを表示します。
+ * Station Blockスタイルに統一されたUIデザイン。
  */
 public class PartForgeScreen extends AbstractContainerScreen<PartForgeMenu> {
 
     // パーツタイプ一覧
     private static final PartType[] PART_TYPES = PartType.values();
 
-    // UIオフセット
-    private static final int LIST_X = 50;
-    private static final int LIST_Y = 17;
-    private static final int LIST_ENTRY_HEIGHT = 12;
-    private static final int LIST_VISIBLE_ENTRIES = 5;
+    // ドロップダウン設定
+    private static final int DROPDOWN_X = 8;
+    private static final int DROPDOWN_Y = 18;
+    private static final int DROPDOWN_WIDTH = 80;
+    private static final int DROPDOWN_CLOSED_HEIGHT = 16;
+    private static final int DROPDOWN_ENTRY_HEIGHT = 14;
+    private static final int DROPDOWN_MAX_VISIBLE = 6;
 
-    // スクロール位置
-    private int scrollOffset = 0;
+    // スロット位置（Menuと同期）
+    private static final int INPUT_SLOT_X = 27;
+    private static final int INPUT_SLOT_Y = 70;
+    private static final int OUTPUT_SLOT_X = 134;
+    private static final int OUTPUT_SLOT_Y = 70;
 
     // 鋳造ボタン
-    private Button forgeButton;
+    private static final int FORGE_BUTTON_X = 93;
+    private static final int FORGE_BUTTON_Y = 70;
+    private static final int FORGE_BUTTON_WIDTH = 30;
+    private static final int FORGE_BUTTON_HEIGHT = 16;
+
+    // ドロップダウン状態
+    private boolean dropdownOpen = false;
+    private int scrollOffset = 0;
 
     /**
      * コンストラクタ
+     *
+     * GUIサイズをStation Blockスタイル（200）に設定
      */
     public PartForgeScreen(PartForgeMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
+        // GUIサイズをStation Blockスタイルに統一
         this.imageWidth = 176;
-        this.imageHeight = 166;
+        this.imageHeight = 200;
+        // インベントリラベル位置をStation Blockスタイルに合わせる
+        this.inventoryLabelY = 106;
     }
 
     @Override
     protected void init() {
         super.init();
-
         // タイトルラベル位置
         this.titleLabelX = 8;
         this.titleLabelY = 6;
-        this.inventoryLabelY = this.imageHeight - 94;
-
-        // 鋳造ボタンを追加
-        int buttonX = this.leftPos + 100;
-        int buttonY = this.topPos + 45;
-        forgeButton = Button.builder(Component.translatable("gui.anvil.part_forge.forge"), this::onForgeButtonPressed)
-                .bounds(buttonX, buttonY, 30, 20)
-                .build();
-        this.addRenderableWidget(forgeButton);
+        // ドロップダウンは閉じた状態から開始
+        this.dropdownOpen = false;
     }
 
-    /**
-     * 鋳造ボタン押下時の処理
-     */
-    private void onForgeButtonPressed(Button button) {
-        // サーバーに鋳造リクエストを送信
-        PacketDistributor.sendToServer(new PartForgeActionPacket(PartForgeActionPacket.ACTION_FORGE, 0));
-    }
+    // ============================================
+    // 描画
+    // ============================================
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        // 背景色で塗りつぶし
         int x = this.leftPos;
         int y = this.topPos;
 
-        // メインパネル背景
-        guiGraphics.fill(x, y, x + imageWidth, y + imageHeight, 0xFFC6C6C6);
+        // 立体的なメインパネルを描画（Station Blockスタイル）
+        AnvilPanelRenderer.renderMainPanel(guiGraphics, x, y, this.imageWidth, this.imageHeight);
 
-        // パネル枠
-        // 上辺（白）
-        guiGraphics.fill(x, y, x + imageWidth, y + 1, 0xFFFFFFFF);
-        // 左辺（白）
-        guiGraphics.fill(x, y, x + 1, y + imageHeight, 0xFFFFFFFF);
-        // 右辺（暗い）
-        guiGraphics.fill(x + imageWidth - 1, y, x + imageWidth, y + imageHeight, 0xFF555555);
-        // 下辺（暗い）
-        guiGraphics.fill(x, y + imageHeight - 1, x + imageWidth, y + imageHeight, 0xFF555555);
+        // 入力スロット背景（Station Blockスタイル）
+        AnvilPanelRenderer.renderSlot(guiGraphics, x + INPUT_SLOT_X, y + INPUT_SLOT_Y);
 
-        // 入力スロット枠（凹み効果）
-        int inputX = x + 26;
-        int inputY = y + 46;
-        drawSlot(guiGraphics, inputX, inputY);
+        // 出力スロット背景（オレンジ枠で強調、Station Blockスタイル）
+        guiGraphics.fill(x + OUTPUT_SLOT_X - 3, y + OUTPUT_SLOT_Y - 3,
+                x + OUTPUT_SLOT_X + 19, y + OUTPUT_SLOT_Y + 19, AnvilColors.FORGE_ORANGE | 0xFF000000);
+        AnvilPanelRenderer.renderSlot(guiGraphics, x + OUTPUT_SLOT_X, y + OUTPUT_SLOT_Y);
 
-        // 出力スロット枠
-        int outputX = x + 133;
-        int outputY = y + 46;
-        drawSlot(guiGraphics, outputX, outputY);
+        // 鋳造ボタンを描画
+        renderForgeButton(guiGraphics, x, y, mouseX, mouseY);
 
-        // 矢印（入力 → 出力）
-        int arrowX = x + 96;
-        int arrowY = y + 50;
-        guiGraphics.fill(arrowX, arrowY, arrowX + 20, arrowY + 8, 0xFF8B8B8B);
-        // 矢印の先（三角形近似）
-        guiGraphics.fill(arrowX + 20, arrowY - 2, arrowX + 24, arrowY + 10, 0xFF8B8B8B);
+        // 矢印描画（入力 → 出力）
+        renderArrow(guiGraphics, x + 50, y + 74);
 
-        // パーツタイプリスト描画
-        renderPartTypeList(guiGraphics, x, y, mouseX, mouseY);
+        // プレイヤーインベントリ境界線とスロット背景を描画（Station Blockスタイル）
+        AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 117, 175);
+
+        // パーツタイプドロップダウンを描画（最後に描画して最前面に）
+        renderPartTypeDropdown(guiGraphics, x, y, mouseX, mouseY);
+    }
+
+    @Override
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        // タイトル（Station Blockスタイルの白色）
+        guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY,
+                AnvilColors.ETHER_WHITE, false);
+
+        // インベントリラベル（Station Blockスタイルの白色）
+        guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY,
+                AnvilColors.ETHER_WHITE, false);
     }
 
     /**
-     * スロット枠を描画
+     * パーツタイプドロップダウンを描画（クリックで開閉するスタイル）
      */
-    private void drawSlot(GuiGraphics guiGraphics, int x, int y) {
-        // 凹み効果：上と左が暗く、下と右が明るい
-        guiGraphics.fill(x - 1, y - 1, x + 17, y, 0xFF373737);
-        guiGraphics.fill(x - 1, y - 1, x, y + 17, 0xFF373737);
-        guiGraphics.fill(x, y + 16, x + 17, y + 17, 0xFFFFFFFF);
-        guiGraphics.fill(x + 16, y, x + 17, y + 17, 0xFFFFFFFF);
-        // スロット内部
-        guiGraphics.fill(x, y, x + 16, y + 16, 0xFF8B8B8B);
+    private void renderPartTypeDropdown(GuiGraphics guiGraphics, int panelX, int panelY, int mouseX, int mouseY) {
+        int dropdownX = panelX + DROPDOWN_X;
+        int dropdownY = panelY + DROPDOWN_Y;
+
+        // 選択中のパーツタイプ
+        PartType selectedType = menu.getSelectedPartType();
+        String selectedName = selectedType != null ?
+                Component.translatable(selectedType.getTranslationKey()).getString() : "選択...";
+
+        // ドロップダウンヘッダー（常に表示）
+        renderDropdownHeader(guiGraphics, dropdownX, dropdownY, mouseX, mouseY, selectedName);
+
+        // ドロップダウンが開いている場合、リストを描画
+        if (dropdownOpen) {
+            renderDropdownList(guiGraphics, dropdownX, dropdownY + DROPDOWN_CLOSED_HEIGHT, mouseX, mouseY);
+        }
     }
 
     /**
-     * パーツタイプリストを描画
+     * ドロップダウンヘッダーを描画
      */
-    private void renderPartTypeList(GuiGraphics guiGraphics, int panelX, int panelY, int mouseX, int mouseY) {
-        int listX = panelX + LIST_X;
-        int listY = panelY + LIST_Y;
-        int listWidth = 40;
-        int listHeight = LIST_VISIBLE_ENTRIES * LIST_ENTRY_HEIGHT;
+    private void renderDropdownHeader(GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY, String text) {
+        boolean isHovered = mouseX >= x && mouseX < x + DROPDOWN_WIDTH &&
+                mouseY >= y && mouseY < y + DROPDOWN_CLOSED_HEIGHT;
 
-        // リスト背景
-        guiGraphics.fill(listX - 1, listY - 1, listX + listWidth + 1, listY + listHeight + 1, 0xFF373737);
-        guiGraphics.fill(listX, listY, listX + listWidth, listY + listHeight, 0xFF8B8B8B);
+        // 背景
+        int bgColor = dropdownOpen ? 0xFF2D3748 : (isHovered ? 0xFF3D4758 : 0xFF374151);
+        guiGraphics.fill(x, y, x + DROPDOWN_WIDTH, y + DROPDOWN_CLOSED_HEIGHT, bgColor);
+
+        // 枠（Station Blockスタイル）
+        guiGraphics.fill(x, y, x + DROPDOWN_WIDTH, y + 1, 0xFF5B6B7F);
+        guiGraphics.fill(x, y, x + 1, y + DROPDOWN_CLOSED_HEIGHT, 0xFF5B6B7F);
+        guiGraphics.fill(x, y + DROPDOWN_CLOSED_HEIGHT - 1, x + DROPDOWN_WIDTH, y + DROPDOWN_CLOSED_HEIGHT, 0xFF1F2937);
+        guiGraphics.fill(x + DROPDOWN_WIDTH - 1, y, x + DROPDOWN_WIDTH, y + DROPDOWN_CLOSED_HEIGHT, 0xFF1F2937);
+
+        // テキスト
+        guiGraphics.drawString(this.font, text, x + 4, y + 4, AnvilColors.ETHER_WHITE, false);
+
+        // 矢印アイコン（開閉状態を示す）
+        String arrow = dropdownOpen ? "▲" : "▼";
+        guiGraphics.drawString(this.font, arrow, x + DROPDOWN_WIDTH - 12, y + 4, AnvilColors.ETHER_WHITE, false);
+    }
+
+    /**
+     * ドロップダウンリストを描画
+     */
+    private void renderDropdownList(GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
+        int visibleEntries = Math.min(DROPDOWN_MAX_VISIBLE, PART_TYPES.length);
+        int listHeight = visibleEntries * DROPDOWN_ENTRY_HEIGHT;
+
+        // リスト背景（半透明で他の要素の上に表示）
+        guiGraphics.fill(x, y, x + DROPDOWN_WIDTH, y + listHeight, 0xFF1F2937);
+
+        // 枠
+        guiGraphics.fill(x, y, x + 1, y + listHeight, 0xFF5B6B7F);
+        guiGraphics.fill(x + DROPDOWN_WIDTH - 1, y, x + DROPDOWN_WIDTH, y + listHeight, 0xFF1F2937);
+        guiGraphics.fill(x, y + listHeight - 1, x + DROPDOWN_WIDTH, y + listHeight, 0xFF1F2937);
 
         // 選択中のパーツタイプ
         int selectedIndex = menu.getSelectedPartTypeIndex();
 
-        // 表示するエントリを描画
-        for (int i = 0; i < LIST_VISIBLE_ENTRIES; i++) {
+        // エントリを描画
+        for (int i = 0; i < visibleEntries; i++) {
             int typeIndex = scrollOffset + i;
             if (typeIndex >= PART_TYPES.length) break;
 
             PartType type = PART_TYPES[typeIndex];
-            int entryY = listY + i * LIST_ENTRY_HEIGHT;
+            int entryY = y + i * DROPDOWN_ENTRY_HEIGHT;
 
-            // 選択中のエントリはハイライト
+            // 選択中のエントリはハイライト（オレンジ系）
             if (typeIndex == selectedIndex) {
-                guiGraphics.fill(listX, entryY, listX + listWidth, entryY + LIST_ENTRY_HEIGHT, 0xFF4080FF);
+                guiGraphics.fill(x + 1, entryY, x + DROPDOWN_WIDTH - 1, entryY + DROPDOWN_ENTRY_HEIGHT,
+                        AnvilColors.FORGE_ORANGE | 0xAA000000);
             }
-
             // マウスホバーハイライト
-            if (mouseX >= listX && mouseX < listX + listWidth &&
-                    mouseY >= entryY && mouseY < entryY + LIST_ENTRY_HEIGHT) {
-                if (typeIndex != selectedIndex) {
-                    guiGraphics.fill(listX, entryY, listX + listWidth, entryY + LIST_ENTRY_HEIGHT, 0xFF6090C0);
-                }
+            else if (mouseX >= x && mouseX < x + DROPDOWN_WIDTH &&
+                    mouseY >= entryY && mouseY < entryY + DROPDOWN_ENTRY_HEIGHT) {
+                guiGraphics.fill(x + 1, entryY, x + DROPDOWN_WIDTH - 1, entryY + DROPDOWN_ENTRY_HEIGHT,
+                        0x44FFFFFF);
             }
 
-            // パーツ名を描画
-            String name = type.getDisplayNameJa();
-            if (name.length() > 6) {
-                name = name.substring(0, 5) + "..";
-            }
-            guiGraphics.drawString(this.font, name, listX + 2, entryY + 2, 0xFFFFFFFF, false);
+            // パーツ名を描画（ローカライズ対応）
+            Component partName = Component.translatable(type.getTranslationKey());
+            int textColor = (typeIndex == selectedIndex) ? 0xFFFFFFFF : AnvilColors.ETHER_WHITE;
+            guiGraphics.drawString(this.font, partName, x + 4, entryY + 3, textColor, false);
         }
 
-        // スクロールバー
-        if (PART_TYPES.length > LIST_VISIBLE_ENTRIES) {
-            int scrollBarX = listX + listWidth + 2;
-            int scrollBarHeight = listHeight * LIST_VISIBLE_ENTRIES / PART_TYPES.length;
-            int scrollBarY = listY + (listHeight - scrollBarHeight) * scrollOffset / (PART_TYPES.length - LIST_VISIBLE_ENTRIES);
+        // スクロールバー（必要な場合）
+        if (PART_TYPES.length > DROPDOWN_MAX_VISIBLE) {
+            int scrollBarX = x + DROPDOWN_WIDTH - 5;
+            int scrollBarHeight = Math.max(10, listHeight * DROPDOWN_MAX_VISIBLE / PART_TYPES.length);
+            int maxScroll = PART_TYPES.length - DROPDOWN_MAX_VISIBLE;
+            int scrollBarY = y + (listHeight - scrollBarHeight) * scrollOffset / maxScroll;
 
-            guiGraphics.fill(scrollBarX, listY, scrollBarX + 3, listY + listHeight, 0xFF555555);
-            guiGraphics.fill(scrollBarX, scrollBarY, scrollBarX + 3, scrollBarY + scrollBarHeight, 0xFFAAAAAA);
+            // スクロールバー背景
+            guiGraphics.fill(scrollBarX, y, scrollBarX + 4, y + listHeight, 0xFF374151);
+            // スクロールバーつまみ
+            guiGraphics.fill(scrollBarX, scrollBarY, scrollBarX + 4, scrollBarY + scrollBarHeight, 0xFF5B6B7F);
         }
+    }
+
+    /**
+     * 鋳造ボタンを描画（AnvilButtonRendererを使用したStation Blockスタイル）
+     */
+    private void renderForgeButton(GuiGraphics guiGraphics, int guiX, int guiY, int mouseX, int mouseY) {
+        int btnX = guiX + FORGE_BUTTON_X;
+        int btnY = guiY + FORGE_BUTTON_Y;
+
+        // AnvilButtonRendererを使用してボタンを描画
+        boolean isHovered = AnvilButtonRenderer.isMouseOverButton(mouseX, mouseY, btnX, btnY, FORGE_BUTTON_WIDTH, FORGE_BUTTON_HEIGHT);
+        boolean isEnabled = menu.canForge();
+        Component forgeText = Component.translatable("gui.anvil.part_forge.forge");
+        AnvilButtonRenderer.renderButton(guiGraphics, this.font, btnX, btnY, FORGE_BUTTON_WIDTH, FORGE_BUTTON_HEIGHT, forgeText, isHovered, isEnabled);
+    }
+
+    /**
+     * 矢印を描画（Station Blockスタイル）
+     */
+    private void renderArrow(GuiGraphics guiGraphics, int x, int y) {
+        // 簡易矢印
+        guiGraphics.fill(x, y, x + 30, y + 2, 0xFFAAAAAA);
+        guiGraphics.fill(x + 24, y - 4, x + 30, y + 8, 0xFFAAAAAA);
     }
 
     @Override
@@ -183,46 +250,89 @@ public class PartForgeScreen extends AbstractContainerScreen<PartForgeMenu> {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
 
-        // パーツタイプリストのツールチップ
-        int listX = this.leftPos + LIST_X;
-        int listY = this.topPos + LIST_Y;
-        int listWidth = 40;
+        // ドロップダウンが開いている場合、ホバー中のパーツタイプのツールチップ
+        if (dropdownOpen) {
+            int dropdownX = this.leftPos + DROPDOWN_X;
+            int dropdownY = this.topPos + DROPDOWN_Y + DROPDOWN_CLOSED_HEIGHT;
+            int visibleEntries = Math.min(DROPDOWN_MAX_VISIBLE, PART_TYPES.length);
 
-        for (int i = 0; i < LIST_VISIBLE_ENTRIES; i++) {
-            int typeIndex = scrollOffset + i;
-            if (typeIndex >= PART_TYPES.length) break;
+            for (int i = 0; i < visibleEntries; i++) {
+                int typeIndex = scrollOffset + i;
+                if (typeIndex >= PART_TYPES.length) break;
 
-            int entryY = listY + i * LIST_ENTRY_HEIGHT;
-            if (mouseX >= listX && mouseX < listX + listWidth &&
-                    mouseY >= entryY && mouseY < entryY + LIST_ENTRY_HEIGHT) {
-                PartType type = PART_TYPES[typeIndex];
-                guiGraphics.renderTooltip(this.font,
-                        Component.translatable(type.getTranslationKey()), mouseX, mouseY);
+                int entryY = dropdownY + i * DROPDOWN_ENTRY_HEIGHT;
+                if (mouseX >= dropdownX && mouseX < dropdownX + DROPDOWN_WIDTH &&
+                        mouseY >= entryY && mouseY < entryY + DROPDOWN_ENTRY_HEIGHT) {
+                    PartType type = PART_TYPES[typeIndex];
+                    guiGraphics.renderTooltip(this.font,
+                            Component.translatable(type.getTranslationKey()), mouseX, mouseY);
+                }
             }
         }
-
-        // 鋳造ボタンの状態更新
-        forgeButton.active = menu.canForge();
     }
+
+    // ============================================
+    // マウス操作
+    // ============================================
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        // パーツタイプリストのクリック処理
-        int listX = this.leftPos + LIST_X;
-        int listY = this.topPos + LIST_Y;
-        int listWidth = 40;
-        int listHeight = LIST_VISIBLE_ENTRIES * LIST_ENTRY_HEIGHT;
+        int guiX = this.leftPos;
+        int guiY = this.topPos;
+        Minecraft mc = Minecraft.getInstance();
 
-        if (mouseX >= listX && mouseX < listX + listWidth &&
-                mouseY >= listY && mouseY < listY + listHeight) {
-
-            int clickedEntry = (int) ((mouseY - listY) / LIST_ENTRY_HEIGHT);
-            int typeIndex = scrollOffset + clickedEntry;
-
-            if (typeIndex >= 0 && typeIndex < PART_TYPES.length) {
-                // サーバーにパーツタイプ選択を送信
-                PacketDistributor.sendToServer(new PartForgeActionPacket(PartForgeActionPacket.ACTION_SELECT, typeIndex));
+        if (button == 0) {
+            // ドロップダウンヘッダーのクリック（開閉トグル）
+            int headerX = guiX + DROPDOWN_X;
+            int headerY = guiY + DROPDOWN_Y;
+            if (mouseX >= headerX && mouseX < headerX + DROPDOWN_WIDTH &&
+                    mouseY >= headerY && mouseY < headerY + DROPDOWN_CLOSED_HEIGHT) {
+                dropdownOpen = !dropdownOpen;
+                AnvilButtonRenderer.playButtonSound(AnvilButtonRenderer.ButtonSound.SELECT);
                 return true;
+            }
+
+            // ドロップダウンリストのクリック（アイテム選択）
+            if (dropdownOpen) {
+                int listX = guiX + DROPDOWN_X;
+                int listY = guiY + DROPDOWN_Y + DROPDOWN_CLOSED_HEIGHT;
+                int visibleEntries = Math.min(DROPDOWN_MAX_VISIBLE, PART_TYPES.length);
+                int listHeight = visibleEntries * DROPDOWN_ENTRY_HEIGHT;
+
+                if (mouseX >= listX && mouseX < listX + DROPDOWN_WIDTH &&
+                        mouseY >= listY && mouseY < listY + listHeight) {
+
+                    int clickedEntry = (int) ((mouseY - listY) / DROPDOWN_ENTRY_HEIGHT);
+                    int typeIndex = scrollOffset + clickedEntry;
+
+                    if (typeIndex >= 0 && typeIndex < PART_TYPES.length) {
+                        // サーバーにパーツタイプ選択を送信
+                        PacketDistributor.sendToServer(new PartForgeActionPacket(PartForgeActionPacket.ACTION_SELECT, typeIndex));
+                        // AnvilButtonRendererを使用して選択音を再生
+                        AnvilButtonRenderer.playButtonSound(AnvilButtonRenderer.ButtonSound.SELECT);
+                        // ドロップダウンを閉じる
+                        dropdownOpen = false;
+                        ANVIL.LOGGER.info("パーツタイプを選択: {}", PART_TYPES[typeIndex].getId());
+                        return true;
+                    }
+                } else {
+                    // リスト外をクリックしたらドロップダウンを閉じる
+                    dropdownOpen = false;
+                }
+            }
+
+            // 鋳造ボタンのクリック判定
+            int forgeBtnX = guiX + FORGE_BUTTON_X;
+            int forgeBtnY = guiY + FORGE_BUTTON_Y;
+            if (AnvilButtonRenderer.isMouseOverButton((int) mouseX, (int) mouseY, forgeBtnX, forgeBtnY, FORGE_BUTTON_WIDTH, FORGE_BUTTON_HEIGHT)) {
+                if (menu.canForge()) {
+                    // サーバーに鋳造リクエストを送信
+                    PacketDistributor.sendToServer(new PartForgeActionPacket(PartForgeActionPacket.ACTION_FORGE, 0));
+                    // AnvilButtonRendererを使用して鋳造音を再生
+                    AnvilButtonRenderer.playButtonSound(AnvilButtonRenderer.ButtonSound.ACTION);
+                    ANVIL.LOGGER.info("パーツ鋳造を実行");
+                    return true;
+                }
             }
         }
 
@@ -231,22 +341,24 @@ public class PartForgeScreen extends AbstractContainerScreen<PartForgeMenu> {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        // パーツタイプリストのスクロール
-        int listX = this.leftPos + LIST_X;
-        int listY = this.topPos + LIST_Y;
-        int listWidth = 40;
-        int listHeight = LIST_VISIBLE_ENTRIES * LIST_ENTRY_HEIGHT;
+        // ドロップダウンリストのスクロール
+        if (dropdownOpen) {
+            int listX = this.leftPos + DROPDOWN_X;
+            int listY = this.topPos + DROPDOWN_Y + DROPDOWN_CLOSED_HEIGHT;
+            int visibleEntries = Math.min(DROPDOWN_MAX_VISIBLE, PART_TYPES.length);
+            int listHeight = visibleEntries * DROPDOWN_ENTRY_HEIGHT;
 
-        if (mouseX >= listX && mouseX < listX + listWidth + 5 &&
-                mouseY >= listY && mouseY < listY + listHeight) {
+            if (mouseX >= listX && mouseX < listX + DROPDOWN_WIDTH + 10 &&
+                    mouseY >= listY && mouseY < listY + listHeight) {
 
-            int maxScroll = Math.max(0, PART_TYPES.length - LIST_VISIBLE_ENTRIES);
-            if (scrollY > 0) {
-                scrollOffset = Math.max(0, scrollOffset - 1);
-            } else if (scrollY < 0) {
-                scrollOffset = Math.min(maxScroll, scrollOffset + 1);
+                int maxScroll = Math.max(0, PART_TYPES.length - DROPDOWN_MAX_VISIBLE);
+                if (scrollY > 0) {
+                    scrollOffset = Math.max(0, scrollOffset - 1);
+                } else if (scrollY < 0) {
+                    scrollOffset = Math.min(maxScroll, scrollOffset + 1);
+                }
+                return true;
             }
-            return true;
         }
 
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
