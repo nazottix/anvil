@@ -1,0 +1,7 @@
+{
+  "_comment": "加工素材アイテムモデル - 素材色でティント",
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/iron_ingot"
+  }
+}

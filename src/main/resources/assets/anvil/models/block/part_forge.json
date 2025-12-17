@@ -1,0 +1,9 @@
+{
+  "_comment": "パーツ鍛造所ブロックモデル - 加工素材をパーツに変換",
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "anvil:block/part_forge_top",
+    "front": "anvil:block/part_forge_front",
+    "side": "anvil:block/part_forge_side"
+  }
+}

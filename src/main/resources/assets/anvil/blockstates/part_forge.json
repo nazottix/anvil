@@ -1,0 +1,9 @@
+{
+  "_comment": "パーツ鍛造所ブロックステート",
+  "variants": {
+    "facing=north": { "model": "anvil:block/part_forge" },
+    "facing=south": { "model": "anvil:block/part_forge", "y": 180 },
+    "facing=west": { "model": "anvil:block/part_forge", "y": 270 },
+    "facing=east": { "model": "anvil:block/part_forge", "y": 90 }
+  }
+}

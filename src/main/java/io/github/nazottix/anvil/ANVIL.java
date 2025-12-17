@@ -69,13 +69,20 @@ public class ANVIL {
                     .icon(() -> AnvilItems.ANVIL_PICKAXE.get().getDefaultInstance())
                     // タブに表示するアイテム（ブロックとツール）
                     .displayItems((parameters, output) -> {
-                        // ステーションブロック（6種）
+                        // ステーションブロック（7種）
                         output.accept(AnvilBlocks.TOOL_STATION_ITEM.get());
                         output.accept(AnvilBlocks.SKILL_TREE_STATION_ITEM.get());
                         output.accept(AnvilBlocks.JEWEL_STATION_ITEM.get());
                         output.accept(AnvilBlocks.RESPEC_STATION_ITEM.get());
                         output.accept(AnvilBlocks.CORE_BOX_STATION_ITEM.get());
                         output.accept(AnvilBlocks.MOD_STATION_ITEM.get());
+                        output.accept(AnvilBlocks.REPAIR_STATION_ITEM.get());
+
+                        // 素材加工ステーション（4種）
+                        output.accept(AnvilBlocks.REFINERY_ITEM.get());
+                        output.accept(AnvilBlocks.FORGING_STATION_ITEM.get());
+                        output.accept(AnvilBlocks.POLISHING_STATION_ITEM.get());
+                        output.accept(AnvilBlocks.PART_FORGE_ITEM.get());
 
                         // 全ANVILツールをタブに追加
                         output.accept(AnvilItems.ANVIL_PICKAXE.get());
@@ -91,6 +98,14 @@ public class ANVIL {
                         output.accept(AnvilItems.MEMORY_SHARD.get());
                         output.accept(AnvilItems.MEMORY_CRYSTAL.get());
                         output.accept(AnvilItems.OBLIVION_ORB.get());
+
+                        // 素材加工アイテム
+                        output.accept(AnvilItems.SMITHING_HAMMER.get());
+                        output.accept(AnvilItems.POLISHING_AGENT_BASIC.get());
+                        output.accept(AnvilItems.POLISHING_AGENT_FINE.get());
+                        output.accept(AnvilItems.POLISHING_AGENT_SUPERIOR.get());
+                        output.accept(AnvilItems.POLISHING_AGENT_PERFECT.get());
+                        output.accept(AnvilItems.PROCESSED_MATERIAL.get());
                     })
                     .build());
 
@@ -171,6 +186,9 @@ public class ANVIL {
         // Loot Modifiersを登録（ジュエルドロップ用）
         AnvilLootModifiers.register(modEventBus);
 
+        // ネットワークパケットを登録（パーツ鍛造所など）
+        io.github.nazottix.anvil.network.AnvilNetworking.register(modEventBus);
+
         // ゲームイベント（サーバー起動など）を受け取るために登録
         NeoForge.EVENT_BUS.register(this);
 
@@ -197,6 +215,9 @@ public class ANVIL {
 
         // ジュエルレジストリを初期化（スキルツリー用ジュエルを登録）
         JewelRegistry.init();
+
+        // アフィックスレジストリを初期化（ツールのアフィックス生成用）
+        io.github.nazottix.anvil.affix.AffixRegistry.initialize();
     }
 
     /**

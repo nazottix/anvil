@@ -23,7 +23,16 @@
       "WebSearch",
       "WebFetch(domain:docs.neoforged.net)",
       "WebFetch(domain:neoforged.net)",
-      "mcp__serena__find_file"
+      "mcp__serena__find_file",
+      "mcp__serena__check_onboarding_performed",
+      "mcp__serena__insert_before_symbol",
+      "mcp__serena__replace_symbol_body",
+      "mcp__serena__insert_after_symbol",
+      "mcp__serena__initial_instructions",
+      "mcp__serena__think_about_collected_information",
+      "Bash(del /q \"C:\\Users\\nazot\\AppData\\Local\\Temp\\ijKotlinCoroutine*.gradle\")",
+      "Bash(./gradlew runClient:*)",
+      "Bash(python generate_processing_textures.py:*)"
     ]
   }
 }

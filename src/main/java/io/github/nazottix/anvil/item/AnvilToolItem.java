@@ -83,7 +83,7 @@ public class AnvilToolItem extends Item {
      * ツールチップを追加
      *
      * アイテムにカーソルを合わせた時に表示される情報を追加します。
-     * Shiftキーで詳細表示（ステータス、パーツ情報）を表示します。
+     * Shiftキーで詳細表示（ステータス、パーツ情報、アフィックス情報）を表示します。
      *
      * @param stack アイテムスタック
      * @param context ツールチップコンテキスト
@@ -106,17 +106,36 @@ public class AnvilToolItem extends Item {
             // 詳細ツールチップ（ToolInfoRendererを使用）
             tooltipComponents.addAll(ToolInfoRenderer.getDetailedTooltip(stack, toolType));
 
+            // レアリティ表示（NORMALでない場合のみ）
+            Component rarityComp = ToolInfoRenderer.getRarityComponent(data);
+            if (rarityComp != null) {
+                tooltipComponents.add(rarityComp);
+            }
+
             // 空行
             tooltipComponents.add(Component.empty());
 
             // パーツ情報
             tooltipComponents.addAll(ToolInfoRenderer.getPartsTooltip(data));
+
+            // アフィックス情報（存在する場合のみ）
+            List<Component> affixTooltip = ToolInfoRenderer.getAffixesTooltip(data);
+            if (!affixTooltip.isEmpty()) {
+                tooltipComponents.add(Component.empty());
+                tooltipComponents.addAll(affixTooltip);
+            }
         } else {
             // 簡易ツールチップ
             // ツールタイプ
             tooltipComponents.add(Component.translatable("tooltip.anvil.tool_type",
                             Component.translatable(toolType.getTranslationKey()))
                     .withStyle(ChatFormatting.GRAY));
+
+            // レアリティ表示（NORMALでない場合のみ）
+            Component rarityComp = ToolInfoRenderer.getRarityComponent(data);
+            if (rarityComp != null) {
+                tooltipComponents.add(rarityComp);
+            }
 
             // レベルをカラフルに表示
             tooltipComponents.add(Component.literal("Lv.")
@@ -126,6 +145,14 @@ public class AnvilToolItem extends Item {
 
             // 主要ステータス（ツールタイプに応じて）
             addQuickStats(tooltipComponents, stats);
+
+            // アフィックス数を簡易表示（存在する場合のみ）
+            if (!data.affixes().isEmpty()) {
+                int prefixCount = data.getPrefixCount();
+                int suffixCount = data.getSuffixCount();
+                tooltipComponents.add(Component.translatable("tooltip.anvil.affix_count", prefixCount, suffixCount)
+                        .withStyle(ChatFormatting.LIGHT_PURPLE));
+            }
 
             // Shiftキーでの詳細表示ヒント
             tooltipComponents.add(Component.translatable("tooltip.anvil.shift_for_details")

@@ -1,0 +1,7 @@
+{
+  "_comment": "至高研磨剤アイテムモデル",
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/diamond"
+  }
+}

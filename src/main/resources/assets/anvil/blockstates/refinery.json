@@ -1,0 +1,13 @@
+{
+  "_comment": "精錬所ブロックステート - LIT状態で別モデルを使用",
+  "variants": {
+    "facing=north,lit=false": { "model": "anvil:block/refinery" },
+    "facing=south,lit=false": { "model": "anvil:block/refinery", "y": 180 },
+    "facing=west,lit=false": { "model": "anvil:block/refinery", "y": 270 },
+    "facing=east,lit=false": { "model": "anvil:block/refinery", "y": 90 },
+    "facing=north,lit=true": { "model": "anvil:block/refinery_on" },
+    "facing=south,lit=true": { "model": "anvil:block/refinery_on", "y": 180 },
+    "facing=west,lit=true": { "model": "anvil:block/refinery_on", "y": 270 },
+    "facing=east,lit=true": { "model": "anvil:block/refinery_on", "y": 90 }
+  }
+}

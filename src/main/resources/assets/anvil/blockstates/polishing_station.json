@@ -1,0 +1,13 @@
+{
+  "_comment": "研磨ステーションブロックステート - LIT状態で別モデルを使用",
+  "variants": {
+    "facing=north,lit=false": { "model": "anvil:block/polishing_station" },
+    "facing=south,lit=false": { "model": "anvil:block/polishing_station", "y": 180 },
+    "facing=west,lit=false": { "model": "anvil:block/polishing_station", "y": 270 },
+    "facing=east,lit=false": { "model": "anvil:block/polishing_station", "y": 90 },
+    "facing=north,lit=true": { "model": "anvil:block/polishing_station_on" },
+    "facing=south,lit=true": { "model": "anvil:block/polishing_station_on", "y": 180 },
+    "facing=west,lit=true": { "model": "anvil:block/polishing_station_on", "y": 270 },
+    "facing=east,lit=true": { "model": "anvil:block/polishing_station_on", "y": 90 }
+  }
+}

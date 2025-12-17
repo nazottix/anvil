@@ -1,0 +1,4 @@
+{
+  "_comment": "精錬所アイテムモデル - ブロックモデルを参照",
+  "parent": "anvil:block/refinery"
+}

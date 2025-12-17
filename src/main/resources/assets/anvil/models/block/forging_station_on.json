@@ -1,0 +1,9 @@
+{
+  "_comment": "鍛造ステーションブロックモデル（稼働中）",
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "anvil:block/forging_station_top",
+    "front": "anvil:block/forging_station_front_on",
+    "side": "anvil:block/forging_station_side"
+  }
+}

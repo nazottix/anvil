@@ -1,0 +1,4 @@
+{
+  "_comment": "鍛造ステーションアイテムモデル - ブロックモデルを参照",
+  "parent": "anvil:block/forging_station"
+}

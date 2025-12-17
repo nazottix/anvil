@@ -195,6 +195,105 @@ public final class ToolInfoRenderer {
         return tooltip;
     }
 
+
+    /**
+     * レアリティ表示コンポーネントを生成
+     *
+     * @param toolData ツールデータ
+     * @return レアリティコンポーネント、レアリティがNORMALの場合はnull
+     */
+    public static Component getRarityComponent(AnvilToolData toolData) {
+        // レアリティを取得
+        io.github.nazottix.anvil.affix.ToolRarity rarity =
+                io.github.nazottix.anvil.affix.ToolRarity.fromId(toolData.rarity());
+
+        // NORMALの場合は表示しない
+        if (rarity == io.github.nazottix.anvil.affix.ToolRarity.NORMAL) {
+            return null;
+        }
+
+        // レアリティ名を表示（色付き）
+        return Component.translatable("rarity.anvil." + rarity.getId())
+                .withStyle(Style.EMPTY.withColor(rarity.getColor()));
+    }
+
+    /**
+     * アフィックス情報ツールチップを生成
+     *
+     * @param toolData ツールデータ
+     * @return アフィックス情報コンポーネントのリスト
+     */
+    public static List<Component> getAffixesTooltip(AnvilToolData toolData) {
+        List<Component> tooltip = new ArrayList<>();
+
+        // アフィックスリストを取得
+        java.util.List<io.github.nazottix.anvil.affix.AffixInstance> affixes = toolData.affixes();
+
+        if (affixes == null || affixes.isEmpty()) {
+            return tooltip;
+        }
+
+        // アフィックスヘッダー
+        tooltip.add(Component.translatable("tooltip.anvil.affixes")
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+
+        // プレフィックスを先に表示
+        for (io.github.nazottix.anvil.affix.AffixInstance instance : affixes) {
+            if (instance.type() == io.github.nazottix.anvil.affix.AffixType.PREFIX) {
+                tooltip.add(getAffixLine(instance));
+            }
+        }
+
+        // サフィックスを後に表示
+        for (io.github.nazottix.anvil.affix.AffixInstance instance : affixes) {
+            if (instance.type() == io.github.nazottix.anvil.affix.AffixType.SUFFIX) {
+                tooltip.add(getAffixLine(instance));
+            }
+        }
+
+        return tooltip;
+    }
+
+    /**
+     * 単一アフィックス行を生成
+     */
+    private static Component getAffixLine(io.github.nazottix.anvil.affix.AffixInstance instance) {
+        io.github.nazottix.anvil.affix.Affix affix = instance.affix();
+        io.github.nazottix.anvil.affix.AffixEffect effect = instance.effect();
+        io.github.nazottix.anvil.affix.AffixTier tier = instance.tier();
+
+        if (affix == null || effect == null) {
+            return Component.literal("  ??? 不明なアフィックス")
+                    .withStyle(ChatFormatting.DARK_GRAY);
+        }
+
+        MutableComponent line = Component.literal("  ");
+
+        // ティアカラーを取得
+        int tierColor = tier.getColor();
+
+        // アフィックス名（翻訳キー）
+        line.append(Component.translatable(affix.getTranslationKey())
+                .withStyle(Style.EMPTY.withColor(tierColor)));
+
+        // ティア表示
+        line.append(Component.literal(" T" + tier.getTier())
+                .withStyle(ChatFormatting.DARK_GRAY));
+
+        // 効果値
+        line.append(Component.literal(": ")
+                .withStyle(ChatFormatting.DARK_GRAY));
+
+        // 効果の表示文字列
+        String effectDisplay = effect.getDisplayValue();
+        // プラス効果は緑、マイナス効果は赤
+        ChatFormatting effectColor = effect.value() >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED;
+        line.append(Component.literal(effectDisplay)
+                .withStyle(effectColor));
+
+        return line;
+    }
+
     // ============================================
     // ヘルパーメソッド
     // ============================================

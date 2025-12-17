@@ -1,0 +1,4 @@
+{
+  "_comment": "パーツ鍛造所アイテムモデル - ブロックモデルを参照",
+  "parent": "anvil:block/part_forge"
+}

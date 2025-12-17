@@ -1,0 +1,9 @@
+{
+  "_comment": "研磨ステーションブロックモデル（稼働中）",
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "anvil:block/polishing_station_top",
+    "front": "anvil:block/polishing_station_front_on",
+    "side": "anvil:block/polishing_station_side"
+  }
+}

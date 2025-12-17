@@ -100,6 +100,54 @@ public class AnvilBlockEntities {
                     ).build(null)
             );
 
+    /**
+     * 精錬所ブロックエンティティタイプ
+     * バニラ素材を加工素材に精錬するステーション
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RefineryBlockEntity>> REFINERY =
+            BLOCK_ENTITIES.register("refinery",
+                    () -> BlockEntityType.Builder.of(
+                            RefineryBlockEntity::new,
+                            AnvilBlocks.REFINERY.get()
+                    ).build(null)
+            );
+
+    /**
+     * パーツ鍛造所ブロックエンティティタイプ
+     * 加工素材をパーツアイテムに変換するステーション
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PartForgeBlockEntity>> PART_FORGE =
+            BLOCK_ENTITIES.register("part_forge",
+                    () -> BlockEntityType.Builder.of(
+                            PartForgeBlockEntity::new,
+                            AnvilBlocks.PART_FORGE.get()
+                    ).build(null)
+            );
+
+    /**
+     * 鍛造ステーションブロックエンティティタイプ
+     * 精錬素材を鍛造素材に変換するステーション
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ForgingStationBlockEntity>> FORGING_STATION =
+            BLOCK_ENTITIES.register("forging_station",
+                    () -> BlockEntityType.Builder.of(
+                            ForgingStationBlockEntity::new,
+                            AnvilBlocks.FORGING_STATION.get()
+                    ).build(null)
+            );
+
+    /**
+     * 研磨ステーションブロックエンティティタイプ
+     * 鍛造素材を研磨素材に変換するステーション
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PolishingStationBlockEntity>> POLISHING_STATION =
+            BLOCK_ENTITIES.register("polishing_station",
+                    () -> BlockEntityType.Builder.of(
+                            PolishingStationBlockEntity::new,
+                            AnvilBlocks.POLISHING_STATION.get()
+                    ).build(null)
+            );
+
     // ============================================
     // 登録
     // ============================================
