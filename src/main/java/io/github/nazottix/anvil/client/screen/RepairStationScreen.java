@@ -73,8 +73,6 @@ public class RepairStationScreen extends AbstractContainerScreen<RepairStationMe
         // 矢印描画（ツール + パーツ → 修理）
         renderArrow(guiGraphics, x + 48, y + 39);
 
-        // 区切り線（立体的）
-        AnvilPanelRenderer.renderHorizontalSeparator(guiGraphics, x + 8, y + 70, this.imageWidth - 16);
 
         // プレイヤーインベントリ境界線とスロット背景を描画（マイクラ標準風）
         AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 84, 142);

@@ -37,8 +37,25 @@ public final class AnvilButtonRenderer {
     // ボタン描画メソッド
     // ============================================
 
+    // ============================================
+    // ボタン描画用カラー
+    // ============================================
+
+    /** ボタン背景色（通常） */
+    private static final int BUTTON_BG_NORMAL = 0xFF2D2D2D;
+    /** ボタン背景色（ホバー） */
+    private static final int BUTTON_BG_HOVER = 0xFF3D3D3D;
+    /** ボタン背景色（押下/選択） */
+    private static final int BUTTON_BG_PRESSED = 0xFF1D1D1D;
+    /** ボタンハイライト色（上・左辺） */
+    private static final int BUTTON_HIGHLIGHT = 0xFF5A5A5A;
+    /** ボタンシャドウ色（下・右辺） */
+    private static final int BUTTON_SHADOW = 0xFF1A1A1A;
+    /** ボタン無効時の背景色 */
+    private static final int BUTTON_BG_DISABLED = 0xFF1F1F1F;
+
     /**
-     * テーマに沿ったボタンを描画
+     * テーマに沿ったボタンを描画（マイクラ風立体デザイン）
      *
      * @param guiGraphics 描画コンテキスト
      * @param font フォント
@@ -53,27 +70,42 @@ public final class AnvilButtonRenderer {
     public static void renderButton(GuiGraphics guiGraphics, Font font,
                                     int x, int y, int width, int height,
                                     Component text, boolean isHovered, boolean isEnabled) {
-        // ボタン色の決定（有効/無効、ホバー状態により変化）
         int bgColor;
-        int borderColor;
+        int highlightColor;
+        int shadowColor;
         int textColor;
 
         if (isEnabled) {
-            // 有効状態: テーマカラーを使用
-            bgColor = isHovered ? (AnvilColors.FORGE_ORANGE | 0xFF000000) : (AnvilColors.VOID_BLACK | 0xFF000000);
-            borderColor = isHovered ? 0xFFFFFFFF : AnvilColors.FORGE_ORANGE;
-            textColor = isHovered ? 0xFFFFFF : AnvilColors.FORGE_ORANGE;
+            if (isHovered) {
+                // ホバー状態: 明るめの背景
+                bgColor = BUTTON_BG_HOVER;
+                highlightColor = 0xFF7A7A7A;
+                shadowColor = BUTTON_SHADOW;
+                textColor = 0xFFFFFFFF;
+            } else {
+                // 通常状態
+                bgColor = BUTTON_BG_NORMAL;
+                highlightColor = BUTTON_HIGHLIGHT;
+                shadowColor = BUTTON_SHADOW;
+                textColor = AnvilColors.FORGE_ORANGE;
+            }
         } else {
             // 無効状態: グレーアウト
-            bgColor = AnvilColors.VOID_BLACK | 0xFF000000;
-            borderColor = 0xFF555555;
+            bgColor = BUTTON_BG_DISABLED;
+            highlightColor = 0xFF3A3A3A;
+            shadowColor = 0xFF0A0A0A;
             textColor = 0xFF555555;
         }
 
-        // 枠を描画（1px外側）
-        guiGraphics.fill(x - 1, y - 1, x + width + 1, y + height + 1, borderColor);
-        // 背景を描画
-        guiGraphics.fill(x, y, x + width, y + height, bgColor);
+        // 外枠（シャドウ側：下・右）を先に描画
+        guiGraphics.fill(x, y, x + width, y + height, shadowColor);
+
+        // 外枠（ハイライト側：上・左）
+        guiGraphics.fill(x, y, x + width - 1, y + 1, highlightColor);
+        guiGraphics.fill(x, y, x + 1, y + height - 1, highlightColor);
+
+        // ボタン背景（1px内側）
+        guiGraphics.fill(x + 1, y + 1, x + width - 1, y + height - 1, bgColor);
 
         // テキストを中央に描画
         int textWidth = font.width(text);
@@ -84,7 +116,7 @@ public final class AnvilButtonRenderer {
     }
 
     /**
-     * シンボル付きの小型ボタンを描画（ツールタイプ選択等）
+     * シンボル付きの小型ボタンを描画（ツールタイプ選択等、マイクラ風立体デザイン）
      *
      * @param guiGraphics 描画コンテキスト
      * @param font フォント
@@ -100,17 +132,42 @@ public final class AnvilButtonRenderer {
                                         int x, int y, int size,
                                         String symbol, int symbolColor,
                                         boolean isSelected, boolean isHovered) {
-        // 背景色の決定
-        int bgColor = isSelected ? (symbolColor | 0xFF000000) :
-                isHovered ? 0xFF444444 : (AnvilColors.VOID_BLACK | 0xFF000000);
-        guiGraphics.fill(x, y, x + size, y + size, bgColor);
+        int bgColor;
+        int highlightColor;
+        int shadowColor;
+        int displayColor;
 
-        // 枠の描画
-        int borderColor = isSelected ? 0xFFFFFFFF : 0xFF666666;
-        guiGraphics.renderOutline(x, y, size, size, borderColor);
+        if (isSelected) {
+            // 選択状態: 凹んだデザイン（ハイライトとシャドウを逆転）
+            bgColor = BUTTON_BG_PRESSED;
+            highlightColor = BUTTON_SHADOW;  // 逆転
+            shadowColor = BUTTON_HIGHLIGHT;  // 逆転
+            displayColor = 0xFFFFFFFF;
+        } else if (isHovered) {
+            // ホバー状態: 明るめ
+            bgColor = BUTTON_BG_HOVER;
+            highlightColor = 0xFF7A7A7A;
+            shadowColor = BUTTON_SHADOW;
+            displayColor = symbolColor;
+        } else {
+            // 通常状態
+            bgColor = BUTTON_BG_NORMAL;
+            highlightColor = BUTTON_HIGHLIGHT;
+            shadowColor = BUTTON_SHADOW;
+            displayColor = symbolColor;
+        }
+
+        // 外枠（シャドウ側：下・右）を先に描画
+        guiGraphics.fill(x, y, x + size, y + size, shadowColor);
+
+        // 外枠（ハイライト側：上・左）
+        guiGraphics.fill(x, y, x + size - 1, y + 1, highlightColor);
+        guiGraphics.fill(x, y, x + 1, y + size - 1, highlightColor);
+
+        // ボタン背景（1px内側）
+        guiGraphics.fill(x + 1, y + 1, x + size - 1, y + size - 1, bgColor);
 
         // シンボルを中央に描画
-        int displayColor = isSelected ? 0xFFFFFF : symbolColor;
         guiGraphics.drawCenteredString(font, symbol, x + size / 2, y + (size - 8) / 2, displayColor);
     }
 

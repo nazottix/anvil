@@ -61,11 +61,11 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
      */
     public ToolStationScreen(ToolStationMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-        // GUI のサイズを設定（縦を拡大してツールボタン用スペース確保 + Inventoryラベルとの間にスペース確保）
+        // GUI のサイズを設定（他のStationと同じサイズ）
         this.imageWidth = 176;
-        this.imageHeight = 234;
-        // インベントリラベルの位置調整（14ピクセル下にずらした）
-        this.inventoryLabelY = 140;
+        this.imageHeight = 200;
+        // インベントリラベルの位置調整
+        this.inventoryLabelY = 106;
     }
 
     @Override
@@ -89,8 +89,6 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
         // ツールタイプ選択ボタンを描画
         renderToolTypeButtons(guiGraphics, x, y, mouseX, mouseY);
 
-        // 区切り線（ツールボタンとスロットの間）- 立体的な区切り線
-        AnvilPanelRenderer.renderHorizontalSeparator(guiGraphics, x + 8, y + 64, this.imageWidth - 16);
 
         // スロットエリア背景
         renderSlotAreas(guiGraphics, x, y);
@@ -101,11 +99,9 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
         // 矢印描画（パーツ → 出力）
         renderArrow(guiGraphics, x + 93, y + 96);
 
-        // 区切り線（スロットとインベントリの間）- 立体的な区切り線
-        AnvilPanelRenderer.renderHorizontalSeparator(guiGraphics, x + 8, y + 120, this.imageWidth - 16);
 
         // プレイヤーインベントリ境界線とスロット背景を描画（マイクラ標準風）
-        AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 151, 209);
+        AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 117, 175);
     }
 
     /**

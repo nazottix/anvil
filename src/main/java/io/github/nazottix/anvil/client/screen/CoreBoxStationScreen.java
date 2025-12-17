@@ -79,8 +79,6 @@ public class CoreBoxStationScreen extends AbstractContainerScreen<CoreBoxStation
         // モジュールスロット背景
         renderModuleSlots(guiGraphics, x, y);
 
-        // 区切り線（立体的）
-        AnvilPanelRenderer.renderHorizontalSeparator(guiGraphics, x + 8, y + 88, this.imageWidth - 16);
 
         // プレイヤーインベントリ境界線とスロット背景を描画（マイクラ標準風）
         AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 117, 175);

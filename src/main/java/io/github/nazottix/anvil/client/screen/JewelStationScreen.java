@@ -90,8 +90,6 @@ public class JewelStationScreen extends AbstractContainerScreen<JewelStationMenu
         // 装着済みジュエル表示
         renderEquippedJewels(guiGraphics, x, y);
 
-        // 区切り線（立体的）
-        AnvilPanelRenderer.renderHorizontalSeparator(guiGraphics, x + 8, y + 90, this.imageWidth - 16);
 
         // プレイヤーインベントリ境界線とスロット背景を描画（マイクラ標準風）
         AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 117, 175);

@@ -81,8 +81,6 @@ public class RespecStationScreen extends AbstractContainerScreen<RespecStationMe
         // リスペックボタンを描画（AnvilButtonRendererを使用）
         renderRespecButton(guiGraphics, x, y, mouseX, mouseY);
 
-        // 区切り線（立体的）
-        AnvilPanelRenderer.renderHorizontalSeparator(guiGraphics, x + 8, y + 70, this.imageWidth - 16);
 
         // プレイヤーインベントリ境界線とスロット背景を描画（マイクラ標準風）
         AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 98, 156);

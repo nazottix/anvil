@@ -92,16 +92,16 @@ public class ToolStationMenu extends AbstractContainerMenu {
 
         // 修理スロットはRepairStationに移動
 
-        // プレイヤーインベントリ（3行9列）- y=151から（14ピクセル下にずらした）
+        // プレイヤーインベントリ（3行9列）- y=117から
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 151 + row * 18));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 117 + row * 18));
             }
         }
 
-        // ホットバー（1行9列）- y=209（14ピクセル下にずらした）
+        // ホットバー（1行9列）- y=175
         for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 209));
+            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 175));
         }
     }
 
