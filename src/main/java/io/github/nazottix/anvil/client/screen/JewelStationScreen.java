@@ -2,6 +2,7 @@ package io.github.nazottix.anvil.client.screen;
 
 import io.github.nazottix.anvil.client.ui.AnvilButtonRenderer;
 import io.github.nazottix.anvil.client.ui.AnvilColors;
+import io.github.nazottix.anvil.client.ui.AnvilPanelRenderer;
 import io.github.nazottix.anvil.menu.JewelStationMenu;
 import io.github.nazottix.anvil.skill.jewel.JewelData;
 import io.github.nazottix.anvil.skill.jewel.JewelRegistry;
@@ -71,13 +72,8 @@ public class JewelStationScreen extends AbstractContainerScreen<JewelStationMenu
         int x = this.leftPos;
         int y = this.topPos;
 
-        // 背景色で塗りつぶし
-        guiGraphics.fill(x, y, x + this.imageWidth, y + this.imageHeight,
-                AnvilColors.VOID_BLACK | 0xFF000000);
-
-        // パネル背景
-        guiGraphics.fill(x + 2, y + 2, x + this.imageWidth - 2, y + this.imageHeight - 2,
-                AnvilColors.ANVIL_STEEL | 0xFF000000);
+        // 立体的なメインパネルを描画（マイクラ従来の奥行きあるデザイン）
+        AnvilPanelRenderer.renderMainPanel(guiGraphics, x, y, this.imageWidth, this.imageHeight);
 
         // ツールスロット背景
         renderToolSlot(guiGraphics, x, y);
@@ -94,11 +90,11 @@ public class JewelStationScreen extends AbstractContainerScreen<JewelStationMenu
         // 装着済みジュエル表示
         renderEquippedJewels(guiGraphics, x, y);
 
-        // 区切り線
-        guiGraphics.fill(x + 8, y + 90, x + this.imageWidth - 8, y + 91, 0xFF444444);
+        // 区切り線（立体的）
+        AnvilPanelRenderer.renderHorizontalSeparator(guiGraphics, x + 8, y + 90, this.imageWidth - 16);
 
-        // プレイヤーインベントリ境界線とスロット背景を描画
-        renderInventoryBackground(guiGraphics, x, y);
+        // プレイヤーインベントリ境界線とスロット背景を描画（マイクラ標準風）
+        AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 117, 175);
     }
 
     /**
@@ -135,29 +131,31 @@ public class JewelStationScreen extends AbstractContainerScreen<JewelStationMenu
     }
 
     /**
-     * ツールスロットを描画
+     * ツールスロットを描画（マイクラ標準風スロット + 紫枠で強調）
      */
     private void renderToolSlot(GuiGraphics guiGraphics, int guiX, int guiY) {
         int slotX = guiX + TOOL_SLOT_X;
         int slotY = guiY + TOOL_SLOT_Y;
 
-        // スロット枠（紫系）
-        guiGraphics.fill(slotX - 2, slotY - 2, slotX + 18, slotY + 18, AnvilColors.ARCANE_PURPLE);
-        guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+        // 紫枠で強調
+        guiGraphics.fill(slotX - 3, slotY - 3, slotX + 19, slotY + 19, AnvilColors.ARCANE_PURPLE);
+        // 内側に標準スロットを描画
+        AnvilPanelRenderer.renderSlot(guiGraphics, slotX, slotY);
     }
 
     /**
-     * ジュエルスロットを描画
+     * ジュエルスロットを描画（マイクラ標準風スロット + 色付き枠で強調）
      */
     private void renderJewelSlots(GuiGraphics guiGraphics, int guiX, int guiY) {
         for (int i = 0; i < JEWEL_SLOT_COUNT; i++) {
             int slotX = guiX + JEWEL_SLOT_START_X + i * JEWEL_SLOT_SPACING;
             int slotY = guiY + JEWEL_SLOT_Y;
 
-            // ジュエルスロット背景（紫系グラデーション風）
+            // ジュエルスロット色付き枠で強調
             int color = getJewelSlotColor(i);
-            guiGraphics.fill(slotX - 1, slotY - 1, slotX + 17, slotY + 17, color);
-            guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+            guiGraphics.fill(slotX - 2, slotY - 2, slotX + 18, slotY + 18, color);
+            // 内側に標準スロットを描画
+            AnvilPanelRenderer.renderSlot(guiGraphics, slotX, slotY);
 
             // スロット番号
             String label = String.valueOf(i + 1);

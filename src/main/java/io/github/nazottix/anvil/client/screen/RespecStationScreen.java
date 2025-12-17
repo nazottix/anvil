@@ -3,6 +3,7 @@ package io.github.nazottix.anvil.client.screen;
 import io.github.nazottix.anvil.ANVIL;
 import io.github.nazottix.anvil.client.ui.AnvilButtonRenderer;
 import io.github.nazottix.anvil.client.ui.AnvilColors;
+import io.github.nazottix.anvil.client.ui.AnvilPanelRenderer;
 import io.github.nazottix.anvil.menu.RespecStationMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -65,13 +66,8 @@ public class RespecStationScreen extends AbstractContainerScreen<RespecStationMe
         int x = this.leftPos;
         int y = this.topPos;
 
-        // 背景色で塗りつぶし
-        guiGraphics.fill(x, y, x + this.imageWidth, y + this.imageHeight,
-                AnvilColors.VOID_BLACK | 0xFF000000);
-
-        // パネル背景
-        guiGraphics.fill(x + 2, y + 2, x + this.imageWidth - 2, y + this.imageHeight - 2,
-                AnvilColors.ANVIL_STEEL | 0xFF000000);
+        // 立体的なメインパネルを描画（マイクラ従来の奥行きあるデザイン）
+        AnvilPanelRenderer.renderMainPanel(guiGraphics, x, y, this.imageWidth, this.imageHeight);
 
         // ツールスロット背景
         renderToolSlot(guiGraphics, x, y);
@@ -85,11 +81,11 @@ public class RespecStationScreen extends AbstractContainerScreen<RespecStationMe
         // リスペックボタンを描画（AnvilButtonRendererを使用）
         renderRespecButton(guiGraphics, x, y, mouseX, mouseY);
 
-        // 区切り線
-        guiGraphics.fill(x + 8, y + 70, x + this.imageWidth - 8, y + 71, 0xFF444444);
+        // 区切り線（立体的）
+        AnvilPanelRenderer.renderHorizontalSeparator(guiGraphics, x + 8, y + 70, this.imageWidth - 16);
 
-        // プレイヤーインベントリ境界線とスロット背景を描画
-        renderInventoryBackground(guiGraphics, x, y);
+        // プレイヤーインベントリ境界線とスロット背景を描画（マイクラ標準風）
+        AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 98, 156);
     }
 
     /**
@@ -141,15 +137,16 @@ public class RespecStationScreen extends AbstractContainerScreen<RespecStationMe
     }
 
     /**
-     * ツールスロットを描画
+     * ツールスロットを描画（マイクラ標準風スロット + シアン枠で強調）
      */
     private void renderToolSlot(GuiGraphics guiGraphics, int guiX, int guiY) {
         int slotX = guiX + TOOL_SLOT_X;
         int slotY = guiY + TOOL_SLOT_Y;
 
-        // スロット枠（シアン系 - ツール）
-        guiGraphics.fill(slotX - 1, slotY - 1, slotX + 17, slotY + 17, AnvilColors.TECH_CYAN);
-        guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+        // シアン枠で強調
+        guiGraphics.fill(slotX - 2, slotY - 2, slotX + 18, slotY + 18, AnvilColors.TECH_CYAN);
+        // 内側に標準スロットを描画
+        AnvilPanelRenderer.renderSlot(guiGraphics, slotX, slotY);
 
         // ラベル
         guiGraphics.drawString(this.font, Component.translatable("gui.anvil.respec_station.tool"),
@@ -157,15 +154,16 @@ public class RespecStationScreen extends AbstractContainerScreen<RespecStationMe
     }
 
     /**
-     * リスペックアイテムスロットを描画
+     * リスペックアイテムスロットを描画（マイクラ標準風スロット + オレンジ枠で強調）
      */
     private void renderRespecItemSlot(GuiGraphics guiGraphics, int guiX, int guiY) {
         int slotX = guiX + RESPEC_ITEM_SLOT_X;
         int slotY = guiY + RESPEC_ITEM_SLOT_Y;
 
-        // スロット枠（オレンジ系 - リスペックアイテム）
-        guiGraphics.fill(slotX - 1, slotY - 1, slotX + 17, slotY + 17, AnvilColors.FORGE_ORANGE);
-        guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+        // オレンジ枠で強調
+        guiGraphics.fill(slotX - 2, slotY - 2, slotX + 18, slotY + 18, AnvilColors.FORGE_ORANGE);
+        // 内側に標準スロットを描画
+        AnvilPanelRenderer.renderSlot(guiGraphics, slotX, slotY);
 
         // ラベル
         guiGraphics.drawString(this.font, Component.translatable("gui.anvil.respec_station.item"),

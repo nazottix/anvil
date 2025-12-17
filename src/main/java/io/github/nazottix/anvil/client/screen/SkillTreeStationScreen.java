@@ -1,6 +1,7 @@
 package io.github.nazottix.anvil.client.screen;
 
 import io.github.nazottix.anvil.client.ui.AnvilColors;
+import io.github.nazottix.anvil.client.ui.AnvilPanelRenderer;
 import io.github.nazottix.anvil.menu.SkillTreeStationMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -59,46 +60,41 @@ public class SkillTreeStationScreen extends AbstractContainerScreen<SkillTreeSta
         int x = this.leftPos;
         int y = this.topPos;
 
-        // 背景色で塗りつぶし
-        guiGraphics.fill(x, y, x + this.imageWidth, y + this.imageHeight,
-                AnvilColors.VOID_BLACK | 0xFF000000);
+        // 立体的なメインパネルを描画（マイクラ従来の奥行きあるデザイン）
+        AnvilPanelRenderer.renderMainPanel(guiGraphics, x, y, this.imageWidth, this.imageHeight);
 
-        // パネル背景
-        guiGraphics.fill(x + 2, y + 2, x + this.imageWidth - 2, y + this.imageHeight - 2,
-                AnvilColors.ANVIL_STEEL | 0xFF000000);
+        // スキルツリー表示エリア（凹んだ内側パネル）
+        AnvilPanelRenderer.renderInnerPanel(guiGraphics, x + TREE_AREA_X, y + TREE_AREA_Y,
+                TREE_AREA_WIDTH, TREE_AREA_HEIGHT);
 
-        // スキルツリー表示エリア背景（紫系）
-        guiGraphics.fill(x + TREE_AREA_X, y + TREE_AREA_Y,
-                x + TREE_AREA_X + TREE_AREA_WIDTH, y + TREE_AREA_Y + TREE_AREA_HEIGHT,
-                0xFF1A1A2E);
-
-        // スキルツリーエリア枠
+        // スキルツリーエリア紫枠
         guiGraphics.renderOutline(x + TREE_AREA_X - 1, y + TREE_AREA_Y - 1,
                 TREE_AREA_WIDTH + 2, TREE_AREA_HEIGHT + 2, AnvilColors.ARCANE_PURPLE);
 
         // ツールスロット背景
         renderToolSlot(guiGraphics, x, y);
 
-        // 区切り線
-        guiGraphics.fill(x + 8, y + 88, x + this.imageWidth - 8, y + 89, 0xFF444444);
+        // 区切り線（立体的）
+        AnvilPanelRenderer.renderHorizontalSeparator(guiGraphics, x + 8, y + 88, this.imageWidth - 16);
 
-        // プレイヤーインベントリ境界線とスロット背景を描画
-        renderInventoryBackground(guiGraphics, x, y);
+        // プレイヤーインベントリ境界線とスロット背景を描画（マイクラ標準風）
+        AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 117, 175);
 
         // スキルツリープレビュー（ツールがセットされている場合）
         renderSkillTreePreview(guiGraphics, x + TREE_AREA_X, y + TREE_AREA_Y);
     }
 
     /**
-     * ツールスロットを描画
+     * ツールスロットを描画（マイクラ標準風スロット + 紫枠で強調）
      */
     private void renderToolSlot(GuiGraphics guiGraphics, int guiX, int guiY) {
         int slotX = guiX + TOOL_SLOT_X;
         int slotY = guiY + TOOL_SLOT_Y;
 
-        // スロット枠（紫系）
-        guiGraphics.fill(slotX - 1, slotY - 1, slotX + 17, slotY + 17, AnvilColors.ARCANE_PURPLE);
-        guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+        // 紫枠で強調
+        guiGraphics.fill(slotX - 2, slotY - 2, slotX + 18, slotY + 18, AnvilColors.ARCANE_PURPLE);
+        // 内側に標準スロットを描画
+        AnvilPanelRenderer.renderSlot(guiGraphics, slotX, slotY);
     }
 
     /**

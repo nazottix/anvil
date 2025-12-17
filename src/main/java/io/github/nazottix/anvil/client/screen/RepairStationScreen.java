@@ -3,6 +3,7 @@ package io.github.nazottix.anvil.client.screen;
 import io.github.nazottix.anvil.ANVIL;
 import io.github.nazottix.anvil.client.ui.AnvilButtonRenderer;
 import io.github.nazottix.anvil.client.ui.AnvilColors;
+import io.github.nazottix.anvil.client.ui.AnvilPanelRenderer;
 import io.github.nazottix.anvil.menu.RepairStationMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -60,13 +61,8 @@ public class RepairStationScreen extends AbstractContainerScreen<RepairStationMe
         int x = this.leftPos;
         int y = this.topPos;
 
-        // 背景色で塗りつぶし
-        guiGraphics.fill(x, y, x + this.imageWidth, y + this.imageHeight,
-                AnvilColors.VOID_BLACK | 0xFF000000);
-
-        // パネル背景
-        guiGraphics.fill(x + 2, y + 2, x + this.imageWidth - 2, y + this.imageHeight - 2,
-                AnvilColors.ANVIL_STEEL | 0xFF000000);
+        // 立体的なメインパネルを描画（マイクラ従来の奥行きあるデザイン）
+        AnvilPanelRenderer.renderMainPanel(guiGraphics, x, y, this.imageWidth, this.imageHeight);
 
         // スロットエリア背景
         renderSlotAreas(guiGraphics, x, y);
@@ -77,28 +73,25 @@ public class RepairStationScreen extends AbstractContainerScreen<RepairStationMe
         // 矢印描画（ツール + パーツ → 修理）
         renderArrow(guiGraphics, x + 48, y + 39);
 
-        // 区切り線（スロットとインベントリの間）
-        guiGraphics.fill(x + 8, y + 70, x + this.imageWidth - 8, y + 71, 0xFF444444);
+        // 区切り線（立体的）
+        AnvilPanelRenderer.renderHorizontalSeparator(guiGraphics, x + 8, y + 70, this.imageWidth - 16);
 
-        // プレイヤーインベントリ境界線とスロット背景を描画
-        renderInventoryBackground(guiGraphics, x, y);
+        // プレイヤーインベントリ境界線とスロット背景を描画（マイクラ標準風）
+        AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 84, 142);
     }
 
     /**
-     * スロットエリアを描画
+     * スロットエリアを描画（マイクラ標準風スロット + 色付き枠で強調）
      */
     private void renderSlotAreas(GuiGraphics guiGraphics, int guiX, int guiY) {
-        // ツール入力スロット背景
-        guiGraphics.fill(guiX + TOOL_SLOT_X - 2, guiY + TOOL_SLOT_Y - 2,
-                guiX + TOOL_SLOT_X + 18, guiY + TOOL_SLOT_Y + 18, AnvilColors.FORGE_ORANGE | 0xFF000000);
-        guiGraphics.fill(guiX + TOOL_SLOT_X, guiY + TOOL_SLOT_Y,
-                guiX + TOOL_SLOT_X + 16, guiY + TOOL_SLOT_Y + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+        // ツール入力スロット背景（オレンジ枠で強調）
+        guiGraphics.fill(guiX + TOOL_SLOT_X - 3, guiY + TOOL_SLOT_Y - 3,
+                guiX + TOOL_SLOT_X + 19, guiY + TOOL_SLOT_Y + 19, AnvilColors.FORGE_ORANGE | 0xFF000000);
+        // 内側に標準スロットを描画
+        AnvilPanelRenderer.renderSlot(guiGraphics, guiX + TOOL_SLOT_X, guiY + TOOL_SLOT_Y);
 
-        // パーツ入力スロット背景
-        guiGraphics.fill(guiX + PART_SLOT_X - 1, guiY + PART_SLOT_Y - 1,
-                guiX + PART_SLOT_X + 17, guiY + PART_SLOT_Y + 17, 0xFF3A3A3A);
-        guiGraphics.fill(guiX + PART_SLOT_X, guiY + PART_SLOT_Y,
-                guiX + PART_SLOT_X + 16, guiY + PART_SLOT_Y + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+        // パーツ入力スロット背景（標準スロット）
+        AnvilPanelRenderer.renderSlot(guiGraphics, guiX + PART_SLOT_X, guiY + PART_SLOT_Y);
     }
 
     /**

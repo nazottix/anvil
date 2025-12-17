@@ -1,6 +1,7 @@
 package io.github.nazottix.anvil.client.screen;
 
 import io.github.nazottix.anvil.client.ui.AnvilColors;
+import io.github.nazottix.anvil.client.ui.AnvilPanelRenderer;
 import io.github.nazottix.anvil.menu.ModStationMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -68,13 +69,8 @@ public class ModStationScreen extends AbstractContainerScreen<ModStationMenu> {
         int x = this.leftPos;
         int y = this.topPos;
 
-        // 背景色で塗りつぶし
-        guiGraphics.fill(x, y, x + this.imageWidth, y + this.imageHeight,
-                AnvilColors.VOID_BLACK | 0xFF000000);
-
-        // パネル背景
-        guiGraphics.fill(x + 2, y + 2, x + this.imageWidth - 2, y + this.imageHeight - 2,
-                AnvilColors.ANVIL_STEEL | 0xFF000000);
+        // 立体的なメインパネルを描画（マイクラ従来の奥行きあるデザイン）
+        AnvilPanelRenderer.renderMainPanel(guiGraphics, x, y, this.imageWidth, this.imageHeight);
 
         // ツールスロット背景
         renderToolSlot(guiGraphics, x, y);
@@ -85,11 +81,11 @@ public class ModStationScreen extends AbstractContainerScreen<ModStationMenu> {
         // MODスロット背景
         renderModSlots(guiGraphics, x, y);
 
-        // 区切り線
-        guiGraphics.fill(x + 8, y + 88, x + this.imageWidth - 8, y + 89, 0xFF444444);
+        // 区切り線（立体的）
+        AnvilPanelRenderer.renderHorizontalSeparator(guiGraphics, x + 8, y + 88, this.imageWidth - 16);
 
-        // プレイヤーインベントリ境界線とスロット背景を描画
-        renderInventoryBackground(guiGraphics, x, y);
+        // プレイヤーインベントリ境界線とスロット背景を描画（マイクラ標準風）
+        AnvilPanelRenderer.renderInventorySlots(guiGraphics, x, y, 117, 175);
     }
 
     /**
@@ -126,15 +122,16 @@ public class ModStationScreen extends AbstractContainerScreen<ModStationMenu> {
     }
 
     /**
-     * ツールスロットを描画
+     * ツールスロットを描画（マイクラ標準風スロット + オレンジ枠で強調）
      */
     private void renderToolSlot(GuiGraphics guiGraphics, int guiX, int guiY) {
         int slotX = guiX + TOOL_SLOT_X;
         int slotY = guiY + TOOL_SLOT_Y;
 
-        // スロット枠（オレンジ系）
-        guiGraphics.fill(slotX - 2, slotY - 2, slotX + 18, slotY + 18, AnvilColors.FORGE_ORANGE);
-        guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+        // オレンジ枠で強調
+        guiGraphics.fill(slotX - 3, slotY - 3, slotX + 19, slotY + 19, AnvilColors.FORGE_ORANGE);
+        // 内側に標準スロットを描画
+        AnvilPanelRenderer.renderSlot(guiGraphics, slotX, slotY);
     }
 
     /**
@@ -161,7 +158,7 @@ public class ModStationScreen extends AbstractContainerScreen<ModStationMenu> {
     }
 
     /**
-     * MODスロットを描画
+     * MODスロットを描画（マイクラ標準風スロット + 極性色枠で強調）
      */
     private void renderModSlots(GuiGraphics guiGraphics, int guiX, int guiY) {
         // 極性シンボル
@@ -183,10 +180,11 @@ public class ModStationScreen extends AbstractContainerScreen<ModStationMenu> {
                 int slotX = guiX + MOD_SLOT_START_X + col * MOD_SLOT_SPACING_X;
                 int slotY = guiY + MOD_SLOT_START_Y + row * MOD_SLOT_SPACING_Y;
 
-                // スロット枠（極性色）
+                // 極性色枠で強調
                 int borderColor = polarityColors[slotIndex % polarityColors.length];
-                guiGraphics.fill(slotX - 1, slotY - 1, slotX + 17, slotY + 17, borderColor);
-                guiGraphics.fill(slotX, slotY, slotX + 16, slotY + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+                guiGraphics.fill(slotX - 2, slotY - 2, slotX + 18, slotY + 18, borderColor);
+                // 内側に標準スロットを描画
+                AnvilPanelRenderer.renderSlot(guiGraphics, slotX, slotY);
 
                 // 極性シンボル（スロットが空の場合）
                 if (this.menu.getSlot(slotIndex + 1).getItem().isEmpty()) {
