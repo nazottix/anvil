@@ -114,6 +114,21 @@ public class AnvilBlocks {
             )
     );
 
+    /**
+     * リペアステーションブロック
+     *
+     * ANVILツールの修理に使用するワークベンチです。
+     * プレイヤーはこのブロックでパーツを消費してツールを修理できます。
+     */
+    public static final DeferredBlock<RepairStationBlock> REPAIR_STATION = ANVIL.BLOCKS.register(
+            "repair_station",
+            () -> new RepairStationBlock(BlockBehaviour.Properties.of()
+                    .strength(2.5f, 2.5f)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()
+            )
+    );
+
     // ============================================
     // アイテム登録（ブロックアイテム）
     // ============================================
@@ -164,6 +179,14 @@ public class AnvilBlocks {
     public static final DeferredItem<BlockItem> MOD_STATION_ITEM = ANVIL.ITEMS.register(
             "mod_station",
             () -> new BlockItem(MOD_STATION.get(), new Item.Properties())
+    );
+
+    /**
+     * リペアステーションのブロックアイテム
+     */
+    public static final DeferredItem<BlockItem> REPAIR_STATION_ITEM = ANVIL.ITEMS.register(
+            "repair_station",
+            () -> new BlockItem(REPAIR_STATION.get(), new Item.Properties())
     );
 
     // ============================================

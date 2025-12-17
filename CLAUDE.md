@@ -99,3 +99,4 @@ See `docs/Minecraftツール作成mod 仕様書.md` for the complete design docu
 ---
 - 参考にする資料以外のことを指示がない状態で検索すること、ただし、検索の許可をする指示を得たら検索しても良いこととする。
 - logを日本語で書かずに英語で書くこと
+- Neoforgeの非推奨APIを使わないこと

@@ -1,7 +1,6 @@
 package io.github.nazottix.anvil.block.entity;
 
-import io.github.nazottix.anvil.ANVIL;
-import io.github.nazottix.anvil.menu.ToolStationMenu;
+import io.github.nazottix.anvil.menu.RepairStationMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -14,7 +13,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,61 +20,31 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * ツールステーションブロックエンティティ
+ * リペアステーションブロックエンティティ
  *
- * ツール作成用のインベントリとデータを管理します。
+ * ツール修理用のインベントリとデータを管理します。
  *
  * スロット構成:
- * - スロット0-3: パーツ入力スロット（最大4パーツ対応、弓等）
- * - スロット4: 出力スロット（完成したツール）
- * - スロット5: ツール入力スロット（修理・改造用）
+ * - スロット0: ツール入力スロット（修理対象のツール）
+ * - スロット1: パーツ入力スロット（修理用パーツ）
  *
  * 仕様書参照: docs/08_入手_リスペックシステム.md
  */
-public class ToolStationBlockEntity extends BlockEntity implements Container, MenuProvider {
+public class RepairStationBlockEntity extends BlockEntity implements Container, MenuProvider {
 
-    // インベントリサイズ（4パーツスロット対応に拡張）
-    public static final int SLOT_PART_1 = 0;       // パーツスロット1（ヘッド/ボウリム等）
-    public static final int SLOT_PART_2 = 1;       // パーツスロット2（ハンドル等）
-    public static final int SLOT_PART_3 = 2;       // パーツスロット3（バインディング/ボウリム等）
-    public static final int SLOT_PART_4 = 3;       // パーツスロット4（ボウストリング等）
-    public static final int SLOT_OUTPUT = 4;       // 出力スロット
-    public static final int INVENTORY_SIZE = 5;    // 合計5スロット（修理スロットはRepairStationに移動）
+    // インベントリサイズ
+    public static final int SLOT_TOOL_INPUT = 0;   // ツール入力スロット（修理対象）
+    public static final int SLOT_PART_INPUT = 1;   // パーツ入力スロット（修理材料）
+    public static final int INVENTORY_SIZE = 2;    // 合計2スロット
 
     // インベントリ
     private NonNullList<ItemStack> items = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);
 
-    // 選択されているツールタイプ（0-7: ピッケル、斧、シャベル、剣、クワ、弓、釣り竿、ハサミ）
-    private int selectedToolType = 0;
-
-    // コンテナデータ（GUIとの同期用）
-    private final ContainerData containerData = new ContainerData() {
-        @Override
-        public int get(int index) {
-            return switch (index) {
-                case 0 -> selectedToolType;
-                default -> 0;
-            };
-        }
-
-        @Override
-        public void set(int index, int value) {
-            switch (index) {
-                case 0 -> selectedToolType = value;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 1;
-        }
-    };
-
     /**
      * コンストラクタ
      */
-    public ToolStationBlockEntity(BlockPos pos, BlockState state) {
-        super(AnvilBlockEntities.TOOL_STATION.get(), pos, state);
+    public RepairStationBlockEntity(BlockPos pos, BlockState state) {
+        super(AnvilBlockEntities.REPAIR_STATION.get(), pos, state);
     }
 
     // ============================================
@@ -154,8 +122,6 @@ public class ToolStationBlockEntity extends BlockEntity implements Container, Me
         super.saveAdditional(tag, registries);
         // インベントリを保存
         ContainerHelper.saveAllItems(tag, items, registries);
-        // 選択されたツールタイプを保存
-        tag.putInt("SelectedToolType", selectedToolType);
     }
 
     @Override
@@ -164,8 +130,6 @@ public class ToolStationBlockEntity extends BlockEntity implements Container, Me
         // インベントリを読み込み
         items = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, items, registries);
-        // 選択されたツールタイプを読み込み
-        selectedToolType = tag.getInt("SelectedToolType");
     }
 
     // ============================================
@@ -174,13 +138,13 @@ public class ToolStationBlockEntity extends BlockEntity implements Container, Me
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.anvil.tool_station");
+        return Component.translatable("block.anvil.repair_station");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-        return new ToolStationMenu(containerId, playerInventory, this, containerData);
+        return new RepairStationMenu(containerId, playerInventory, this);
     }
 
     // ============================================
@@ -197,27 +161,5 @@ public class ToolStationBlockEntity extends BlockEntity implements Container, Me
      */
     public void dropContents(Level level, BlockPos pos) {
         Containers.dropContents(level, pos, items);
-    }
-
-    /**
-     * 選択されているツールタイプを取得
-     */
-    public int getSelectedToolType() {
-        return selectedToolType;
-    }
-
-    /**
-     * ツールタイプを設定
-     */
-    public void setSelectedToolType(int toolType) {
-        this.selectedToolType = toolType;
-        setChanged();
-    }
-
-    /**
-     * コンテナデータを取得
-     */
-    public ContainerData getContainerData() {
-        return containerData;
     }
 }

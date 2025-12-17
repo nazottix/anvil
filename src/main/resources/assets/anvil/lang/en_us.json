@@ -19,6 +19,7 @@
   "block.anvil.respec_station": "Respec Station",
   "block.anvil.core_box_station": "Core Box Station",
   "block.anvil.mod_station": "MOD Station",
+  "block.anvil.repair_station": "Repair Station",
 
   "tool.anvil.pickaxe": "Pickaxe",
   "tool.anvil.axe": "Axe",
@@ -496,6 +497,12 @@
   "gui.anvil.core_box_station.insert_tool": "Insert a tool",
   "gui.anvil.core_box_station.weight": "Weight: %d/%d",
   "gui.anvil.mod_station.capacity": "Capacity: %d/%d",
+
+  "_comment_repair_station_ui": "Repair Station UI",
+  "gui.anvil.repair_station": "Repair Station",
+  "gui.anvil.repair_station.repair": "Repair",
+  "gui.anvil.repair_station.tool": "Tool",
+  "gui.anvil.repair_station.part": "Part",
 
   "_comment_skill_tree": "=== Skill Tree System ===",
 

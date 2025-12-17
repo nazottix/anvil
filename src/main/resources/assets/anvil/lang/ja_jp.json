@@ -19,6 +19,7 @@
   "block.anvil.respec_station": "リスペックステーション",
   "block.anvil.core_box_station": "コアボックスステーション",
   "block.anvil.mod_station": "MODステーション",
+  "block.anvil.repair_station": "リペアステーション",
 
   "tool.anvil.pickaxe": "ピッケル",
   "tool.anvil.axe": "斧",
@@ -496,6 +497,12 @@
   "gui.anvil.core_box_station.insert_tool": "ツールを入れてください",
   "gui.anvil.core_box_station.weight": "重量: %d/%d",
   "gui.anvil.mod_station.capacity": "容量: %d/%d",
+
+  "_comment_repair_station_ui": "リペアステーションUI",
+  "gui.anvil.repair_station": "リペアステーション",
+  "gui.anvil.repair_station.repair": "修理",
+  "gui.anvil.repair_station.tool": "ツール",
+  "gui.anvil.repair_station.part": "パーツ",
 
   "_comment_skill_tree": "=== スキルツリーシステム ===",
 

@@ -1,5 +1,6 @@
 package io.github.nazottix.anvil.client.screen;
 
+import io.github.nazottix.anvil.client.ui.AnvilButtonRenderer;
 import io.github.nazottix.anvil.client.ui.AnvilColors;
 import io.github.nazottix.anvil.menu.JewelStationMenu;
 import io.github.nazottix.anvil.skill.jewel.JewelData;
@@ -206,31 +207,19 @@ public class JewelStationScreen extends AbstractContainerScreen<JewelStationMenu
     /**
      * 装着ボタンを描画
      * クリックするとスロット内のジュエルをツールに装着
+     * AnvilButtonRendererユーティリティを使用してテーマに統一
      */
     private void renderEquipButton(GuiGraphics guiGraphics, int guiX, int guiY, int mouseX, int mouseY) {
         int buttonX = guiX + EQUIP_BUTTON_X;
         int buttonY = guiY + EQUIP_BUTTON_Y;
 
-        // マウスホバー判定
-        boolean hovered = mouseX >= buttonX && mouseX < buttonX + EQUIP_BUTTON_WIDTH
-                && mouseY >= buttonY && mouseY < buttonY + EQUIP_BUTTON_HEIGHT;
-
-        // ボタン背景色（ホバー時は明るく）
-        int bgColor = hovered ? 0xFF6BCB77 : 0xFF4A9A5A;
-        int borderColor = hovered ? 0xFF8AE99A : 0xFF5AAF6A;
-
-        // ボタン外枠
-        guiGraphics.fill(buttonX - 1, buttonY - 1, buttonX + EQUIP_BUTTON_WIDTH + 1,
-                buttonY + EQUIP_BUTTON_HEIGHT + 1, borderColor);
-        // ボタン背景
-        guiGraphics.fill(buttonX, buttonY, buttonX + EQUIP_BUTTON_WIDTH,
-                buttonY + EQUIP_BUTTON_HEIGHT, bgColor);
-
-        // 「+」記号を描画（装着を示す）
-        guiGraphics.drawString(this.font, "+", buttonX + 5, buttonY + 4, 0xFFFFFF, false);
+        // AnvilButtonRendererを使用してボタンを描画
+        boolean isHovered = AnvilButtonRenderer.isMouseOverButton(mouseX, mouseY, buttonX, buttonY, EQUIP_BUTTON_WIDTH, EQUIP_BUTTON_HEIGHT);
+        Component equipText = Component.literal("+");
+        AnvilButtonRenderer.renderButton(guiGraphics, this.font, buttonX, buttonY, EQUIP_BUTTON_WIDTH, EQUIP_BUTTON_HEIGHT, equipText, isHovered, true);
 
         // ツールチップ表示
-        if (hovered) {
+        if (isHovered) {
             guiGraphics.renderTooltip(this.font,
                     Component.translatable("gui.anvil.jewel_station.equip_button"),
                     mouseX, mouseY);
@@ -294,16 +283,13 @@ public class JewelStationScreen extends AbstractContainerScreen<JewelStationMenu
             int buttonX = this.leftPos + EQUIP_BUTTON_X;
             int buttonY = this.topPos + EQUIP_BUTTON_Y;
 
-            // 装着ボタンがクリックされたか
-            if (mouseX >= buttonX && mouseX < buttonX + EQUIP_BUTTON_WIDTH
-                    && mouseY >= buttonY && mouseY < buttonY + EQUIP_BUTTON_HEIGHT) {
+            // 装着ボタンがクリックされたか（AnvilButtonRendererを使用）
+            if (AnvilButtonRenderer.isMouseOverButton((int) mouseX, (int) mouseY, buttonX, buttonY, EQUIP_BUTTON_WIDTH, EQUIP_BUTTON_HEIGHT)) {
                 // 全てのジュエルスロットからツールに装着
                 int equipped = this.menu.equipAllJewels();
                 if (equipped > 0) {
-                    // 効果音（成功）
-                    this.minecraft.player.playSound(
-                            net.minecraft.sounds.SoundEvents.EXPERIENCE_ORB_PICKUP,
-                            0.5f, 1.0f);
+                    // AnvilButtonRendererを使用して装備音を再生（鍛冶テーマに統一）
+                    AnvilButtonRenderer.playButtonSound(AnvilButtonRenderer.ButtonSound.EQUIP);
                 }
                 return true;
             }

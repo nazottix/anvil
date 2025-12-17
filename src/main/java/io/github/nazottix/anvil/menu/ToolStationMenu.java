@@ -90,8 +90,7 @@ public class ToolStationMenu extends AbstractContainerMenu {
         // 出力スロット - 位置 (124, 78)
         this.addSlot(new OutputSlot(container, ToolStationBlockEntity.SLOT_OUTPUT, 124, 78));
 
-        // ツール入力スロット（修理用） - 位置 (21, 96)
-        this.addSlot(new ToolInputSlot(container, ToolStationBlockEntity.SLOT_TOOL_INPUT, 21, 96));
+        // 修理スロットはRepairStationに移動
 
         // プレイヤーインベントリ（3行9列）- y=151から（14ピクセル下にずらした）
         for (int row = 0; row < 3; row++) {
@@ -402,23 +401,5 @@ public class ToolStationMenu extends AbstractContainerMenu {
         }
     }
 
-    /**
-     * ツール入力スロット（修理用）
-     */
-    private static class ToolInputSlot extends Slot {
-        public ToolInputSlot(Container container, int index, int x, int y) {
-            super(container, index, x, y);
-        }
-
-        @Override
-        public boolean mayPlace(ItemStack stack) {
-            // ANVILツールのみ受け入れる
-            return stack.has(AnvilDataComponents.TOOL_DATA.get());
-        }
-
-        @Override
-        public int getMaxStackSize() {
-            return 1;
-        }
-    }
+    // ToolInputSlotはRepairStationMenuに移動
 }

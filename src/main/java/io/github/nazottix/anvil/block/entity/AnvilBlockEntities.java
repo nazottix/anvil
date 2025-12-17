@@ -89,6 +89,17 @@ public class AnvilBlockEntities {
                     ).build(null)
             );
 
+    /**
+     * リペアステーションブロックエンティティタイプ
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RepairStationBlockEntity>> REPAIR_STATION =
+            BLOCK_ENTITIES.register("repair_station",
+                    () -> BlockEntityType.Builder.of(
+                            RepairStationBlockEntity::new,
+                            AnvilBlocks.REPAIR_STATION.get()
+                    ).build(null)
+            );
+
     // ============================================
     // 登録
     // ============================================

@@ -1,6 +1,7 @@
 package io.github.nazottix.anvil.client.screen;
 
 import io.github.nazottix.anvil.ANVIL;
+import io.github.nazottix.anvil.client.ui.AnvilButtonRenderer;
 import io.github.nazottix.anvil.client.ui.AnvilColors;
 import io.github.nazottix.anvil.menu.ToolStationMenu;
 import io.github.nazottix.anvil.tool.ToolType;
@@ -43,9 +44,7 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
     private static final int OUTPUT_SLOT_X = 124;
     private static final int OUTPUT_SLOT_Y = 78;
 
-    // ツール入力スロット位置（Menuと同期）
-    private static final int TOOL_INPUT_X = 21;
-    private static final int TOOL_INPUT_Y = 96;
+    // ツール入力スロットはRepairStationScreenに移動
 
     // ホバー中のツールタイプ
     private ToolType hoveredToolType = null;
@@ -183,13 +182,12 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
             guiGraphics.drawString(this.font, label, PART_SLOT_X + i * PART_SLOT_SPACING + 4, PART_SLOT_Y - 9, 0x888888, false);
         }
 
-        // ツールスロットラベル（ローカライズ対応）
-        Component repairLabel = Component.translatable("gui.anvil.tool_station.repair");
-        guiGraphics.drawString(this.font, repairLabel, TOOL_INPUT_X + 18, TOOL_INPUT_Y + 4, 0x888888, false);
+        // 修理ラベルはRepairStationScreenに移動
     }
 
     /**
      * ツールタイプ選択ボタンを描画
+     * AnvilButtonRendererユーティリティを使用してテーマに統一
      */
     private void renderToolTypeButtons(GuiGraphics guiGraphics, int guiX, int guiY, int mouseX, int mouseY) {
         ToolType[] types = ToolType.values();
@@ -204,25 +202,16 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
 
             ToolType type = types[i];
             boolean isSelected = type == selectedType;
-            boolean isHovered = isMouseOver(mouseX, mouseY, btnX, btnY, TOOL_BUTTON_SIZE, TOOL_BUTTON_SIZE);
+            boolean isHovered = AnvilButtonRenderer.isMouseOverButton(mouseX, mouseY, btnX, btnY, TOOL_BUTTON_SIZE, TOOL_BUTTON_SIZE);
 
             if (isHovered) {
                 hoveredToolType = type;
             }
 
-            // ボタン背景
-            int bgColor = isSelected ? (getToolTypeColor(type) | 0xFF000000) :
-                    isHovered ? 0xFF444444 : AnvilColors.VOID_BLACK | 0xFF000000;
-            guiGraphics.fill(btnX, btnY, btnX + TOOL_BUTTON_SIZE, btnY + TOOL_BUTTON_SIZE, bgColor);
-
-            // 枠
-            int borderColor = isSelected ? 0xFFFFFFFF : 0xFF666666;
-            guiGraphics.renderOutline(btnX, btnY, TOOL_BUTTON_SIZE, TOOL_BUTTON_SIZE, borderColor);
-
-            // アイコン（シンボル）
+            // AnvilButtonRendererを使用してアイコンボタンを描画
             String symbol = getToolTypeSymbol(type);
-            int symbolColor = isSelected ? 0xFFFFFF : getToolTypeColor(type);
-            guiGraphics.drawCenteredString(this.font, symbol, btnX + TOOL_BUTTON_SIZE / 2, btnY + 6, symbolColor);
+            int symbolColor = getToolTypeColor(type);
+            AnvilButtonRenderer.renderIconButton(guiGraphics, this.font, btnX, btnY, TOOL_BUTTON_SIZE, symbol, symbolColor, isSelected, isHovered);
         }
     }
 
@@ -244,39 +233,21 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
         guiGraphics.fill(guiX + OUTPUT_SLOT_X, guiY + OUTPUT_SLOT_Y,
                 guiX + OUTPUT_SLOT_X + 16, guiY + OUTPUT_SLOT_Y + 16, AnvilColors.VOID_BLACK | 0xFF000000);
 
-        // ツール入力スロット背景
-        guiGraphics.fill(guiX + TOOL_INPUT_X - 1, guiY + TOOL_INPUT_Y - 1,
-                guiX + TOOL_INPUT_X + 17, guiY + TOOL_INPUT_Y + 17, 0xFF3A5A5A);
-        guiGraphics.fill(guiX + TOOL_INPUT_X, guiY + TOOL_INPUT_Y,
-                guiX + TOOL_INPUT_X + 16, guiY + TOOL_INPUT_Y + 16, AnvilColors.VOID_BLACK | 0xFF000000);
+        // ツール入力スロットはRepairStationに移動
     }
 
     /**
      * Craftボタンを描画
+     * AnvilButtonRendererユーティリティを使用してテーマに統一
      */
     private void renderCraftButton(GuiGraphics guiGraphics, int guiX, int guiY, int mouseX, int mouseY) {
         int btnX = guiX + CRAFT_BUTTON_X;
         int btnY = guiY + CRAFT_BUTTON_Y;
 
-        boolean isHovered = isMouseOver(mouseX, mouseY, btnX, btnY, CRAFT_BUTTON_WIDTH, CRAFT_BUTTON_HEIGHT);
-
-        // ボタン背景（周りのUIに合わせたスタイル）
-        int bgColor = isHovered ? (AnvilColors.FORGE_ORANGE | 0xFF000000) : (AnvilColors.VOID_BLACK | 0xFF000000);
-        int borderColor = isHovered ? 0xFFFFFFFF : AnvilColors.FORGE_ORANGE;
-
-        // 枠を描画
-        guiGraphics.fill(btnX - 1, btnY - 1, btnX + CRAFT_BUTTON_WIDTH + 1, btnY + CRAFT_BUTTON_HEIGHT + 1, borderColor);
-        // 背景を描画
-        guiGraphics.fill(btnX, btnY, btnX + CRAFT_BUTTON_WIDTH, btnY + CRAFT_BUTTON_HEIGHT, bgColor);
-
-        // テキストを描画
+        // AnvilButtonRendererを使用してボタンを描画
+        boolean isHovered = AnvilButtonRenderer.isMouseOverButton(mouseX, mouseY, btnX, btnY, CRAFT_BUTTON_WIDTH, CRAFT_BUTTON_HEIGHT);
         Component craftText = Component.translatable("gui.anvil.craft");
-        int textColor = isHovered ? 0xFFFFFF : AnvilColors.FORGE_ORANGE;
-        int textWidth = this.font.width(craftText);
-        guiGraphics.drawString(this.font, craftText,
-                btnX + (CRAFT_BUTTON_WIDTH - textWidth) / 2,
-                btnY + (CRAFT_BUTTON_HEIGHT - 8) / 2,
-                textColor, false);
+        AnvilButtonRenderer.renderButton(guiGraphics, this.font, btnX, btnY, CRAFT_BUTTON_WIDTH, CRAFT_BUTTON_HEIGHT, craftText, isHovered, true);
     }
 
     /**
@@ -329,13 +300,13 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
             // Craftボタンのクリック判定
             int craftBtnX = guiX + CRAFT_BUTTON_X;
             int craftBtnY = guiY + CRAFT_BUTTON_Y;
-            if (isMouseOver((int) mouseX, (int) mouseY, craftBtnX, craftBtnY, CRAFT_BUTTON_WIDTH, CRAFT_BUTTON_HEIGHT)) {
+            if (AnvilButtonRenderer.isMouseOverButton((int) mouseX, (int) mouseY, craftBtnX, craftBtnY, CRAFT_BUTTON_WIDTH, CRAFT_BUTTON_HEIGHT)) {
                 // サーバーにボタンクリックを送信（ボタンID 0 = クラフト）
                 if (mc.gameMode != null) {
                     mc.gameMode.handleInventoryButtonClick(this.menu.containerId, 0);
                 }
-                // クラフト音を再生
-                mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.ANVIL_USE, 1.0F, 0.5F));
+                // AnvilButtonRendererを使用してクラフト音を再生
+                AnvilButtonRenderer.playButtonSound(AnvilButtonRenderer.ButtonSound.ACTION);
                 ANVIL.LOGGER.info("ツール作成を実行");
                 return true;
             }
@@ -348,10 +319,10 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
                 int btnX = guiX + TOOL_BUTTONS_X + col * (TOOL_BUTTON_SIZE + TOOL_BUTTON_SPACING);
                 int btnY = guiY + TOOL_BUTTONS_Y + row * (TOOL_BUTTON_SIZE + TOOL_BUTTON_SPACING);
 
-                if (isMouseOver((int) mouseX, (int) mouseY, btnX, btnY, TOOL_BUTTON_SIZE, TOOL_BUTTON_SIZE)) {
+                if (AnvilButtonRenderer.isMouseOverButton((int) mouseX, (int) mouseY, btnX, btnY, TOOL_BUTTON_SIZE, TOOL_BUTTON_SIZE)) {
                     this.menu.setSelectedToolType(i);
-                    // ツールタイプ選択音を再生
-                    mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK.value(), 1.0F));
+                    // AnvilButtonRendererを使用して選択音を再生
+                    AnvilButtonRenderer.playButtonSound(AnvilButtonRenderer.ButtonSound.SELECT);
                     ANVIL.LOGGER.info("ツールタイプを選択: {}", types[i].getId());
                     return true;
                 }

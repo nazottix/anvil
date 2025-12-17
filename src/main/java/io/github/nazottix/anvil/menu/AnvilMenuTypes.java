@@ -123,6 +123,17 @@ public class AnvilMenuTypes {
                     () -> IMenuTypeExtension.create(ModStationMenu::new)
             );
 
+    /**
+     * リペアステーションメニュータイプ
+     *
+     * リペアステーションブロックのメニュータイプです。
+     * ツールの修理を行います。
+     */
+    public static final DeferredHolder<MenuType<?>, MenuType<RepairStationMenu>> REPAIR_STATION =
+            MENU_TYPES.register("repair_station",
+                    () -> IMenuTypeExtension.create(RepairStationMenu::new)
+            );
+
     // ============================================
     // 登録
     // ============================================
