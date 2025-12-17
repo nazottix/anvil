@@ -166,13 +166,7 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
             guiGraphics.drawString(this.font, typeName, 100, 6, color, false);
         }
 
-        // パーツスロットラベル（選択中のツールタイプに応じて表示）
-        ToolType selectedTool = this.menu.getSelectedToolType();
-        String[] slotLabels = getPartSlotLabels(selectedTool);
-        for (int i = 0; i < PART_SLOT_COUNT; i++) {
-            String label = i < slotLabels.length ? slotLabels[i] : "";
-            guiGraphics.drawString(this.font, label, PART_SLOT_X + i * PART_SLOT_SPACING + 4, PART_SLOT_Y - 9, 0x888888, false);
-        }
+        // パーツスロットラベルはrenderBgでアイコンとして描画（renderLabelsでは描画しない）
 
         // 修理ラベルはRepairStationScreenに移動
     }
@@ -211,11 +205,21 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
      * スロットエリアを描画（マイクラ標準風の立体的スロット）
      */
     private void renderSlotAreas(GuiGraphics guiGraphics, int guiX, int guiY) {
+        // 選択中のツールタイプを取得
+        ToolType selectedTool = this.menu.getSelectedToolType();
+        java.util.List<io.github.nazottix.anvil.tool.PartType> requiredParts =
+                selectedTool != null ? selectedTool.getRequiredParts() : java.util.Collections.emptyList();
+
         // パーツスロット背景（4スロット対応）- マイクラ標準風スロット
         for (int i = 0; i < PART_SLOT_COUNT; i++) {
             int slotX = guiX + PART_SLOT_X + i * PART_SLOT_SPACING;
             int slotY = guiY + PART_SLOT_Y;
             AnvilPanelRenderer.renderSlot(guiGraphics, slotX, slotY);
+
+            // スロットが空で、必要なパーツタイプがある場合はアイコンを描画
+            if (this.menu.getSlot(i).getItem().isEmpty() && i < requiredParts.size()) {
+                renderPartTypeIcon(guiGraphics, slotX, slotY, requiredParts.get(i));
+            }
         }
 
         // 出力スロット背景（やや大きめ、オレンジ枠で強調）
@@ -226,6 +230,95 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
         AnvilPanelRenderer.renderSlot(guiGraphics, guiX + OUTPUT_SLOT_X, guiY + OUTPUT_SLOT_Y);
 
         // ツール入力スロットはRepairStationに移動
+    }
+
+    /**
+     * パーツタイプに応じたアイコンを描画（スロット内に表示）
+     * スロットが空の場合に、どのパーツを入れるべきかを示す
+     */
+    private void renderPartTypeIcon(GuiGraphics guiGraphics, int slotX, int slotY, io.github.nazottix.anvil.tool.PartType partType) {
+        // アイコン描画色（半透明グレー）
+        int iconColor = 0x55FFFFFF;
+        // スロット中央座標
+        int centerX = slotX + 8;
+        int centerY = slotY + 8;
+
+        switch (partType) {
+            case HEAD -> {
+                // ヘッド: 上向き三角形（ツールの先端を表現）
+                guiGraphics.fill(centerX - 1, centerY - 5, centerX + 2, centerY - 4, iconColor);
+                guiGraphics.fill(centerX - 2, centerY - 4, centerX + 3, centerY - 3, iconColor);
+                guiGraphics.fill(centerX - 3, centerY - 3, centerX + 4, centerY - 2, iconColor);
+                guiGraphics.fill(centerX - 4, centerY - 2, centerX + 5, centerY + 1, iconColor);
+                guiGraphics.fill(centerX - 2, centerY + 1, centerX + 3, centerY + 5, iconColor);
+            }
+            case HANDLE -> {
+                // ハンドル: 縦棒（持ち手を表現）
+                guiGraphics.fill(centerX - 1, centerY - 5, centerX + 2, centerY + 5, iconColor);
+                // 握り部分のアクセント
+                guiGraphics.fill(centerX - 2, centerY - 2, centerX + 3, centerY + 2, iconColor);
+            }
+            case BINDING -> {
+                // バインディング: 円形（結合部を表現）
+                guiGraphics.fill(centerX - 2, centerY - 4, centerX + 3, centerY - 3, iconColor);
+                guiGraphics.fill(centerX - 4, centerY - 3, centerX - 2, centerY + 3, iconColor);
+                guiGraphics.fill(centerX + 2, centerY - 3, centerX + 4, centerY + 3, iconColor);
+                guiGraphics.fill(centerX - 2, centerY + 3, centerX + 3, centerY + 4, iconColor);
+            }
+            case BLADE -> {
+                // ブレード: 細長い剣の形
+                guiGraphics.fill(centerX - 1, centerY - 6, centerX + 2, centerY + 3, iconColor);
+                guiGraphics.fill(centerX, centerY - 7, centerX + 1, centerY - 6, iconColor);
+                guiGraphics.fill(centerX - 2, centerY + 3, centerX + 3, centerY + 5, iconColor);
+            }
+            case GUARD -> {
+                // ガード: 横棒（鍔を表現）
+                guiGraphics.fill(centerX - 5, centerY - 1, centerX + 6, centerY + 2, iconColor);
+                guiGraphics.fill(centerX - 1, centerY - 3, centerX + 2, centerY + 4, iconColor);
+            }
+            case BOW_LIMB -> {
+                // ボウリム: 弓の曲線部分
+                guiGraphics.fill(centerX - 4, centerY - 5, centerX - 3, centerY + 5, iconColor);
+                guiGraphics.fill(centerX - 3, centerY - 6, centerX - 2, centerY - 5, iconColor);
+                guiGraphics.fill(centerX - 3, centerY + 5, centerX - 2, centerY + 6, iconColor);
+                guiGraphics.fill(centerX - 2, centerY - 7, centerX, centerY - 6, iconColor);
+                guiGraphics.fill(centerX - 2, centerY + 6, centerX, centerY + 7, iconColor);
+            }
+            case BOWSTRING -> {
+                // ボウストリング: 縦線（弦を表現）
+                guiGraphics.fill(centerX, centerY - 6, centerX + 1, centerY + 6, iconColor);
+            }
+            case ROD -> {
+                // ロッド: 斜めの棒（釣り竿を表現）
+                guiGraphics.fill(centerX - 4, centerY + 4, centerX + 5, centerY + 5, iconColor);
+                guiGraphics.fill(centerX + 3, centerY - 4, centerX + 5, centerY + 5, iconColor);
+            }
+            case HOOK -> {
+                // フック: Jの字型（釣り針を表現）
+                guiGraphics.fill(centerX, centerY - 4, centerX + 1, centerY + 2, iconColor);
+                guiGraphics.fill(centerX - 3, centerY + 2, centerX + 1, centerY + 3, iconColor);
+                guiGraphics.fill(centerX - 4, centerY, centerX - 3, centerY + 3, iconColor);
+                guiGraphics.fill(centerX - 3, centerY - 1, centerX - 2, centerY + 1, iconColor);
+            }
+            case LINE -> {
+                // ライン: 縦の波線（釣り糸を表現）
+                guiGraphics.fill(centerX - 1, centerY - 6, centerX, centerY - 4, iconColor);
+                guiGraphics.fill(centerX, centerY - 4, centerX + 1, centerY - 2, iconColor);
+                guiGraphics.fill(centerX - 1, centerY - 2, centerX, centerY, iconColor);
+                guiGraphics.fill(centerX, centerY, centerX + 1, centerY + 2, iconColor);
+                guiGraphics.fill(centerX - 1, centerY + 2, centerX, centerY + 4, iconColor);
+                guiGraphics.fill(centerX, centerY + 4, centerX + 1, centerY + 6, iconColor);
+            }
+            case PIVOT -> {
+                // ピボット: 中央の丸（ハサミの軸を表現）
+                guiGraphics.fill(centerX - 2, centerY - 1, centerX + 3, centerY + 2, iconColor);
+                guiGraphics.fill(centerX - 1, centerY - 2, centerX + 2, centerY + 3, iconColor);
+            }
+            default -> {
+                // デフォルト: 小さな四角
+                guiGraphics.fill(centerX - 3, centerY - 3, centerX + 4, centerY + 4, iconColor);
+            }
+        }
     }
 
     /**
@@ -348,23 +441,6 @@ public class ToolStationScreen extends AbstractContainerScreen<ToolStationMenu> 
      */
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
         return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
-    }
-
-    /**
-     * ツールタイプに応じたパーツスロットラベルを取得
-     */
-    private String[] getPartSlotLabels(ToolType type) {
-        if (type == null) {
-            return new String[]{"1", "2", "3", "4"};
-        }
-        return switch (type) {
-            case PICKAXE, AXE -> new String[]{"H", "G", "B", ""};     // ヘッド、ハンドル、バインディング
-            case SHOVEL, HOE -> new String[]{"H", "G", "", ""};       // ヘッド、ハンドル
-            case SWORD -> new String[]{"B", "G", "D", ""};            // ブレード、ハンドル、ガード
-            case BOW -> new String[]{"L", "G", "L", "S"};             // ボウリム、ハンドル、ボウリム、ストリング
-            case FISHING_ROD -> new String[]{"R", "H", "L", ""};      // ロッド、フック、ライン
-            case SHEARS -> new String[]{"B", "B", "P", ""};           // ブレード×2、ピボット
-        };
     }
 
     /**
