@@ -31,8 +31,10 @@ Optimize placement with Tetris-like puzzle elements.
 ## Getting Started
 
 1. [Getting Started Guide](getting-started.md) - Learn the basics of ANVIL
-2. [Part Forge](stations/part-forge.md) - How to create parts
-3. [Tool Station](stations/tool-station.md) - Assembling tools
-4. [Materials System](systems/materials.md) - About materials and grades
-5. [Skill Tree](systems/skill-tree.md) - Learning skills
-6. [Module System](systems/modules.md) - Grid module placement
+2. [Stations](stations/index.md) - Crafting stations overview
+   - [Part Forge](stations/part-forge.md) - How to create parts
+   - [Tool Station](stations/tool-station.md) - Assembling tools
+3. [Systems](systems/index.md) - Game systems overview
+   - [Materials System](systems/materials.md) - About materials and grades
+   - [Skill Tree](systems/skill-tree.md) - Learning skills
+   - [Module System](systems/modules.md) - Grid module placement

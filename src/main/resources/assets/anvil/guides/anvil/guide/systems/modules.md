@@ -2,8 +2,8 @@
 navigation:
   title: Module System
   icon: anvil:core_box_station
-  parent: ../index.md
-  position: 5
+  parent: index.md
+  position: 3
 item_ids:
   - anvil:core_box_station
 ---

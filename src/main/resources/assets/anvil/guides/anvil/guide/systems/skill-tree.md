@@ -2,8 +2,8 @@
 navigation:
   title: Skill Tree
   icon: anvil:skill_tree_station
-  parent: ../index.md
-  position: 4
+  parent: index.md
+  position: 2
 item_ids:
   - anvil:skill_tree_station
 ---

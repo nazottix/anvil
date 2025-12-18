@@ -2,7 +2,7 @@
 navigation:
   title: Tool Station
   icon: anvil:tool_station
-  parent: ../index.md
+  parent: index.md
   position: 2
 item_ids:
   - anvil:tool_station

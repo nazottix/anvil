@@ -2,7 +2,7 @@
 navigation:
   title: Part Forge
   icon: anvil:part_forge
-  parent: ../index.md
+  parent: index.md
   position: 1
 item_ids:
   - anvil:part_forge

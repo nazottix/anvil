@@ -2,8 +2,8 @@
 navigation:
   title: Materials
   icon: minecraft:iron_ingot
-  parent: ../index.md
-  position: 3
+  parent: index.md
+  position: 1
 ---
 
 # Materials System
