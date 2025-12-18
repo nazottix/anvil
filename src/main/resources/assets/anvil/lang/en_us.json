@@ -233,6 +233,8 @@
   "trait.anvil.shearing.desc": "Increased shearing efficiency and drops",
   "trait.anvil.self_repair": "Self Repair",
   "trait.anvil.self_repair.desc": "Slowly repair durability over time",
+  "trait.anvil.take_root": "Take Root",
+  "trait.anvil.take_root.desc": "Recover 1 durability every [60/level] seconds",
   "trait.anvil.aquadynamic": "Aquadynamic",
   "trait.anvil.aquadynamic.desc": "Increased speed in water",
   "trait.anvil.nether_affinity": "Nether Affinity",

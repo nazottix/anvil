@@ -232,6 +232,8 @@
   "trait.anvil.shearing.desc": "刈り取り効率と追加ドロップ",
   "trait.anvil.self_repair": "修復",
   "trait.anvil.self_repair.desc": "時間経過で耐久値を回復",
+  "trait.anvil.take_root": "根を張る",
+  "trait.anvil.take_root.desc": "[60/レベル]秒毎に耐久値を1回復",
   "trait.anvil.aquadynamic": "水力学",
   "trait.anvil.aquadynamic.desc": "水中での速度が上昇",
   "trait.anvil.nether_affinity": "ネザー適応",

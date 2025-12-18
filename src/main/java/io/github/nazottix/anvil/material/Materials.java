@@ -53,6 +53,7 @@ public final class Materials {
             .hookStats(1.0f, 0.0f)
             .headTraits(TraitEntry.of("anvil:ecological", 1))
             .handleTraits(TraitEntry.of("anvil:lightweight", 1))
+            .extraTraits(TraitEntry.of("anvil:take_root", 1))  // 根を張る: 60秒毎に1耐久回復
             .repairItem(Items.OAK_PLANKS)  // 代表アイテム、実際は全木材の板材対応（タグで処理）
             .colors(0xC4A05A, 0xA68B4B)
             .rarityWeight(1.0)

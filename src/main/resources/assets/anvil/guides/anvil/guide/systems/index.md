@@ -16,6 +16,10 @@ ANVIL features several interconnected systems for deep tool customization.
 Learn about different materials and their properties.
 Each material has unique stats and traits that affect your tools.
 
+### [Traits System](traits.md)
+Discover the special abilities that materials provide to tools.
+From combat enhancements to utility effects, traits define your tool's capabilities.
+
 ### [Skill Tree](skill-tree.md)
 A deep build customization system inspired by Path of Exile.
 Level up your tools and spend skill points to unlock powerful abilities.
@@ -29,6 +33,7 @@ Optimize your module placement to maximize bonuses within weight limits.
 | System | Description |
 |--------|-------------|
 | Materials | Different tiers and grades of crafting materials |
+| Traits | Special abilities provided by materials |
 | Grades | D to S ranking affecting stat multipliers |
 | Leveling | Tools gain experience and level up to 10,000 |
 | Skill Tree | Spend skill points on nodes for bonuses |

@@ -120,7 +120,13 @@ Some materials have unique traits.
 | Diamond | Sturdy | Reduced durability consumption |
 | Netherite | Immortal | Lava resistance |
 
+### Wood-Exclusive Trait: Take Root
+
+Wood materials have the **Take Root** trait, which passively regenerates
+1 durability every 60 seconds. See [Traits System](traits.md) for details.
+
 ## Related Topics
 
+- [Traits System](traits.md)
 - [Part Forge](../stations/part-forge.md)
 - [Tool Station](../stations/tool-station.md)

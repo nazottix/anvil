@@ -421,6 +421,21 @@ public final class Traits {
             .rarity(4)
             .build();
 
+    /**
+     * 根を張る - 木材素材の固有特性。時間経過で耐久回復
+     * レベルスケーリング: 1耐久/(60/Lv)秒
+     * Lv1: 60秒毎、Lv2: 30秒毎、Lv3: 20秒毎、Lv4: 15秒毎、Lv5: 12秒毎
+     */
+    public static final Trait TAKE_ROOT = Trait.builder(loc("take_root"))
+            .category(TraitCategory.UTILITY)
+            .trigger(TraitTrigger.ALWAYS)
+            .maxLevel(5)
+            .effectPerLevel(1.0f)  // 回復間隔 = 60/Lv 秒
+            .effectUnit("秒間隔")
+            .color(0x8B4513)  // 茶色（木の色）
+            .rarity(1)  // 木材の基本特性なので低レアリティ
+            .build();
+
     // ============================================
     // 環境適応特性（3種）
     // ============================================
@@ -512,7 +527,7 @@ public final class Traits {
         registry.register(LIGHTWEIGHT);
         registry.register(THORNS);
 
-        // ユーティリティ（8種）
+        // ユーティリティ（9種）
         registry.register(ECOLOGICAL);
         registry.register(WRITABLE);
         registry.register(MENDING);
@@ -521,6 +536,7 @@ public final class Traits {
         registry.register(ANGLER);
         registry.register(SHEARING);
         registry.register(SELF_REPAIR);
+        registry.register(TAKE_ROOT);
 
         // 環境適応（3種）
         registry.register(AQUADYNAMIC);
