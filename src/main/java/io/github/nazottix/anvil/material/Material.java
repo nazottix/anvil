@@ -18,7 +18,7 @@ import java.util.Set;
  */
 public class Material {
 
-    // 素材ID（例: "anvil:manyullyn"）
+    // 素材ID（例: "anvil:diamond"）
     private final ResourceLocation id;
 
     // 表示名（ローカライズキー）

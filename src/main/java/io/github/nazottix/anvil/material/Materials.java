@@ -8,19 +8,19 @@ import io.github.nazottix.anvil.material.Material.MaterialCategory;
 import static io.github.nazottix.anvil.material.Material.TraitEntry;
 
 /**
- * 初期素材定義
+ * 素材定義
  *
- * Phase 1で実装する初期30種の素材を定義します。
- * 各素材はバニラMinecraftのアイテムまたはANVIL独自の素材です。
+ * バニラMinecraftのアイテムを使用した素材を定義します。
  *
  * 素材構成:
- * - ティア0（木材）: 3種
- * - ティア1（石）: 4種
- * - ティア2（鉄）: 6種
- * - ティア3（ダイヤモンド）: 5種
- * - ティア4（ネザライト）: 5種
- * - ティア5（伝説）: 4種
- * - ティア6（神話）: 3種
+ * - ティア0（木材）: 3種（オーク、竹、ダークオーク）
+ * - ティア1（石）: 4種（石、フリント、黒曜石、深層岩）
+ * - ティア2（鉄）: 5種（鉄、銅、金、鎖、レッドストーン）
+ * - ティア3（ダイヤモンド）: 5種（ダイヤモンド、エメラルド、ラピス、アメジスト、プリズマリン）
+ * - ティア4（ネザライト）: 4種（ネザライト、ブレイズ、エンドストーン、シュルカー）
+ * - 繊維: 1種（糸）
+ *
+ * 合計: 22種
  *
  * 仕様書参照: docs/01_パーツ_素材システム.md - 3.4 マテリアル（素材）システム
  */
@@ -160,7 +160,7 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア2: 鉄（6種）
+    // ティア2: 鉄（5種）
     // ============================================
 
     /** 鉄 - バランスの取れた金属 */
@@ -210,25 +210,6 @@ public final class Materials {
             .handleTraits(TraitEntry.of("anvil:lucky", 1))
             .repairItem(Items.GOLD_INGOT)
             .colors(0xFCEE4B, 0xDEAA1F)
-            .rarityWeight(0.7)
-            .build();
-
-    /** 青銅（ANVIL独自合金） - 銅の改良版 */
-    public static final Material BRONZE = Material.builder(loc("bronze"))
-            .tier(MaterialTier.IRON)
-            .categories(MaterialCategory.METAL, MaterialCategory.ALLOY)
-            .headStats(280, 5.8f, 2, 2.2f)
-            .handleStats(1.1f, 0.0f)
-            .bindingStats(1.1f)
-            .bowLimbStats(1.0f, 1.05f)
-            .bowstringStats(0.85f, 0.9f)
-            .hookStats(1.05f, 0.04f)
-            .headTraits(
-                    TraitEntry.of("anvil:reinforced", 1),
-                    TraitEntry.of("anvil:shocking", 1)
-            )
-            .repairItem(Items.COPPER_INGOT)  // 暫定（将来的にはブロンズインゴット）
-            .colors(0xCD7F32, 0xA5682A)
             .rarityWeight(0.7)
             .build();
 
@@ -357,7 +338,7 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア4: ネザライト（5種）
+    // ティア4: ネザライト（4種）
     // ============================================
 
     /** ネザライト - 最強のバニラ素材 */
@@ -397,25 +378,6 @@ public final class Materials {
             .rarityWeight(0.25)
             .build();
 
-    /** ウィザーボーン（ANVIL独自） - アンデッド特効 */
-    public static final Material WITHER_BONE = Material.builder(loc("wither_bone"))
-            .tier(MaterialTier.NETHERITE)
-            .categories(MaterialCategory.ORGANIC, MaterialCategory.NETHER, MaterialCategory.MAGICAL)
-            .headStats(1800, 8.0f, 4, 4.5f)
-            .handleStats(1.0f, 0.0f)
-            .bindingStats(1.2f)
-            .bowLimbStats(1.0f, 1.2f)
-            .bowstringStats(0.9f, 0.9f)
-            .hookStats(0.7f, 0.08f)
-            .headTraits(
-                    TraitEntry.of("anvil:holy", 2),
-                    TraitEntry.of("anvil:lifesteal", 1)
-            )
-            .repairItem(Items.WITHER_SKELETON_SKULL)  // 暫定
-            .colors(0x2A2A2A, 0x1A1A1A)
-            .rarityWeight(0.12)
-            .build();
-
     /** エンドストーン - エンド素材 */
     public static final Material END_STONE = Material.builder(loc("end_stone"))
             .tier(MaterialTier.NETHERITE)
@@ -448,169 +410,6 @@ public final class Materials {
             .repairItem(Items.SHULKER_SHELL)
             .colors(0x946B94, 0x7A577A)
             .rarityWeight(0.18)
-            .build();
-
-    // ============================================
-    // ティア5: 伝説（4種）- ANVIL独自素材
-    // ============================================
-
-    /** コバルト - 高速採掘 */
-    public static final Material COBALT = Material.builder(loc("cobalt"))
-            .tier(MaterialTier.LEGENDARY)
-            .categories(MaterialCategory.METAL, MaterialCategory.MAGICAL)
-            .headStats(2200, 11.0f, 5, 3.8f)
-            .handleStats(1.1f, 0.1f)
-            .bindingStats(1.2f)
-            .bowLimbStats(1.3f, 1.2f)
-            .bowstringStats(1.2f, 0.95f)
-            .hookStats(1.3f, 0.2f)
-            .headTraits(
-                    TraitEntry.of("anvil:momentum", 2),
-                    TraitEntry.of("anvil:lightweight", 1)
-            )
-            .handleTraits(TraitEntry.of("anvil:momentum", 1))
-            .repairItem(Items.DIAMOND)  // 暫定（将来的にはコバルトインゴット）
-            .colors(0x2376DD, 0x1A5AB0)
-            .rarityWeight(0.05)
-            .build();
-
-    /** マニュリン - 攻撃特化合金 */
-    public static final Material MANYULLYN = Material.builder(loc("manyullyn"))
-            .tier(MaterialTier.LEGENDARY)
-            .categories(MaterialCategory.METAL, MaterialCategory.ALLOY, MaterialCategory.MAGICAL)
-            .headStats(2500, 9.5f, 5, 5.0f)
-            .handleStats(1.25f, 0.0f)
-            .bindingStats(1.25f)
-            .bowLimbStats(1.1f, 1.4f)
-            .bowstringStats(1.0f, 0.98f)
-            .hookStats(1.2f, 0.15f)
-            .headTraits(
-                    TraitEntry.of("anvil:reinforced", 2),
-                    TraitEntry.of("anvil:momentum", 1)
-            )
-            .handleTraits(TraitEntry.of("anvil:lightweight", 1))
-            .repairItem(Items.NETHERITE_INGOT)  // 暫定
-            .colors(0x9B59B6, 0x8E44AD)
-            .rarityWeight(0.03)
-            .build();
-
-    /** ドラゴンスケイル - ドラゴン素材 */
-    public static final Material DRAGON_SCALE = Material.builder(loc("dragon_scale"))
-            .tier(MaterialTier.LEGENDARY)
-            .categories(MaterialCategory.ORGANIC, MaterialCategory.END, MaterialCategory.MAGICAL)
-            .headStats(2800, 10.0f, 5, 4.5f)
-            .handleStats(1.2f, 0.05f)
-            .bindingStats(1.4f)
-            .bowLimbStats(1.2f, 1.6f)
-            .bowstringStats(1.1f, 0.95f)
-            .hookStats(1.0f, 0.25f)
-            .headTraits(
-                    TraitEntry.of("anvil:reinforced", 3),
-                    TraitEntry.of("anvil:fiery", 2)
-            )
-            .handleTraits(TraitEntry.of("anvil:reinforced", 2))
-            .repairItem(Items.DRAGON_BREATH)  // 暫定
-            .colors(0x1A1A1A, 0x4A1A4A)
-            .rarityWeight(0.02)
-            .build();
-
-    /** スターメタル - 星の金属 */
-    public static final Material STAR_METAL = Material.builder(loc("star_metal"))
-            .tier(MaterialTier.LEGENDARY)
-            .categories(MaterialCategory.METAL, MaterialCategory.END, MaterialCategory.MAGICAL)
-            .headStats(2400, 10.5f, 5, 4.2f)
-            .handleStats(1.15f, 0.1f)
-            .bindingStats(1.35f)
-            .bowLimbStats(1.25f, 1.5f)
-            .bowstringStats(1.15f, 1.0f)  // 完璧な精度
-            .hookStats(1.4f, 0.3f)
-            .headTraits(
-                    TraitEntry.of("anvil:holy", 2),
-                    TraitEntry.of("anvil:ecological", 2)
-            )
-            .handleTraits(TraitEntry.of("anvil:lucky", 2))
-            .repairItem(Items.NETHER_STAR)  // 暫定
-            .colors(0xF0F0FF, 0xD0D0EE)
-            .rarityWeight(0.02)
-            .build();
-
-    // ============================================
-    // ティア6: 神話（3種）- ANVIL独自最上位素材
-    // ============================================
-
-    /** エーテライト - 最高の採掘素材 */
-    public static final Material AETHERITE = Material.builder(loc("aetherite"))
-            .tier(MaterialTier.MYTHIC)
-            .categories(MaterialCategory.GEM, MaterialCategory.MAGICAL)
-            .headStats(3500, 14.0f, 6, 5.5f)
-            .handleStats(1.3f, 0.15f)
-            .bindingStats(1.5f)
-            .bowLimbStats(1.4f, 1.8f)
-            .bowstringStats(1.3f, 1.0f)
-            .hookStats(1.6f, 0.4f)
-            .headTraits(
-                    TraitEntry.of("anvil:momentum", 3),
-                    TraitEntry.of("anvil:auto_smelt", 2),
-                    TraitEntry.of("anvil:magnetic", 2)
-            )
-            .handleTraits(
-                    TraitEntry.of("anvil:lightweight", 2),
-                    TraitEntry.of("anvil:ecological", 2)
-            )
-            .repairItem(Items.NETHER_STAR)  // 暫定
-            .colors(0x87CEEB, 0x5FAFCF)
-            .rarityWeight(0.005)
-            .build();
-
-    /** ヴォイドメタル - 最高の戦闘素材 */
-    public static final Material VOID_METAL = Material.builder(loc("void_metal"))
-            .tier(MaterialTier.MYTHIC)
-            .categories(MaterialCategory.METAL, MaterialCategory.END, MaterialCategory.MAGICAL)
-            .headStats(3200, 12.0f, 6, 7.0f)
-            .handleStats(1.25f, 0.1f)
-            .bindingStats(1.45f)
-            .bowLimbStats(1.3f, 2.0f)  // 超長射程
-            .bowstringStats(1.25f, 0.98f)
-            .hookStats(1.3f, 0.35f)
-            .headTraits(
-                    TraitEntry.of("anvil:lifesteal", 2),
-                    TraitEntry.of("anvil:venomous", 2),
-                    TraitEntry.of("anvil:ethereal", 2)
-            )
-            .handleTraits(
-                    TraitEntry.of("anvil:reinforced", 3),
-                    TraitEntry.of("anvil:mending", 2)
-            )
-            .repairItem(Items.NETHER_STAR)  // 暫定
-            .colors(0x1A0030, 0x0D0018)
-            .rarityWeight(0.003)
-            .build();
-
-    /** プライモーディアル - 究極の万能素材 */
-    public static final Material PRIMORDIAL = Material.builder(loc("primordial"))
-            .tier(MaterialTier.MYTHIC)
-            .categories(MaterialCategory.ALLOY, MaterialCategory.MAGICAL)
-            .headStats(4000, 13.0f, 6, 6.0f)
-            .handleStats(1.35f, 0.1f)
-            .bindingStats(1.6f)  // 最高の特性増幅
-            .bowLimbStats(1.35f, 1.9f)
-            .bowstringStats(1.3f, 1.0f)
-            .hookStats(1.5f, 0.5f)  // 最高の幸運
-            .coatingStats(1.3f)  // コーティングとして優秀
-            .upgradeStats(2)  // MODスロット+2
-            .headTraits(
-                    TraitEntry.of("anvil:reinforced", 3),
-                    TraitEntry.of("anvil:lucky", 3),
-                    TraitEntry.of("anvil:mending", 2)
-            )
-            .handleTraits(
-                    TraitEntry.of("anvil:writable", 2),
-                    TraitEntry.of("anvil:ecological", 3)
-            )
-            .extraTraits(TraitEntry.of("anvil:unbreaking", 3))
-            .repairItem(Items.NETHER_STAR)  // 暫定
-            .colors(0xFFD700, 0xFFA500)
-            .rarityWeight(0.001)
             .build();
 
     // ============================================
@@ -667,7 +466,6 @@ public final class Materials {
         registry.register(IRON);
         registry.register(COPPER);
         registry.register(GOLD);
-        registry.register(BRONZE);
         registry.register(CHAIN);
         registry.register(REDSTONE);
 
@@ -681,20 +479,8 @@ public final class Materials {
         // ティア4: ネザライト
         registry.register(NETHERITE);
         registry.register(BLAZE);
-        registry.register(WITHER_BONE);
         registry.register(END_STONE);
         registry.register(SHULKER);
-
-        // ティア5: 伝説
-        registry.register(COBALT);
-        registry.register(MANYULLYN);
-        registry.register(DRAGON_SCALE);
-        registry.register(STAR_METAL);
-
-        // ティア6: 神話
-        registry.register(AETHERITE);
-        registry.register(VOID_METAL);
-        registry.register(PRIMORDIAL);
 
         // 繊維
         registry.register(STRING);

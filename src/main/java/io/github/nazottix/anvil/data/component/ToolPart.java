@@ -20,7 +20,7 @@ import net.minecraft.network.codec.StreamCodec;
  * 仕様書参照: docs/01_パーツ_素材システム.md
  */
 public record ToolPart(
-        // 素材ID（例: "minecraft:diamond", "anvil:manyullyn"）
+        // 素材ID（例: "anvil:diamond", "anvil:netherite"）
         String materialId,
         // パーツタイプID（例: "head", "handle", "binding"）
         String partType,
