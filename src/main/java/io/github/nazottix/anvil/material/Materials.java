@@ -13,15 +13,15 @@ import static io.github.nazottix.anvil.material.Material.TraitEntry;
  * バニラMinecraftのアイテムを使用した素材を定義します。
  *
  * 素材構成:
- * - ティア0（木材）: 2種（オーク、竹）
- * - ティア1（石）: 4種（石、フリント、黒曜石、深層岩）
+ * - ティア0（木材）: 2種（木材、竹）
+ * - ティア1（石）: 3種（石、フリント、深層岩）
  * - ティア2（鉄）: 5種（鉄、銅、金、鎖、レッドストーン）
- * - ティア3（ダイヤモンド）: 6種（ダイヤモンド、エメラルド、ラピス、アメジスト、プリズマリン、エンダーパール）
+ * - ティア3（ダイヤモンド）: 9種（ダイヤモンド、エメラルド、ラピス、アメジスト、プリズマリン、エンダーパール、黒曜石、クォーツ、マグマブロック）
  * - ティア4（ネザライト）: 4種（ネザライト、ブレイズ、エンドストーン、シュルカー）
- * - ティア5（伝説）: 2種（ネザースター、ドラゴンヘッド）
+ * - ティア5（伝説）: 2種（ネザースター、ドラゴン）
  * - 繊維: 1種（糸）
  *
- * 合計: 24種
+ * 合計: 26種
  *
  * 仕様書参照: docs/01_パーツ_素材システム.md - 3.4 マテリアル（素材）システム
  */
@@ -32,11 +32,11 @@ public final class Materials {
     }
 
     // ============================================
-    // ティア0: 木材（2種）- ダークオーク削除
+    // ティア0: 木材（2種）- 木材（全木材対応）、竹
     // ============================================
 
-    /** オーク - 最も基本的な木材 */
-    public static final Material OAK = Material.builder(loc("oak"))
+    /** 木材 - 最も基本的な素材（全木材の板材で作成・修理可能、竹は除く） */
+    public static final Material WOOD = Material.builder(loc("wood"))
             .tier(MaterialTier.WOOD)
             .categories(MaterialCategory.WOOD, MaterialCategory.ORGANIC)
             .headStats(60, 2.0f, 0, 1.0f)
@@ -47,7 +47,7 @@ public final class Materials {
             .hookStats(1.0f, 0.0f)
             .headTraits(TraitEntry.of("anvil:ecological", 1))
             .handleTraits(TraitEntry.of("anvil:lightweight", 1))
-            .repairItem(Items.OAK_PLANKS)
+            .repairItem(Items.OAK_PLANKS)  // 代表アイテム、実際は全木材の板材対応（タグで処理）
             .colors(0xC4A05A, 0xA68B4B)
             .rarityWeight(1.0)
             .build();
@@ -70,7 +70,7 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア1: 石（4種）
+    // ティア1: 石（3種）- 黒曜石はティア3に移動
     // ============================================
 
     /** 石 - 基本的な石素材 */
@@ -106,24 +106,24 @@ public final class Materials {
             .rarityWeight(0.9)
             .build();
 
-    /** 黒曜石 - 非常に硬い */
+    /** 黒曜石 - 非常に硬い（ティア3: ダイヤモンドクラス） */
     public static final Material OBSIDIAN = Material.builder(loc("obsidian"))
-            .tier(MaterialTier.STONE)
+            .tier(MaterialTier.DIAMOND)  // 変更: STONE → DIAMOND（ティア3）
             .categories(MaterialCategory.STONE, MaterialCategory.MAGICAL)
-            .headStats(200, 3.0f, 1, 2.5f)
+            .headStats(1300, 5.0f, 3, 3.0f)  // 変更: ティア3相当のステータスに調整
             .handleStats(1.3f, -0.2f)  // 重くて遅い
             .bindingStats(1.2f)
             .bowLimbStats(0.5f, 1.2f)
             .bowstringStats(0.3f, 0.4f)
             .hookStats(0.6f, 0.1f)
             .headTraits(
-                    TraitEntry.of("anvil:reinforced", 1),
-                    TraitEntry.of("anvil:stonebound", 1)
+                    TraitEntry.of("anvil:reinforced", 2),  // 変更: レベル上昇
+                    TraitEntry.of("anvil:stonebound", 2)   // 変更: レベル上昇
             )
-            .handleTraits(TraitEntry.of("anvil:reinforced", 2))
+            .handleTraits(TraitEntry.of("anvil:reinforced", 3))  // 変更: レベル上昇
             .repairItem(Items.OBSIDIAN)
             .colors(0x0F0A18, 0x1A0F28)
-            .rarityWeight(0.6)
+            .rarityWeight(0.4)  // 変更: レア度調整
             .build();
 
     /** 深層岩 - 地下深くの頑丈な石 */
@@ -231,7 +231,7 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア3: ダイヤモンド（6種）- エンダーパール追加
+    // ティア3: ダイヤモンド（9種）- 黒曜石、クォーツ、マグマブロック追加
     // ============================================
 
     /** ダイヤモンド - 高品質な宝石 */
@@ -338,6 +338,40 @@ public final class Materials {
             .rarityWeight(0.35)
             .build();
 
+    /** クォーツ - ネザー産の白い鉱石 */
+    public static final Material QUARTZ = Material.builder(loc("quartz"))
+            .tier(MaterialTier.DIAMOND)
+            .categories(MaterialCategory.GEM, MaterialCategory.NETHER)
+            .headStats(1000, 7.5f, 3, 2.5f)
+            .handleStats(0.9f, 0.05f)
+            .bindingStats(1.15f)
+            .bowLimbStats(1.0f, 1.1f)
+            .bowstringStats(0.9f, 0.95f)
+            .hookStats(1.1f, 0.1f)
+            .headTraits(TraitEntry.of("anvil:jagged", 2))  // 鋭い
+            .handleTraits(TraitEntry.of("anvil:lightweight", 1))
+            .repairItem(Items.QUARTZ)
+            .colors(0xEAE5DE, 0xD5CFC5)  // クォーツの白色
+            .rarityWeight(0.45)
+            .build();
+
+    /** マグマブロック - 溶岩の熱を持つブロック */
+    public static final Material MAGMA_BLOCK = Material.builder(loc("magma_block"))
+            .tier(MaterialTier.DIAMOND)
+            .categories(MaterialCategory.STONE, MaterialCategory.NETHER, MaterialCategory.MAGICAL)
+            .headStats(950, 6.5f, 3, 3.0f)
+            .handleStats(1.0f, -0.05f)  // 熱くて扱いにくい
+            .bindingStats(1.1f)
+            .bowLimbStats(0.8f, 1.0f)
+            .bowstringStats(0.7f, 0.8f)
+            .hookStats(0.9f, 0.08f)
+            .headTraits(TraitEntry.of("anvil:fiery", 2))  // 炎属性
+            .handleTraits(TraitEntry.of("anvil:fiery", 1))
+            .repairItem(Items.MAGMA_BLOCK)
+            .colors(0xC54D0D, 0x8B3707)  // マグマブロックのオレンジ/赤色
+            .rarityWeight(0.5)
+            .build();
+
     // ============================================
     // ティア4: ネザライト（4種）
     // ============================================
@@ -414,7 +448,7 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア5: 伝説（2種）- ネザースター、ドラゴンヘッド
+    // ティア5: 伝説（2種）- ネザースター、ドラゴン
     // ============================================
 
     /** ネザースター - ウィザー討伐報酬、最強クラスの素材 */
@@ -437,8 +471,8 @@ public final class Materials {
             .rarityWeight(0.05)  // 非常にレア
             .build();
 
-    /** ドラゴンヘッド - エンダードラゴン討伐報酬 */
-    public static final Material DRAGON_HEAD = Material.builder(loc("dragon_head"))
+    /** ドラゴン - エンダードラゴン討伐報酬（ドラゴンヘッドから作成） */
+    public static final Material DRAGON = Material.builder(loc("dragon"))
             .tier(MaterialTier.LEGENDARY)
             .categories(MaterialCategory.ORGANIC, MaterialCategory.END, MaterialCategory.MAGICAL)
             .headStats(2800, 9.5f, 5, 5.5f)  // 最高クラスの攻撃力
@@ -452,7 +486,7 @@ public final class Materials {
                     TraitEntry.of("anvil:fiery", 2)
             )
             .handleTraits(TraitEntry.of("anvil:reinforced", 2))
-            .repairItem(Items.DRAGON_HEAD)
+            .repairItem(Items.DRAGON_HEAD)  // 修理素材はドラゴンヘッド
             .colors(0x1A1A1A, 0x2A1A2A)  // 暗い紫がかった黒
             .rarityWeight(0.03)  // 超レア
             .build();
@@ -497,13 +531,12 @@ public final class Materials {
      */
     public static void registerAll(MaterialRegistry registry) {
         // ティア0: 木材（2種）
-        registry.register(OAK);
+        registry.register(WOOD);  // 変更: OAK → WOOD
         registry.register(BAMBOO);
 
-        // ティア1: 石（4種）
+        // ティア1: 石（3種）- 黒曜石はティア3に移動
         registry.register(STONE);
         registry.register(FLINT);
-        registry.register(OBSIDIAN);
         registry.register(DEEPSLATE);
 
         // ティア2: 鉄（5種）
@@ -513,13 +546,16 @@ public final class Materials {
         registry.register(CHAIN);
         registry.register(REDSTONE);
 
-        // ティア3: ダイヤモンド（6種）
+        // ティア3: ダイヤモンド（9種）- 黒曜石、クォーツ、マグマブロック追加
         registry.register(DIAMOND);
         registry.register(EMERALD);
         registry.register(LAPIS);
         registry.register(AMETHYST);
         registry.register(PRISMARINE);
-        registry.register(ENDER_PEARL);  // 追加: エンダーパール
+        registry.register(ENDER_PEARL);
+        registry.register(OBSIDIAN);     // 追加: ティア1から移動
+        registry.register(QUARTZ);       // 追加: クォーツ
+        registry.register(MAGMA_BLOCK);  // 追加: マグマブロック
 
         // ティア4: ネザライト（4種）
         registry.register(NETHERITE);
@@ -529,7 +565,7 @@ public final class Materials {
 
         // ティア5: 伝説（2種）
         registry.register(NETHER_STAR);   // 追加: ネザースター
-        registry.register(DRAGON_HEAD);   // 追加: ドラゴンヘッド
+        registry.register(DRAGON);   // 追加: ドラゴン（旧DRAGON_HEAD）
 
         // 繊維（1種）
         registry.register(STRING);

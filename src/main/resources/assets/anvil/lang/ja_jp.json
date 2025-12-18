@@ -114,8 +114,8 @@
 
   "config.anvil.balance.respec_cost": "リスペックコスト倍率",
 
-  "_comment_materials": "素材名（24種 - バニラ素材のみ）",
-  "material.anvil.oak": "オーク",
+  "_comment_materials": "素材名（26種 - バニラ素材のみ）",
+  "material.anvil.wood": "木材",
   "material.anvil.bamboo": "竹",
   "material.anvil.stone": "石",
   "material.anvil.flint": "フリント",
@@ -137,7 +137,9 @@
   "material.anvil.end_stone": "エンドストーン",
   "material.anvil.shulker": "シュルカー",
   "material.anvil.nether_star": "ネザースター",
-  "material.anvil.dragon_head": "ドラゴンヘッド",
+  "material.anvil.dragon": "ドラゴン",
+  "material.anvil.quartz": "クォーツ",
+  "material.anvil.magma_block": "マグマブロック",
   "material.anvil.string": "糸",
 
   "_comment_tiers": "素材ティア",
