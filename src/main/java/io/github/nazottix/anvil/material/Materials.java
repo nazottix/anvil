@@ -13,14 +13,15 @@ import static io.github.nazottix.anvil.material.Material.TraitEntry;
  * バニラMinecraftのアイテムを使用した素材を定義します。
  *
  * 素材構成:
- * - ティア0（木材）: 3種（オーク、竹、ダークオーク）
+ * - ティア0（木材）: 2種（オーク、竹）
  * - ティア1（石）: 4種（石、フリント、黒曜石、深層岩）
  * - ティア2（鉄）: 5種（鉄、銅、金、鎖、レッドストーン）
- * - ティア3（ダイヤモンド）: 5種（ダイヤモンド、エメラルド、ラピス、アメジスト、プリズマリン）
+ * - ティア3（ダイヤモンド）: 6種（ダイヤモンド、エメラルド、ラピス、アメジスト、プリズマリン、エンダーパール）
  * - ティア4（ネザライト）: 4種（ネザライト、ブレイズ、エンドストーン、シュルカー）
+ * - ティア5（伝説）: 2種（ネザースター、ドラゴンヘッド）
  * - 繊維: 1種（糸）
  *
- * 合計: 22種
+ * 合計: 24種
  *
  * 仕様書参照: docs/01_パーツ_素材システム.md - 3.4 マテリアル（素材）システム
  */
@@ -31,7 +32,7 @@ public final class Materials {
     }
 
     // ============================================
-    // ティア0: 木材（3種）
+    // ティア0: 木材（2種）- ダークオーク削除
     // ============================================
 
     /** オーク - 最も基本的な木材 */
@@ -66,23 +67,6 @@ public final class Materials {
             .repairItem(Items.BAMBOO)
             .colors(0x7BA05B, 0x5C8A3D)
             .rarityWeight(0.9)
-            .build();
-
-    /** ダークオーク - 頑丈な木材 */
-    public static final Material DARK_OAK = Material.builder(loc("dark_oak"))
-            .tier(MaterialTier.WOOD)
-            .categories(MaterialCategory.WOOD, MaterialCategory.ORGANIC)
-            .headStats(75, 1.8f, 0, 1.2f)
-            .handleStats(1.15f, -0.05f)  // 耐久上昇、速度低下
-            .bindingStats(1.1f)
-            .bowLimbStats(0.9f, 1.1f)
-            .bowstringStats(0.9f, 0.85f)
-            .hookStats(0.9f, 0.05f)
-            .headTraits(TraitEntry.of("anvil:stonebound", 1))
-            .handleTraits(TraitEntry.of("anvil:reinforced", 1))
-            .repairItem(Items.DARK_OAK_PLANKS)
-            .colors(0x3D2D16, 0x2A1F0F)
-            .rarityWeight(0.85)
             .build();
 
     // ============================================
@@ -247,7 +231,7 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア3: ダイヤモンド（5種）
+    // ティア3: ダイヤモンド（6種）- エンダーパール追加
     // ============================================
 
     /** ダイヤモンド - 高品質な宝石 */
@@ -337,6 +321,23 @@ public final class Materials {
             .rarityWeight(0.5)
             .build();
 
+    /** エンダーパール - テレポート・エンド素材 */
+    public static final Material ENDER_PEARL = Material.builder(loc("ender_pearl"))
+            .tier(MaterialTier.DIAMOND)
+            .categories(MaterialCategory.MAGICAL, MaterialCategory.END)
+            .headStats(800, 7.0f, 3, 2.0f)
+            .handleStats(0.85f, 0.1f)  // 軽量で速い
+            .bindingStats(1.3f)  // 特性増幅高い
+            .bowLimbStats(1.1f, 1.3f)  // 長射程
+            .bowstringStats(1.0f, 0.9f)
+            .hookStats(1.2f, 0.15f)
+            .headTraits(TraitEntry.of("anvil:ethereal", 2))
+            .handleTraits(TraitEntry.of("anvil:lightweight", 1))
+            .repairItem(Items.ENDER_PEARL)
+            .colors(0x0C5E4E, 0x0A4A3D)  // エンダーパールの深緑色
+            .rarityWeight(0.35)
+            .build();
+
     // ============================================
     // ティア4: ネザライト（4種）
     // ============================================
@@ -413,6 +414,50 @@ public final class Materials {
             .build();
 
     // ============================================
+    // ティア5: 伝説（2種）- ネザースター、ドラゴンヘッド
+    // ============================================
+
+    /** ネザースター - ウィザー討伐報酬、最強クラスの素材 */
+    public static final Material NETHER_STAR = Material.builder(loc("nether_star"))
+            .tier(MaterialTier.LEGENDARY)
+            .categories(MaterialCategory.MAGICAL, MaterialCategory.NETHER)
+            .headStats(2500, 10.0f, 5, 5.0f)  // 非常に高いステータス
+            .handleStats(1.3f, 0.1f)  // 耐久・速度両方ボーナス
+            .bindingStats(1.5f)  // 特性増幅最高クラス
+            .bowLimbStats(1.3f, 1.5f)  // 高速・長射程
+            .bowstringStats(1.2f, 1.0f)
+            .hookStats(1.5f, 0.3f)  // 幸運特化
+            .headTraits(
+                    TraitEntry.of("anvil:holy", 2),
+                    TraitEntry.of("anvil:reinforced", 3)
+            )
+            .handleTraits(TraitEntry.of("anvil:mending", 2))
+            .repairItem(Items.NETHER_STAR)
+            .colors(0xE8E8E0, 0xD0D0C8)  // 白〜クリーム色
+            .rarityWeight(0.05)  // 非常にレア
+            .build();
+
+    /** ドラゴンヘッド - エンダードラゴン討伐報酬 */
+    public static final Material DRAGON_HEAD = Material.builder(loc("dragon_head"))
+            .tier(MaterialTier.LEGENDARY)
+            .categories(MaterialCategory.ORGANIC, MaterialCategory.END, MaterialCategory.MAGICAL)
+            .headStats(2800, 9.5f, 5, 5.5f)  // 最高クラスの攻撃力
+            .handleStats(1.25f, 0.05f)
+            .bindingStats(1.45f)
+            .bowLimbStats(1.2f, 1.6f)  // 超長射程
+            .bowstringStats(1.1f, 0.95f)
+            .hookStats(1.3f, 0.25f)
+            .headTraits(
+                    TraitEntry.of("anvil:ethereal", 3),
+                    TraitEntry.of("anvil:fiery", 2)
+            )
+            .handleTraits(TraitEntry.of("anvil:reinforced", 2))
+            .repairItem(Items.DRAGON_HEAD)
+            .colors(0x1A1A1A, 0x2A1A2A)  // 暗い紫がかった黒
+            .rarityWeight(0.03)  // 超レア
+            .build();
+
+    // ============================================
     // 繊維素材（弦、ライン用）
     // ============================================
 
@@ -451,38 +496,42 @@ public final class Materials {
      * @param registry 登録先レジストリ
      */
     public static void registerAll(MaterialRegistry registry) {
-        // ティア0: 木材
+        // ティア0: 木材（2種）
         registry.register(OAK);
         registry.register(BAMBOO);
-        registry.register(DARK_OAK);
 
-        // ティア1: 石
+        // ティア1: 石（4種）
         registry.register(STONE);
         registry.register(FLINT);
         registry.register(OBSIDIAN);
         registry.register(DEEPSLATE);
 
-        // ティア2: 鉄
+        // ティア2: 鉄（5種）
         registry.register(IRON);
         registry.register(COPPER);
         registry.register(GOLD);
         registry.register(CHAIN);
         registry.register(REDSTONE);
 
-        // ティア3: ダイヤモンド
+        // ティア3: ダイヤモンド（6種）
         registry.register(DIAMOND);
         registry.register(EMERALD);
         registry.register(LAPIS);
         registry.register(AMETHYST);
         registry.register(PRISMARINE);
+        registry.register(ENDER_PEARL);  // 追加: エンダーパール
 
-        // ティア4: ネザライト
+        // ティア4: ネザライト（4種）
         registry.register(NETHERITE);
         registry.register(BLAZE);
         registry.register(END_STONE);
         registry.register(SHULKER);
 
-        // 繊維
+        // ティア5: 伝説（2種）
+        registry.register(NETHER_STAR);   // 追加: ネザースター
+        registry.register(DRAGON_HEAD);   // 追加: ドラゴンヘッド
+
+        // 繊維（1種）
         registry.register(STRING);
     }
 }

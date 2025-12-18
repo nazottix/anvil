@@ -115,10 +115,9 @@
 
   "config.anvil.balance.respec_cost": "Respec Cost Multiplier",
 
-  "_comment_materials": "Material names (22 types - vanilla materials only)",
+  "_comment_materials": "Material names (24 types - vanilla materials only)",
   "material.anvil.oak": "Oak",
   "material.anvil.bamboo": "Bamboo",
-  "material.anvil.dark_oak": "Dark Oak",
   "material.anvil.stone": "Stone",
   "material.anvil.flint": "Flint",
   "material.anvil.obsidian": "Obsidian",
@@ -133,10 +132,13 @@
   "material.anvil.lapis": "Lapis Lazuli",
   "material.anvil.amethyst": "Amethyst",
   "material.anvil.prismarine": "Prismarine",
+  "material.anvil.ender_pearl": "Ender Pearl",
   "material.anvil.netherite": "Netherite",
   "material.anvil.blaze": "Blaze",
   "material.anvil.end_stone": "End Stone",
   "material.anvil.shulker": "Shulker",
+  "material.anvil.nether_star": "Nether Star",
+  "material.anvil.dragon_head": "Dragon Head",
   "material.anvil.string": "String",
 
   "_comment_tiers": "Material Tiers",

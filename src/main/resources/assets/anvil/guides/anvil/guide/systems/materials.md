@@ -13,14 +13,13 @@ Each material has unique stats and traits.
 
 ## Material Tiers
 
-Materials are classified by tier (22 types total).
+Materials are classified by tier (24 types total).
 
 ### Tier 0 - Wood
 | Material | Repair Item |
 |----------|-------------|
 | Oak | Oak Planks |
 | Bamboo | Bamboo |
-| Dark Oak | Dark Oak Planks |
 
 ### Tier 1 - Stone
 | Material | Repair Item |
@@ -47,6 +46,7 @@ Materials are classified by tier (22 types total).
 | Lapis Lazuli | Lapis Lazuli |
 | Amethyst | Amethyst Shard |
 | Prismarine | Prismarine Shard |
+| Ender Pearl | Ender Pearl |
 
 ### Tier 4 - Netherite
 | Material | Repair Item |
@@ -55,6 +55,12 @@ Materials are classified by tier (22 types total).
 | Blaze | Blaze Rod |
 | End Stone | End Stone |
 | Shulker | Shulker Shell |
+
+### Tier 5 - Legendary
+| Material | Repair Item |
+|----------|-------------|
+| Nether Star | Nether Star |
+| Dragon Head | Dragon Head |
 
 ### Fiber Materials
 | Material | Repair Item |
