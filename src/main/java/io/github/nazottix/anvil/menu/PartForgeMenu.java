@@ -1,6 +1,7 @@
 package io.github.nazottix.anvil.menu;
 
 import io.github.nazottix.anvil.block.entity.PartForgeBlockEntity;
+import io.github.nazottix.anvil.material.MaterialRegistry;
 import io.github.nazottix.anvil.tool.PartType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
@@ -210,12 +211,43 @@ public class PartForgeMenu extends AbstractContainerMenu {
 
     /**
      * 鋳造可能かチェック
+     * 
+     * サーバー側ではblockEntityを使用し、クライアント側ではcontainerとdataを直接チェックします。
+     * 
+     * @return 鋳造可能な場合true
      */
     public boolean canForge() {
+        // サーバー側：blockEntityが存在する場合はそちらを使用
         if (blockEntity != null) {
             return blockEntity.canForge();
         }
-        return false;
+        
+        // クライアント側：containerとdataを直接チェック
+        // 入力スロットが空でないかチェック
+        ItemStack input = container.getItem(PartForgeBlockEntity.SLOT_INPUT);
+        if (input.isEmpty()) {
+            return false;
+        }
+        
+        // 素材レジストリから対応する素材を検索
+        if (MaterialRegistry.getInstance().getByRepairItem(input.getItem()).isEmpty()) {
+            return false;
+        }
+        
+        // 選択中のパーツタイプをチェック（data index 0 = selectedPartTypeIndex）
+        int selectedPartTypeIndex = data.get(0);
+        PartType[] types = PartType.values();
+        if (selectedPartTypeIndex < 0 || selectedPartTypeIndex >= types.length) {
+            return false;
+        }
+        
+        // 出力スロットが空かチェック
+        ItemStack output = container.getItem(PartForgeBlockEntity.SLOT_OUTPUT);
+        if (!output.isEmpty()) {
+            return false;
+        }
+        
+        return true;
     }
 
     // ============================================
