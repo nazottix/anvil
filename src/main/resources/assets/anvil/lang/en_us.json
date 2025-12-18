@@ -143,12 +143,15 @@
   "material.anvil.magma_block": "Magma Block",
   "material.anvil.string": "String",
 
-  "_comment_tiers": "Material Tiers",
+  "_comment_tiers": "Material Tiers (10 levels: 0-9)",
   "tier.anvil.wood": "Wood",
   "tier.anvil.stone": "Stone",
+  "tier.anvil.copper": "Copper",
   "tier.anvil.iron": "Iron",
   "tier.anvil.diamond": "Diamond",
-  "tier.anvil.netherite": "Netherite",
+  "tier.anvil.quartz": "Quartz",
+  "tier.anvil.obsidian": "Obsidian",
+  "tier.anvil.ender": "Ender",
   "tier.anvil.legendary": "Legendary",
   "tier.anvil.mythic": "Mythic",
 

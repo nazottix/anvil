@@ -13,7 +13,7 @@ Each material has unique stats and traits.
 
 ## Material Tiers
 
-Materials are classified by tier (26 types total).
+Materials are classified by tier (10 levels, 26 types total).
 
 ### Tier 0 - Wood
 | Material | Repair Item |
@@ -28,37 +28,53 @@ Materials are classified by tier (26 types total).
 | Flint | Flint |
 | Deepslate | Cobbled Deepslate |
 
-### Tier 2 - Iron
+### Tier 2 - Copper
 | Material | Repair Item |
 |----------|-------------|
-| Iron | Iron Ingot |
 | Copper | Copper Ingot |
 | Gold | Gold Ingot |
 | Chain | Chain |
-| Redstone | Redstone |
 
-### Tier 3 - Diamond
+### Tier 3 - Iron
+| Material | Repair Item |
+|----------|-------------|
+| Iron | Iron Ingot |
+| Redstone | Redstone |
+| Lapis Lazuli | Lapis Lazuli |
+
+### Tier 4 - Diamond
 | Material | Repair Item |
 |----------|-------------|
 | Diamond | Diamond |
 | Emerald | Emerald |
-| Lapis Lazuli | Lapis Lazuli |
-| Amethyst | Amethyst Shard |
-| Prismarine | Prismarine Shard |
-| Ender Pearl | Ender Pearl |
-| Obsidian | Obsidian |
-| Quartz | Quartz |
-| Magma Block | Magma Block |
 
-### Tier 4 - Netherite
+### Tier 5 - Quartz
 | Material | Repair Item |
 |----------|-------------|
-| Netherite | Netherite Ingot |
+| Quartz | Quartz |
+| Prismarine | Prismarine Shard |
+| Amethyst | Amethyst Shard |
+
+### Tier 6 - Obsidian
+| Material | Repair Item |
+|----------|-------------|
+| Obsidian | Obsidian |
 | Blaze | Blaze Rod |
+| Magma Block | Magma Block |
+
+### Tier 7 - Ender
+| Material | Repair Item |
+|----------|-------------|
+| Ender Pearl | Ender Pearl |
 | End Stone | End Stone |
 | Shulker | Shulker Shell |
 
-### Tier 5 - Legendary
+### Tier 8 - Legendary
+| Material | Repair Item |
+|----------|-------------|
+| Netherite | Netherite Ingot |
+
+### Tier 9 - Mythic
 | Material | Repair Item |
 |----------|-------------|
 | Nether Star | Nether Star |

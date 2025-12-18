@@ -142,12 +142,15 @@
   "material.anvil.magma_block": "マグマブロック",
   "material.anvil.string": "糸",
 
-  "_comment_tiers": "素材ティア",
+  "_comment_tiers": "素材ティア（10段階: 0-9）",
   "tier.anvil.wood": "木材",
   "tier.anvil.stone": "石",
+  "tier.anvil.copper": "銅",
   "tier.anvil.iron": "鉄",
   "tier.anvil.diamond": "ダイヤモンド",
-  "tier.anvil.netherite": "ネザライト",
+  "tier.anvil.quartz": "クォーツ",
+  "tier.anvil.obsidian": "黒曜石",
+  "tier.anvil.ender": "エンダー",
   "tier.anvil.legendary": "伝説",
   "tier.anvil.mythic": "神話",
 
