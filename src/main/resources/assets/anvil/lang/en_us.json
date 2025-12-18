@@ -20,6 +20,7 @@
   "block.anvil.core_box_station": "Core Box Station",
   "block.anvil.mod_station": "MOD Station",
   "block.anvil.repair_station": "Repair Station",
+  "block.anvil.grade_station": "Grade Station",
 
   "tool.anvil.pickaxe": "Pickaxe",
   "tool.anvil.axe": "Axe",
@@ -867,5 +868,18 @@
   "gui.anvil.part_forge.select_type": "Select Part Type",
   "gui.anvil.part_forge.forge": "Forge",
   "gui.anvil.part_forge.no_material": "Insert material",
-  "gui.anvil.part_forge.preview": "Preview"
+  "gui.anvil.part_forge.preview": "Preview",
+
+  "_comment_grade_station": "=== Grade Station ===",
+  "block.anvil.grade_station": "Grade Station",
+  "item.anvil.grade_essence": "Grade Essence",
+  "gui.anvil.grade_station": "Grade Station",
+  "gui.anvil.grade_station.upgrade": "Upgrade",
+  "gui.anvil.grade_station.part": "Part",
+  "gui.anvil.grade_station.essence": "Essence",
+  "gui.anvil.grade_station.essence_cost": "Cost: %d/%d",
+  "gui.anvil.grade_station.max_grade": "Maximum Grade Reached",
+  "gui.anvil.grade_station.current_grade": "Current: %s",
+  "gui.anvil.grade_station.next_grade": "Next: %s",
+  "tooltip.anvil.grade_essence": "Used to upgrade part grades at the Grade Station"
 }

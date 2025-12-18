@@ -134,6 +134,17 @@ public class AnvilMenuTypes {
                     () -> IMenuTypeExtension.create(RepairStationMenu::new)
             );
 
+    /**
+     * グレードステーションメニュータイプ
+     *
+     * グレードステーションブロックのメニュータイプです。
+     * パーツのグレードアップグレードを行います。
+     */
+    public static final DeferredHolder<MenuType<?>, MenuType<GradeStationMenu>> GRADE_STATION =
+            MENU_TYPES.register("grade_station",
+                    () -> IMenuTypeExtension.create(GradeStationMenu::new)
+            );
+
     // 削除済み: 精錬所メニュータイプ (素材加工の簡略化のため)
 
     /**

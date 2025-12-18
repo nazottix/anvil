@@ -254,6 +254,21 @@ public class AnvilItems {
     );
 
     // ============================================
+    // グレードエッセンスアイテム
+    // パーツのグレードを上げるために使用
+    // ============================================
+
+    /**
+     * グレードエッセンス
+     * Grade Stationでパーツのグレードを1段階上げるために使用。
+     * グレードが高いほど多くのエッセンスが必要。
+     */
+    public static final DeferredItem<Item> GRADE_ESSENCE = ANVIL.ITEMS.register(
+            "grade_essence",
+            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON))
+    );
+
+    // ============================================
     // 削除済み: 加工素材アイテム（素材加工の簡略化のため）
     // - ProcessedMaterial
     // - SmithingHammer

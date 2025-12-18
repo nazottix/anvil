@@ -1,6 +1,7 @@
 package io.github.nazottix.anvil;
 
 import io.github.nazottix.anvil.client.screen.CoreBoxStationScreen;
+import io.github.nazottix.anvil.client.screen.GradeStationScreen;
 import io.github.nazottix.anvil.client.screen.GridCustomizationScreen;
 import io.github.nazottix.anvil.client.screen.JewelStationScreen;
 import io.github.nazottix.anvil.client.screen.ModCustomizationScreen;
@@ -78,9 +79,10 @@ public class ANVILClient {
         event.register(AnvilMenuTypes.CORE_BOX_STATION.get(), CoreBoxStationScreen::new);
         event.register(AnvilMenuTypes.MOD_STATION.get(), ModStationScreen::new);
         event.register(AnvilMenuTypes.REPAIR_STATION.get(), RepairStationScreen::new);
+        event.register(AnvilMenuTypes.GRADE_STATION.get(), GradeStationScreen::new);
         // 削除済み: RefineryScreen, ForgingStationScreen, PolishingStationScreen (素材加工の簡略化のため)
         event.register(AnvilMenuTypes.PART_FORGE.get(), PartForgeScreen::new);
 
-        ANVIL.LOGGER.info("ANVIL: メニュースクリーンを登録（11種）");
+        ANVIL.LOGGER.info("ANVIL: メニュースクリーンを登録（12種）");
     }
 }

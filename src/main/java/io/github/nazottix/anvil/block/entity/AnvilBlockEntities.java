@@ -100,6 +100,18 @@ public class AnvilBlockEntities {
                     ).build(null)
             );
 
+    /**
+     * グレードステーションブロックエンティティタイプ
+     * パーツのグレードをアップグレードするステーション
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GradeStationBlockEntity>> GRADE_STATION =
+            BLOCK_ENTITIES.register("grade_station",
+                    () -> BlockEntityType.Builder.of(
+                            GradeStationBlockEntity::new,
+                            AnvilBlocks.GRADE_STATION.get()
+                    ).build(null)
+            );
+
     // 削除済み: 精錬所ブロックエンティティタイプ (素材加工の簡略化のため)
 
     /**

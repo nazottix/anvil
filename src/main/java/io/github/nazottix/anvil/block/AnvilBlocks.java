@@ -129,6 +129,23 @@ public class AnvilBlocks {
             )
     );
 
+    /**
+     * グレードステーションブロック
+     *
+     * パーツのグレードアップグレードに使用するワークベンチです。
+     * プレイヤーはこのブロックでグレードエッセンスを消費してパーツのグレードを上げられます。
+     *
+     * 仕様書参照: docs/01_パーツ_素材システム.md - 3.5 グレードシステム
+     */
+    public static final DeferredBlock<GradeStationBlock> GRADE_STATION = ANVIL.BLOCKS.register(
+            "grade_station",
+            () -> new GradeStationBlock(BlockBehaviour.Properties.of()
+                    .strength(2.5f, 2.5f)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()
+            )
+    );
+
     // 削除済み: 精錬所ブロック (素材加工の簡略化のため)
 
     /**
@@ -208,6 +225,14 @@ public class AnvilBlocks {
     public static final DeferredItem<BlockItem> REPAIR_STATION_ITEM = ANVIL.ITEMS.register(
             "repair_station",
             () -> new BlockItem(REPAIR_STATION.get(), new Item.Properties())
+    );
+
+    /**
+     * グレードステーションのブロックアイテム
+     */
+    public static final DeferredItem<BlockItem> GRADE_STATION_ITEM = ANVIL.ITEMS.register(
+            "grade_station",
+            () -> new BlockItem(GRADE_STATION.get(), new Item.Properties())
     );
 
     // 削除済み: 精錬所のブロックアイテム (素材加工の簡略化のため)

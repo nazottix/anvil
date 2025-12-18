@@ -69,7 +69,7 @@ public class ANVIL {
                     .icon(() -> AnvilItems.ANVIL_PICKAXE.get().getDefaultInstance())
                     // タブに表示するアイテム（ブロックとツール）
                     .displayItems((parameters, output) -> {
-                        // ステーションブロック（7種）
+                        // ステーションブロック（8種）
                         output.accept(AnvilBlocks.TOOL_STATION_ITEM.get());
                         output.accept(AnvilBlocks.SKILL_TREE_STATION_ITEM.get());
                         output.accept(AnvilBlocks.JEWEL_STATION_ITEM.get());
@@ -77,6 +77,7 @@ public class ANVIL {
                         output.accept(AnvilBlocks.CORE_BOX_STATION_ITEM.get());
                         output.accept(AnvilBlocks.MOD_STATION_ITEM.get());
                         output.accept(AnvilBlocks.REPAIR_STATION_ITEM.get());
+                        output.accept(AnvilBlocks.GRADE_STATION_ITEM.get());
 
                         // パーツ鍛造ステーション（素材加工の簡略化により1種に統合）
                         output.accept(AnvilBlocks.PART_FORGE_ITEM.get());
@@ -96,7 +97,8 @@ public class ANVIL {
                         output.accept(AnvilItems.MEMORY_CRYSTAL.get());
                         output.accept(AnvilItems.OBLIVION_ORB.get());
 
-                        // 削除済み: 素材加工アイテム（素材加工の簡略化のため）
+                        // グレードアップグレードアイテム
+                        output.accept(AnvilItems.GRADE_ESSENCE.get());
                     })
                     .build());
 

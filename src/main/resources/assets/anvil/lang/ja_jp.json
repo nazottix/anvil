@@ -827,5 +827,18 @@
   "gui.anvil.part_forge.select_type": "パーツタイプを選択",
   "gui.anvil.part_forge.forge": "鋳造",
   "gui.anvil.part_forge.no_material": "素材を入れてください",
-  "gui.anvil.part_forge.preview": "プレビュー"
+  "gui.anvil.part_forge.preview": "プレビュー",
+
+  "_comment_grade_station": "=== グレードステーション ===",
+  "block.anvil.grade_station": "グレードステーション",
+  "item.anvil.grade_essence": "グレードエッセンス",
+  "gui.anvil.grade_station": "グレードステーション",
+  "gui.anvil.grade_station.upgrade": "アップグレード",
+  "gui.anvil.grade_station.part": "パーツ",
+  "gui.anvil.grade_station.essence": "エッセンス",
+  "gui.anvil.grade_station.essence_cost": "コスト: %d/%d",
+  "gui.anvil.grade_station.max_grade": "最大グレードに到達済み",
+  "gui.anvil.grade_station.current_grade": "現在: %s",
+  "gui.anvil.grade_station.next_grade": "次: %s",
+  "tooltip.anvil.grade_essence": "グレードステーションでパーツのグレードをアップグレードするために使用"
 }
