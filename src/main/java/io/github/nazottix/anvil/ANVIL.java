@@ -99,6 +99,9 @@ public class ANVIL {
 
                         // グレードアップグレードアイテム
                         output.accept(AnvilItems.GRADE_ESSENCE.get());
+
+                        // ガイドブック（GuideME連携）
+                        output.accept(AnvilItems.GUIDE_BOOK.get());
                     })
                     .build());
 

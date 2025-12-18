@@ -287,6 +287,21 @@ public class AnvilItems {
     );
 
     // ============================================
+    // ガイドブックアイテム
+    // GuideME連携用のガイドブック
+    // ============================================
+
+    /**
+     * ANVILガイドブック
+     * 右クリックでGuideMEガイドブックを開きます。
+     * GuideMEがインストールされていない場合は使用できません。
+     */
+    public static final DeferredItem<GuideBookItem> GUIDE_BOOK = ANVIL.ITEMS.register(
+            "guide_book",
+            () -> new GuideBookItem(new Item.Properties().stacksTo(1))
+    );
+
+    // ============================================
     // 削除済み: 加工素材アイテム（素材加工の簡略化のため）
     // - ProcessedMaterial
     // - SmithingHammer

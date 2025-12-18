@@ -58,7 +58,12 @@
   "item.anvil.part_pivot": "ピボット",
   "item.anvil.part_coating": "コーティング",
   "item.anvil.part_upgrade": "アップグレード",
+  "item.anvil.guide_book": "ANVILガイドブック",
   "item.anvil.part.named": "%s %s",
+
+  "tooltip.anvil.guide_book.open": "右クリックでガイドを開く",
+  "tooltip.anvil.guide_book.guideme_required": "GuideMEが必要です",
+  "message.anvil.guideme_not_installed": "GuideMEがインストールされていません",
 
   "tooltip.anvil.part.no_material": "素材未設定",
   "tooltip.anvil.part.material": "素材: %s",

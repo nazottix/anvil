@@ -59,7 +59,12 @@
   "item.anvil.part_pivot": "Pivot",
   "item.anvil.part_coating": "Coating",
   "item.anvil.part_upgrade": "Upgrade",
+  "item.anvil.guide_book": "ANVIL Guide Book",
   "item.anvil.part.named": "%s %s",
+
+  "tooltip.anvil.guide_book.open": "Right-click to open guide",
+  "tooltip.anvil.guide_book.guideme_required": "GuideME required",
+  "message.anvil.guideme_not_installed": "GuideME is not installed",
 
   "tooltip.anvil.part.no_material": "No material set",
   "tooltip.anvil.part.material": "Material: %s",
