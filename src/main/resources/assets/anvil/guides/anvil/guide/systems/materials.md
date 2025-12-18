@@ -6,75 +6,75 @@ navigation:
   position: 3
 ---
 
-# 素材システム
+# Materials System
 
-ANVILでは様々な素材を使用してパーツを作成できます。
-各素材は固有のステータスと特性を持っています。
+ANVIL allows you to create parts using various materials.
+Each material has unique stats and traits.
 
-## 素材ティア
+## Material Tiers
 
-素材はティアによって分類されています。
+Materials are classified by tier.
 
-### Tier 1 - 基本素材
-| 素材 | 採掘レベル | 耐久値 | 採掘速度 | 攻撃力 |
-|------|-----------|--------|---------|--------|
-| 木材 | 0 | 59 | 2.0 | 0 |
-| 石 | 1 | 131 | 4.0 | 1 |
-| 銅 | 1 | 200 | 4.5 | 1 |
+### Tier 1 - Basic Materials
+| Material | Mining Level | Durability | Mining Speed | Attack |
+|----------|-------------|------------|--------------|--------|
+| Wood | 0 | 59 | 2.0 | 0 |
+| Stone | 1 | 131 | 4.0 | 1 |
+| Copper | 1 | 200 | 4.5 | 1 |
 
-### Tier 2 - 中級素材
-| 素材 | 採掘レベル | 耐久値 | 採掘速度 | 攻撃力 |
-|------|-----------|--------|---------|--------|
-| 鉄 | 2 | 250 | 6.0 | 2 |
-| 金 | 0 | 32 | 12.0 | 0 |
+### Tier 2 - Intermediate Materials
+| Material | Mining Level | Durability | Mining Speed | Attack |
+|----------|-------------|------------|--------------|--------|
+| Iron | 2 | 250 | 6.0 | 2 |
+| Gold | 0 | 32 | 12.0 | 0 |
 
-### Tier 3 - 上級素材
-| 素材 | 採掘レベル | 耐久値 | 採掘速度 | 攻撃力 |
-|------|-----------|--------|---------|--------|
-| ダイヤモンド | 3 | 1561 | 8.0 | 3 |
-| アメジスト | 2 | 800 | 7.0 | 2 |
+### Tier 3 - Advanced Materials
+| Material | Mining Level | Durability | Mining Speed | Attack |
+|----------|-------------|------------|--------------|--------|
+| Diamond | 3 | 1561 | 8.0 | 3 |
+| Amethyst | 2 | 800 | 7.0 | 2 |
 
-### Tier 4 - 最上級素材
-| 素材 | 採掘レベル | 耐久値 | 採掘速度 | 攻撃力 |
-|------|-----------|--------|---------|--------|
-| ネザライト | 4 | 2031 | 9.0 | 4 |
+### Tier 4 - Ultimate Materials
+| Material | Mining Level | Durability | Mining Speed | Attack |
+|----------|-------------|------------|--------------|--------|
+| Netherite | 4 | 2031 | 9.0 | 4 |
 
-## グレードシステム
+## Grade System
 
-同じ素材でもグレードによってステータスが変化します。
+Even with the same material, stats change based on grade.
 
-| グレード | 倍率 | 出現確率 |
-|---------|------|---------|
+| Grade | Multiplier | Drop Rate |
+|-------|------------|-----------|
 | D | 0.8x | 15% |
 | C | 1.0x | 40% |
 | B | 1.2x | 30% |
 | A | 1.5x | 12% |
 | S | 2.0x | 3% |
 
-## グレードの強化
+## Grade Enhancement
 
-**グレードステーション**でグレードエッセンスを使用することで、
-パーツのグレードを1段階上げることができます。
+At the **Grade Station**, you can use Grade Essence to
+upgrade a part's grade by one level.
 
-### 必要エッセンス数
-| 現在のグレード | 必要エッセンス |
-|--------------|--------------|
+### Required Essence
+| Current Grade | Required Essence |
+|--------------|------------------|
 | D → C | 1 |
 | C → B | 2 |
 | B → A | 4 |
 | A → S | 8 |
 
-## 素材特性
+## Material Traits
 
-一部の素材は固有の特性を持っています。
+Some materials have unique traits.
 
-| 素材 | 特性 | 効果 |
-|------|------|------|
-| 金 | 魅力 | エンチャント効率アップ |
-| ダイヤモンド | 頑丈 | 耐久値消費軽減 |
-| ネザライト | 不滅 | 溶岩耐性 |
+| Material | Trait | Effect |
+|----------|-------|--------|
+| Gold | Charm | Enchantment efficiency boost |
+| Diamond | Sturdy | Reduced durability consumption |
+| Netherite | Immortal | Lava resistance |
 
-## 関連項目
+## Related Topics
 
-- [パーツ鍛造所](../stations/part-forge.md)
-- [ツールステーション](../stations/tool-station.md)
+- [Part Forge](../stations/part-forge.md)
+- [Tool Station](../stations/tool-station.md)

@@ -8,66 +8,66 @@ item_ids:
   - anvil:part_forge
 ---
 
-# パーツ鍛造所 (Part Forge)
+# Part Forge
 
-パーツ鍛造所は、バニラの素材からツールパーツを鋳造するためのステーションです。
+The Part Forge is a station for forging tool parts from vanilla materials.
 
-## 使い方
+## How to Use
 
-### 1. パーツタイプの選択
-ドロップダウンメニューから作成したいパーツタイプを選択します。
+### 1. Select Part Type
+Select the part type you want to create from the dropdown menu.
 
-**利用可能なパーツタイプ:**
+**Available Part Types:**
 
-| パーツ | 用途 |
-|-------|------|
-| ヘッド | ピッケル、斧、シャベル、クワのメイン部品 |
-| ハンドル | 全ツール共通の柄部品 |
-| バインディング | 採掘ツールの接続部品 |
-| ブレード | 剣、ハサミの刃部品 |
-| ガード | 剣の鍔部品 |
-| ボウリム | 弓の腕部品 |
-| ボウストリング | 弓の弦部品 |
-| ロッド | 釣り竿の竿部品 |
-| フック | 釣り竿の針部品 |
-| ライン | 釣り竿の糸部品 |
-| ピボット | ハサミの軸部品 |
-| コーティング | 全体コーティング用 |
-| アップグレード | 追加効果スロット用 |
+| Part | Purpose |
+|------|---------|
+| Head | Main component for pickaxes, axes, shovels, hoes |
+| Handle | Common handle component for all tools |
+| Binding | Connector component for mining tools |
+| Blade | Blade component for swords, shears |
+| Guard | Crossguard component for swords |
+| Bow Limb | Limb component for bows |
+| Bowstring | String component for bows |
+| Rod | Pole component for fishing rods |
+| Hook | Hook component for fishing rods |
+| Line | Line component for fishing rods |
+| Pivot | Pivot component for shears |
+| Coating | For overall coating |
+| Upgrade | For additional effect slots |
 
-### 2. 素材の投入
-入力スロットに対応する素材を入れます。
+### 2. Insert Materials
+Place the corresponding material in the input slot.
 
-**対応素材の例:**
-- 鉄インゴット → 鉄パーツ
-- 金インゴット → 金パーツ
-- ダイヤモンド → ダイヤモンドパーツ
-- ネザライトインゴット → ネザライトパーツ
+**Example Materials:**
+- Iron Ingot → Iron Part
+- Gold Ingot → Gold Part
+- Diamond → Diamond Part
+- Netherite Ingot → Netherite Part
 
-### 3. 鋳造の実行
-「鋳造」ボタンをクリックしてパーツを作成します。
-作成されたパーツにはランダムなグレードが付与されます。
+### 3. Execute Forging
+Click the "Forge" button to create a part.
+The created part will be assigned a random grade.
 
-## グレードシステム
+## Grade System
 
-パーツのグレードはステータスに影響を与えます。
+Part grades affect their stats.
 
-| グレード | 効果 |
-|---------|------|
-| D | 基本値の80% |
-| C | 基本値の100% |
-| B | 基本値の120% |
-| A | 基本値の150% |
-| S | 基本値の200% |
+| Grade | Effect |
+|-------|--------|
+| D | 80% of base value |
+| C | 100% of base value |
+| B | 120% of base value |
+| A | 150% of base value |
+| S | 200% of base value |
 
-より高いグレードのパーツを狙って何度も鋳造しましょう！
+Forge multiple times to aim for higher grade parts!
 
-## グレードの強化
+## Grade Enhancement
 
-グレードステーションでグレードエッセンスを使用することで、
-パーツのグレードを1段階上げることができます。
+At the Grade Station, you can use Grade Essence to
+upgrade a part's grade by one level.
 
-## 関連項目
+## Related Topics
 
-- [ツールステーション](tool-station.md)
-- [素材システム](../systems/materials.md)
+- [Tool Station](tool-station.md)
+- [Materials System](../systems/materials.md)

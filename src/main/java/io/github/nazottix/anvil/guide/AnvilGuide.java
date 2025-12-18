@@ -1,6 +1,7 @@
 package io.github.nazottix.anvil.guide;
 
 import io.github.nazottix.anvil.ANVIL;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
 
@@ -62,15 +63,58 @@ public class AnvilGuide {
      * このメソッドはGuideMEが存在する場合のみ呼び出されます。
      */
     private static void initGuide() {
-        // GuideME APIを使用してガイドを構築
-        // Guide.builder(GUIDE_ID)
-        //     .itemSettings(settings -> settings
-        //         .displayName(Component.translatable("item.anvil.guide_book"))
-        //     )
-        //     .build();
-
-        // 注意: 実際のGuideME APIの使用はGuideMEのバージョンによって異なる場合があります
-        // 現時点では、データ駆動型ガイド（Markdownファイル）のみを使用します
+        // GuideMEのデータ駆動型ガイド（Markdownファイル）を使用
+        // ガイドはassets/anvil/guides/anvil/guide/に配置されたMarkdownファイルから自動的に読み込まれます
         ANVIL.LOGGER.debug("GuideMEデータ駆動型ガイドを使用します。");
+    }
+
+    /**
+     * ガイドを開く（クライアント側のみ）
+     *
+     * GuideMEのAPIを使用してガイドスクリーンを表示します。
+     * このメソッドはクライアント側でのみ呼び出してください。
+     */
+    public static void openGuide() {
+        if (!isGuideMeAvailable()) {
+            ANVIL.LOGGER.warn("GuideMEが利用できないため、ガイドを開けません。");
+            return;
+        }
+
+        try {
+            // GuideMEのAPIを使用してガイドを開く
+            // リフレクションを使用してGuideMEのinternalクラスにアクセス
+            openGuideInternal();
+        } catch (Exception e) {
+            ANVIL.LOGGER.error("ガイドを開く際にエラーが発生しました: {}", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * GuideME内部APIを使用してガイドを開く
+     *
+     * GuideMEのinternalパッケージにアクセスするためリフレクションを使用します。
+     */
+    private static void openGuideInternal() {
+        try {
+            // GuideMEProxy.instance().openGuide(player, guideId) を呼び出す
+            Class<?> proxyClass = Class.forName("guideme.internal.GuideMEProxy");
+            Object proxyInstance = proxyClass.getMethod("instance").invoke(null);
+
+            // openGuide(Player player, ResourceLocation guideId) を呼び出す
+            var player = Minecraft.getInstance().player;
+            if (player != null) {
+                proxyClass.getMethod("openGuide", net.minecraft.world.entity.player.Player.class, ResourceLocation.class)
+                        .invoke(proxyInstance, player, GUIDE_ID);
+                ANVIL.LOGGER.debug("ガイドを開きました: {}", GUIDE_ID);
+            }
+        } catch (ClassNotFoundException e) {
+            ANVIL.LOGGER.error("GuideMEProxyクラスが見つかりません。GuideMEのバージョンを確認してください。");
+        } catch (NoSuchMethodException e) {
+            ANVIL.LOGGER.error("GuideMEProxyのメソッドが見つかりません: {}", e.getMessage());
+        } catch (Exception e) {
+            ANVIL.LOGGER.error("ガイドを開く際にエラーが発生しました: {}", e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

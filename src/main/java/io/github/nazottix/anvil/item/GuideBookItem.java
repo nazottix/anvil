@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.neoforged.fml.ModList;
 
 import java.util.List;
 
@@ -38,8 +37,8 @@ public class GuideBookItem extends Item {
 
         if (level.isClientSide) {
             if (AnvilGuide.isGuideMeAvailable()) {
-                // GuideMEのガイドを開く
-                openGuide(player);
+                // GuideMEのガイドを開く（クライアント側で実行）
+                AnvilGuide.openGuide();
             } else {
                 // GuideMEが利用できない場合のメッセージ
                 player.displayClientMessage(
@@ -50,24 +49,6 @@ public class GuideBookItem extends Item {
         }
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
-    }
-
-    /**
-     * GuideMEガイドを開く
-     *
-     * このメソッドはクライアント側でのみ呼び出されます。
-     */
-    private void openGuide(Player player) {
-        try {
-            // GuideME APIを使用してガイドを開く
-            // Guides.open(player, AnvilGuide.GUIDE_ID);
-            ANVIL.LOGGER.debug("ガイドブックを開きます");
-
-            // 注意: 実際のGuideME APIの呼び出しはGuideMEのバージョンによって異なります
-            // GuideMEがロードされている場合、自動的にガイドアイテムを処理する可能性があります
-        } catch (Exception e) {
-            ANVIL.LOGGER.error("ガイドブックを開けませんでした: {}", e.getMessage());
-        }
     }
 
     /**

@@ -6,52 +6,52 @@ navigation:
   position: 1
 ---
 
-# 入門ガイド
+# Getting Started Guide
 
-ANVILでツール作成を始めるための基本的な手順を説明します。
+This guide explains the basic steps to start crafting tools with ANVIL.
 
-## 必要なステーション
+## Required Stations
 
-ANVILでツールを作成するには、以下のステーションが必要です：
+You need the following stations to create tools with ANVIL:
 
-### 1. パーツ鍛造所 (Part Forge)
-バニラの素材からツールパーツを鋳造するためのステーションです。
-鉄インゴット、金インゴット、ダイヤモンドなどを入れてパーツを作成します。
+### 1. Part Forge
+A station for forging tool parts from vanilla materials.
+Insert iron ingots, gold ingots, diamonds, etc. to create parts.
 
-### 2. ツールステーション (Tool Station)
-鋳造したパーツを組み合わせてツールを作成するステーションです。
-各ツールタイプに必要なパーツを配置して組み立てます。
+### 2. Tool Station
+A station for combining forged parts to create tools.
+Place the required parts for each tool type to assemble.
 
-## 基本的な流れ
+## Basic Workflow
 
-### ステップ1: 素材の準備
-まずは素材を集めましょう。初めは鉄や銅などの基本素材から始めることをお勧めします。
+### Step 1: Gather Materials
+First, collect materials. We recommend starting with basic materials like iron or copper.
 
-### ステップ2: パーツの鋳造
-パーツ鍛造所で素材からパーツを作成します。
-同じ素材でもグレードがランダムに決定されるため、より高いグレードを狙いましょう。
+### Step 2: Forge Parts
+Create parts from materials at the Part Forge.
+Even with the same material, grades are randomly determined, so aim for higher grades.
 
-**グレード一覧:**
-- **D** - 最低グレード
-- **C** - 標準グレード
-- **B** - 良グレード
-- **A** - 優グレード
-- **S** - 最高グレード
+**Grade List:**
+- **D** - Lowest grade
+- **C** - Standard grade
+- **B** - Good grade
+- **A** - Excellent grade
+- **S** - Best grade
 
-### ステップ3: ツールの組み立て
-ツールステーションで必要なパーツを配置してツールを作成します。
+### Step 3: Assemble Tools
+Place the required parts at the Tool Station to create tools.
 
-**ピッケルの例:**
-- ヘッド × 1
-- ハンドル × 1
-- バインディング × 1
+**Pickaxe Example:**
+- Head × 1
+- Handle × 1
+- Binding × 1
 
-### ステップ4: ツールの強化
-作成したツールは使用することでレベルアップします。
-レベルアップで獲得したスキルポイントを使ってスキルツリーをカスタマイズしましょう。
+### Step 4: Enhance Tools
+Created tools level up through use.
+Use skill points earned from leveling to customize the skill tree.
 
-## 次のステップ
+## Next Steps
 
-- [パーツ鍛造所の詳細](stations/part-forge.md)
-- [ツールステーションの詳細](stations/tool-station.md)
-- [素材システム](systems/materials.md)
+- [Part Forge Details](stations/part-forge.md)
+- [Tool Station Details](stations/tool-station.md)
+- [Materials System](systems/materials.md)

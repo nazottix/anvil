@@ -1,0 +1,14 @@
+{
+  "item_settings": {
+    "display_name": {
+      "translate": "item.anvil.guide_book"
+    },
+    "tooltip_lines": [
+      {
+        "translate": "tooltip.anvil.guide_book.open"
+      }
+    ]
+  },
+  "default_namespace": "anvil",
+  "start_page": "anvil:guide/index.md"
+}

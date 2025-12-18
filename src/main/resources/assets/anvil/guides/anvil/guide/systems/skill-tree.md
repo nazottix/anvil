@@ -8,90 +8,89 @@ item_ids:
   - anvil:skill_tree_station
 ---
 
-# スキルツリーシステム
+# Skill Tree System
 
-ANVILのスキルツリーは、Path of Exileにインスパイアされた深いビルドカスタマイズシステムです。
-ツールを使用してレベルアップし、獲得したスキルポイントでスキルを習得できます。
+ANVIL's skill tree is a deep build customization system inspired by Path of Exile.
+Level up your tools through use and spend earned skill points to acquire skills.
 
-## レベリング
+## Leveling
 
-### 経験値の獲得
-ツールを使用することで経験値を獲得します。
+### Experience Gain
+Gain experience by using tools.
 
-| アクション | 獲得経験値 |
-|----------|-----------|
-| ブロック破壊 | 1-5 |
-| モブ撃破 | 5-20 |
-| クラフト | 2 |
-| 釣り成功 | 3-10 |
+| Action | Experience |
+|--------|------------|
+| Block Breaking | 1-5 |
+| Mob Defeat | 5-20 |
+| Crafting | 2 |
+| Successful Fishing | 3-10 |
 
-### レベルアップ
-- 最大レベル: **10,000**
-- レベルアップごとに **1スキルポイント** 獲得
-- 特定レベルでボーナスポイント獲得
+### Level Up
+- Max Level: **10,000**
+- Earn **1 Skill Point** per level up
+- Bonus points at certain levels
 
-## スキルツリーの構造
+## Skill Tree Structure
 
-### ノードタイプ
+### Node Types
 
-| タイプ | 説明 | コスト |
-|-------|------|-------|
-| 小ノード | 小さなボーナス | 1ポイント |
-| 中ノード | 中程度のボーナス | 3ポイント |
-| 大ノード | 大きなボーナス | 5ポイント |
-| キーストーン | 強力な効果（デメリットあり） | 10ポイント |
+| Type | Description | Cost |
+|------|-------------|------|
+| Small Node | Minor bonus | 1 point |
+| Medium Node | Moderate bonus | 3 points |
+| Large Node | Major bonus | 5 points |
+| Keystone | Powerful effect (with drawbacks) | 10 points |
 
-### スキルカテゴリ
+### Skill Categories
 
-**攻撃系**
-- 攻撃力アップ
-- クリティカル率アップ
-- クリティカルダメージアップ
+**Offense**
+- Attack damage increase
+- Critical rate increase
+- Critical damage increase
 
-**採掘系**
-- 採掘速度アップ
-- 範囲採掘
-- 幸運効果
+**Mining**
+- Mining speed increase
+- Area mining
+- Fortune effect
 
-**耐久系**
-- 耐久値アップ
-- 耐久消費軽減
-- 自動修復
+**Durability**
+- Durability increase
+- Reduced durability consumption
+- Auto-repair
 
-**特殊系**
-- 経験値ボーナス
-- ドロップ率アップ
-- 特殊効果発動
+**Utility**
+- Experience bonus
+- Drop rate increase
+- Special effect activation
 
-## ジュエルシステム
+## Jewel System
 
-スキルツリーには**ジュエルソケット**があり、
-ジュエルを装着することで追加効果を得られます。
+The skill tree has **Jewel Sockets** where you can equip jewels for additional effects.
 
-### ジュエルの入手
-- モンスタードロップ
-- 宝箱から発見
-- クラフト
+### Obtaining Jewels
+- Monster drops
+- Found in treasure chests
+- Crafting
 
-### ジュエルの種類
-| ジュエル | 効果 |
-|---------|------|
-| ルビー | 攻撃力+5% |
-| サファイア | 採掘速度+10% |
-| エメラルド | 経験値+15% |
-| ダイヤモンド | 全ステータス+3% |
+### Jewel Types
+| Jewel | Effect |
+|-------|--------|
+| Ruby | Attack +5% |
+| Sapphire | Mining Speed +10% |
+| Emerald | Experience +15% |
+| Diamond | All Stats +3% |
 
-## リスペック
+## Respec
 
-**リスペックステーション**でスキルポイントをリセットできます。
+You can reset skill points at the **Respec Station**.
 
-### リスペックアイテム
-| アイテム | 効果 |
-|---------|------|
-| リスペックオーブ | 1ポイントリセット |
-| 完全リスペック | 全ポイントリセット |
+### Respec Items
+| Item | Effect |
+|------|--------|
+| Respec Orb | Reset 1 point |
+| Full Respec | Reset all points |
 
-## 関連項目
+## Related Topics
 
-- [モジュールシステム](modules.md)
-- [ツールステーション](../stations/tool-station.md)
+- [Module System](modules.md)
+- [Tool Station](../stations/tool-station.md)

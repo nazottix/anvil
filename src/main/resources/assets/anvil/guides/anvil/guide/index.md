@@ -7,32 +7,32 @@ navigation:
 
 # ANVIL - Advanced Nexus of Variable Implement Leverage
 
-ANVILへようこそ！このModはMinecraftのツール作成システムを大幅に拡張し、
-深いカスタマイズとレベリング体験を提供します。
+Welcome to ANVIL! This mod significantly expands Minecraft's tool crafting system,
+providing deep customization and leveling experiences.
 
-## 主な機能
+## Main Features
 
-### パーツシステム
-様々な素材からツールパーツを鋳造し、組み合わせてカスタムツールを作成できます。
-各パーツは固有のステータスと特性を持ちます。
+### Parts System
+Forge tool parts from various materials and combine them to create custom tools.
+Each part has unique stats and traits.
 
-### レベリングシステム
-ツールを使用することで経験値を獲得し、最大レベル10,000まで成長させることができます。
-レベルアップごとにスキルポイントを獲得します。
+### Leveling System
+Gain experience by using tools and level them up to a maximum of 10,000.
+Earn skill points with each level up.
 
-### スキルツリー
-獲得したスキルポイントを使って、ツール固有のスキルツリーをカスタマイズできます。
-Path of Exileにインスパイアされた深いビルド選択が可能です。
+### Skill Tree
+Use earned skill points to customize tool-specific skill trees.
+Deep build choices inspired by Path of Exile.
 
-### グリッドモジュール
-ツールにモジュールを配置して追加効果を付与できます。
-テトリスのようなパズル要素で配置を最適化しましょう。
+### Grid Modules
+Place modules on tools to add bonus effects.
+Optimize placement with Tetris-like puzzle elements.
 
-## はじめに
+## Getting Started
 
-1. [入門ガイド](getting-started.md) - ANVILの基本を学ぶ
-2. [パーツ鍛造所](stations/part-forge.md) - パーツの作成方法
-3. [ツールステーション](stations/tool-station.md) - ツールの組み立て
-4. [素材システム](systems/materials.md) - 素材とグレードについて
-5. [スキルツリー](systems/skill-tree.md) - スキルの習得
-6. [モジュールシステム](systems/modules.md) - グリッドモジュールの配置
+1. [Getting Started Guide](getting-started.md) - Learn the basics of ANVIL
+2. [Part Forge](stations/part-forge.md) - How to create parts
+3. [Tool Station](stations/tool-station.md) - Assembling tools
+4. [Materials System](systems/materials.md) - About materials and grades
+5. [Skill Tree](systems/skill-tree.md) - Learning skills
+6. [Module System](systems/modules.md) - Grid module placement

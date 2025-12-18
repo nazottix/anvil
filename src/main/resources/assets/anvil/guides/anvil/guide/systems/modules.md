@@ -8,90 +8,90 @@ item_ids:
   - anvil:core_box_station
 ---
 
-# モジュールシステム
+# Module System
 
-グリッドモジュールシステムは、テトリスのようなパズル要素を持つカスタマイズシステムです。
-ツールにモジュールを配置して追加効果を付与できます。
+The Grid Module System is a customization system with Tetris-like puzzle elements.
+Place modules on tools to grant additional effects.
 
-## コアボックス
+## Core Box
 
-各ツールには**コアボックス**と呼ばれるグリッドスペースがあります。
+Each tool has a grid space called a **Core Box**.
 
-### グリッドサイズ
-| サイズ | グリッド | 解放条件 |
-|-------|---------|---------|
-| Small | 3×3 | 初期 |
-| Medium | 4×4 | レベル50 |
-| Large | 5×5 | レベル200 |
-| Extra Large | 6×6 | レベル500 |
+### Grid Sizes
+| Size | Grid | Unlock Condition |
+|------|------|------------------|
+| Small | 3×3 | Initial |
+| Medium | 4×4 | Level 50 |
+| Large | 5×5 | Level 200 |
+| Extra Large | 6×6 | Level 500 |
 
-## モジュールの配置
+## Module Placement
 
-### 配置ルール
-1. モジュールは回転可能
-2. モジュール同士は重ねられない
-3. グリッド外にはみ出せない
-4. 一度配置したモジュールは取り外し可能
+### Placement Rules
+1. Modules can be rotated
+2. Modules cannot overlap each other
+3. Modules cannot extend outside the grid
+4. Placed modules can be removed
 
-### 重量システム
-各モジュールには**重量**があり、コアボックスには**最大重量**が設定されています。
+### Weight System
+Each module has a **weight**, and the Core Box has a **maximum weight** limit.
 
-| コアボックスサイズ | 最大重量 |
-|-----------------|---------|
+| Core Box Size | Max Weight |
+|---------------|------------|
 | Small | 10 |
 | Medium | 20 |
 | Large | 35 |
 | Extra Large | 50 |
 
-## モジュールの種類
+## Module Types
 
-### 攻撃モジュール
-| モジュール | 形状 | 重量 | 効果 |
-|----------|------|------|------|
-| ダメージアップI | 1×1 | 1 | 攻撃力+2 |
-| ダメージアップII | 2×1 | 3 | 攻撃力+5 |
-| クリティカル | L字 | 4 | クリティカル率+5% |
+### Attack Modules
+| Module | Shape | Weight | Effect |
+|--------|-------|--------|--------|
+| Damage Up I | 1×1 | 1 | Attack +2 |
+| Damage Up II | 2×1 | 3 | Attack +5 |
+| Critical | L-shape | 4 | Critical Rate +5% |
 
-### 採掘モジュール
-| モジュール | 形状 | 重量 | 効果 |
-|----------|------|------|------|
-| スピードアップI | 1×1 | 1 | 採掘速度+5% |
-| スピードアップII | 2×1 | 3 | 採掘速度+12% |
-| 範囲拡張 | T字 | 5 | 3×3範囲採掘 |
+### Mining Modules
+| Module | Shape | Weight | Effect |
+|--------|-------|--------|--------|
+| Speed Up I | 1×1 | 1 | Mining Speed +5% |
+| Speed Up II | 2×1 | 3 | Mining Speed +12% |
+| Area Expansion | T-shape | 5 | 3×3 Area Mining |
 
-### 耐久モジュール
-| モジュール | 形状 | 重量 | 効果 |
-|----------|------|------|------|
-| 頑丈I | 1×1 | 1 | 耐久値+50 |
-| 頑丈II | 2×2 | 4 | 耐久値+200 |
-| 修復 | 十字 | 6 | 時間経過で耐久回復 |
+### Durability Modules
+| Module | Shape | Weight | Effect |
+|--------|-------|--------|--------|
+| Sturdy I | 1×1 | 1 | Durability +50 |
+| Sturdy II | 2×2 | 4 | Durability +200 |
+| Repair | Cross | 6 | Durability regeneration over time |
 
-### ユーティリティモジュール
-| モジュール | 形状 | 重量 | 効果 |
-|----------|------|------|------|
-| 幸運 | 2×1 | 3 | ドロップ率+10% |
-| シルクタッチ | 2×2 | 5 | シルクタッチ効果 |
-| 経験値 | L字 | 4 | 獲得経験値+20% |
+### Utility Modules
+| Module | Shape | Weight | Effect |
+|--------|-------|--------|--------|
+| Fortune | 2×1 | 3 | Drop Rate +10% |
+| Silk Touch | 2×2 | 5 | Silk Touch effect |
+| Experience | L-shape | 4 | Experience Gain +20% |
 
-## モジュールの入手
+## Obtaining Modules
 
-### クラフト
-MODステーションで素材からモジュールをクラフトできます。
+### Crafting
+Craft modules from materials at the MOD Station.
 
-### ドロップ
-モンスターや宝箱からレアモジュールが入手できることがあります。
+### Drops
+Rare modules can be obtained from monsters and treasure chests.
 
-## コアボックスステーション
+## Core Box Station
 
-コアボックスステーションでモジュールの配置・取り外しができます。
+Use the Core Box Station to place and remove modules.
 
-### 操作方法
-1. ツールをスロットに配置
-2. モジュールをグリッドにドラッグ
-3. 右クリックで回転
-4. 配置を確定
+### Controls
+1. Place tool in slot
+2. Drag modules to the grid
+3. Right-click to rotate
+4. Confirm placement
 
-## 関連項目
+## Related Topics
 
-- [スキルツリー](skill-tree.md)
-- [ツールステーション](../stations/tool-station.md)
+- [Skill Tree](skill-tree.md)
+- [Tool Station](../stations/tool-station.md)

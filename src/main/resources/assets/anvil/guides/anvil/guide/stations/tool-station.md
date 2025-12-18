@@ -8,71 +8,71 @@ item_ids:
   - anvil:tool_station
 ---
 
-# ツールステーション (Tool Station)
+# Tool Station
 
-ツールステーションは、鋳造したパーツを組み合わせてカスタムツールを作成するステーションです。
+The Tool Station is a station for combining forged parts to create custom tools.
 
-## 使い方
+## How to Use
 
-### 1. ツールタイプの選択
-作成したいツールの種類を選択します。
+### 1. Select Tool Type
+Select the type of tool you want to create.
 
-### 2. パーツの配置
-各スロットに必要なパーツを配置します。
+### 2. Place Parts
+Place the required parts in each slot.
 
-### 3. ツールの組み立て
-「組み立て」ボタンをクリックしてツールを作成します。
+### 3. Assemble Tool
+Click the "Assemble" button to create the tool.
 
-## ツールタイプと必要パーツ
+## Tool Types and Required Parts
 
-### 採掘ツール
+### Mining Tools
 
-| ツール | ヘッド | ハンドル | バインディング |
-|-------|--------|---------|--------------|
-| ピッケル | 1 | 1 | 1 |
-| 斧 | 1 | 1 | 1 |
-| シャベル | 1 | 1 | 1 |
-| クワ | 1 | 1 | 1 |
+| Tool | Head | Handle | Binding |
+|------|------|--------|---------|
+| Pickaxe | 1 | 1 | 1 |
+| Axe | 1 | 1 | 1 |
+| Shovel | 1 | 1 | 1 |
+| Hoe | 1 | 1 | 1 |
 
-### 戦闘ツール
+### Combat Tools
 
-| ツール | ブレード | ハンドル | ガード |
-|-------|---------|---------|-------|
-| 剣 | 1 | 1 | 1 |
+| Tool | Blade | Handle | Guard |
+|------|-------|--------|-------|
+| Sword | 1 | 1 | 1 |
 
-### 弓
+### Bow
 
-| ツール | ボウリム | ボウストリング | ハンドル |
-|-------|---------|--------------|---------|
-| 弓 | 2 | 1 | 1 |
+| Tool | Bow Limb | Bowstring | Handle |
+|------|----------|-----------|--------|
+| Bow | 2 | 1 | 1 |
 
-### 釣り竿
+### Fishing Rod
 
-| ツール | ロッド | フック | ライン |
-|-------|-------|-------|-------|
-| 釣り竿 | 1 | 1 | 1 |
+| Tool | Rod | Hook | Line |
+|------|-----|------|------|
+| Fishing Rod | 1 | 1 | 1 |
 
-### ハサミ
+### Shears
 
-| ツール | ブレード | ピボット |
-|-------|---------|---------|
-| ハサミ | 2 | 1 |
+| Tool | Blade | Pivot |
+|------|-------|-------|
+| Shears | 2 | 1 |
 
-## ツールのステータス
+## Tool Stats
 
-完成したツールのステータスは、使用したパーツの素材とグレードによって決定されます。
+The stats of completed tools are determined by the materials and grades of the parts used.
 
-- **攻撃力**: ヘッド/ブレードの素材とグレードに依存
-- **採掘速度**: ヘッドの素材とグレードに依存
-- **耐久値**: すべてのパーツの素材とグレードの平均
-- **攻撃速度**: ハンドルの素材とグレードに依存
+- **Attack Damage**: Depends on head/blade material and grade
+- **Mining Speed**: Depends on head material and grade
+- **Durability**: Average of all parts' materials and grades
+- **Attack Speed**: Depends on handle material and grade
 
-## ツールの分解
+## Tool Disassembly
 
-ツールステーションで既存のツールを分解してパーツを回収できます。
-ただし、分解時にパーツが損傷する可能性があります。
+You can disassemble existing tools at the Tool Station to recover parts.
+However, parts may be damaged during disassembly.
 
-## 関連項目
+## Related Topics
 
-- [パーツ鍛造所](part-forge.md)
-- [スキルツリー](../systems/skill-tree.md)
+- [Part Forge](part-forge.md)
+- [Skill Tree](../systems/skill-tree.md)
