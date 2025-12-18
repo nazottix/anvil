@@ -847,5 +847,8 @@
   "gui.anvil.grade_station.max_grade": "最大グレードに到達済み",
   "gui.anvil.grade_station.current_grade": "現在: %s",
   "gui.anvil.grade_station.next_grade": "次: %s",
-  "tooltip.anvil.grade_essence": "グレードステーションでパーツのグレードをアップグレードするために使用"
+  "tooltip.anvil.grade_essence": "グレードステーションでパーツのグレードをアップグレードするために使用",
+
+  "_comment_jei": "=== JEI連携 ===",
+  "gui.jei.anvil.part_forge": "パーツ鍛造所"
 }

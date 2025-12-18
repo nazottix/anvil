@@ -888,5 +888,8 @@
   "gui.anvil.grade_station.max_grade": "Maximum Grade Reached",
   "gui.anvil.grade_station.current_grade": "Current: %s",
   "gui.anvil.grade_station.next_grade": "Next: %s",
-  "tooltip.anvil.grade_essence": "Used to upgrade part grades at the Grade Station"
+  "tooltip.anvil.grade_essence": "Used to upgrade part grades at the Grade Station",
+
+  "_comment_jei": "=== JEI Integration ===",
+  "gui.jei.anvil.part_forge": "Part Forge"
 }
