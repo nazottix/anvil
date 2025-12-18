@@ -57,6 +57,8 @@
   "item.anvil.part_hook": "Hook",
   "item.anvil.part_line": "Line",
   "item.anvil.part_pivot": "Pivot",
+  "item.anvil.part_coating": "Coating",
+  "item.anvil.part_upgrade": "Upgrade",
   "item.anvil.part.named": "%s %s",
 
   "tooltip.anvil.part.no_material": "No material set",

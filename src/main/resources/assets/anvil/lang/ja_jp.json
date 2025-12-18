@@ -56,6 +56,8 @@
   "item.anvil.part_hook": "フック",
   "item.anvil.part_line": "ライン",
   "item.anvil.part_pivot": "ピボット",
+  "item.anvil.part_coating": "コーティング",
+  "item.anvil.part_upgrade": "アップグレード",
   "item.anvil.part.named": "%s %s",
 
   "tooltip.anvil.part.no_material": "素材未設定",

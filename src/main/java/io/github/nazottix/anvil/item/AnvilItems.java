@@ -253,6 +253,24 @@ public class AnvilItems {
             () -> new PartItem(PartType.PIVOT, new Item.Properties())
     );
 
+    /**
+     * コーティングパーツ
+     * 全体コーティング用の追加パーツ
+     */
+    public static final DeferredItem<PartItem> PART_COATING = ANVIL.ITEMS.register(
+            "part_coating",
+            () -> new PartItem(PartType.COATING, new Item.Properties())
+    );
+
+    /**
+     * アップグレードパーツ
+     * 追加効果スロット用のパーツ
+     */
+    public static final DeferredItem<PartItem> PART_UPGRADE = ANVIL.ITEMS.register(
+            "part_upgrade",
+            () -> new PartItem(PartType.UPGRADE, new Item.Properties())
+    );
+
     // ============================================
     // グレードエッセンスアイテム
     // パーツのグレードを上げるために使用
@@ -291,6 +309,9 @@ public class AnvilItems {
         PART_ITEM_MAP.put(PartType.HOOK, PART_HOOK);
         PART_ITEM_MAP.put(PartType.LINE, PART_LINE);
         PART_ITEM_MAP.put(PartType.PIVOT, PART_PIVOT);
+        // 追加パーツのマッピング
+        PART_ITEM_MAP.put(PartType.COATING, PART_COATING);
+        PART_ITEM_MAP.put(PartType.UPGRADE, PART_UPGRADE);
     }
 
     /**

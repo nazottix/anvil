@@ -32,7 +32,8 @@
       "mcp__serena__think_about_collected_information",
       "Bash(del /q \"C:\\Users\\nazot\\AppData\\Local\\Temp\\ijKotlinCoroutine*.gradle\")",
       "Bash(./gradlew runClient:*)",
-      "Bash(python generate_processing_textures.py:*)"
+      "Bash(python generate_processing_textures.py:*)",
+      "mcp__serena__onboarding"
     ]
   }
 }
