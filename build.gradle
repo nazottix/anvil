@@ -20,6 +20,11 @@ group = mod_group_id
 repositories {
     // Add here additional repositories if required by some of the dependencies below.
     mavenCentral() // GuideME dependency
+    // JEI Maven repository
+    maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
 }
 
 base {
@@ -118,12 +123,12 @@ dependencies {
     compileOnly "org.appliedenergistics:guideme:${guideme_version}:api"
     localRuntime "org.appliedenergistics:guideme:${guideme_version}"
 
-    // Example optional mod dependency with JEI
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
-    // compileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
-    // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
-    // localRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
+    // JEI - オプショナル依存（レシピ表示連携）
+    // APIはコンパイル時のみ、フルパッケージは実行時のみ
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    // localRuntimeに追加して、依存関係として公開しない
+    localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
