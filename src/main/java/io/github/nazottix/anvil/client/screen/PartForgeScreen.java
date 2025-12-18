@@ -119,7 +119,10 @@ public class PartForgeScreen extends AbstractContainerScreen<PartForgeMenu> {
     }
 
     /**
-     * パーツタイプドロップダウンを描画（クリックで開閉するスタイル）
+     * パーツタイプドロップダウンのヘッダーを描画（背景レイヤー用）
+     *
+     * ドロップダウンリストはrender()メソッドでスロットの上に描画されるため、
+     * ここではヘッダーのみを描画する。
      */
     private void renderPartTypeDropdown(GuiGraphics guiGraphics, int panelX, int panelY, int mouseX, int mouseY) {
         int dropdownX = panelX + DROPDOWN_X;
@@ -132,11 +135,7 @@ public class PartForgeScreen extends AbstractContainerScreen<PartForgeMenu> {
 
         // ドロップダウンヘッダー（常に表示）
         renderDropdownHeader(guiGraphics, dropdownX, dropdownY, mouseX, mouseY, selectedName);
-
-        // ドロップダウンが開いている場合、リストを描画
-        if (dropdownOpen) {
-            renderDropdownList(guiGraphics, dropdownX, dropdownY + DROPDOWN_CLOSED_HEIGHT, mouseX, mouseY);
-        }
+        // 注: ドロップダウンリストはrender()メソッドで描画（スロットの上に表示するため）
     }
 
     /**
@@ -248,6 +247,21 @@ public class PartForgeScreen extends AbstractContainerScreen<PartForgeMenu> {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
+
+        // ドロップダウンが開いている場合、リストをスロットの上に描画
+        // Z座標を上げて、アイテムやスロットの上に表示されるようにする
+        if (dropdownOpen) {
+            int dropdownX = this.leftPos + DROPDOWN_X;
+            int dropdownY = this.topPos + DROPDOWN_Y + DROPDOWN_CLOSED_HEIGHT;
+
+            // Z座標を手前に移動（アイテムは通常z=200程度で描画されるため、300以上に設定）
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(0, 0, 400);
+            renderDropdownList(guiGraphics, dropdownX, dropdownY, mouseX, mouseY);
+            guiGraphics.pose().popPose();
+        }
+
+        // ツールチップを描画（最前面）
         this.renderTooltip(guiGraphics, mouseX, mouseY);
 
         // ドロップダウンが開いている場合、ホバー中のパーツタイプのツールチップ
