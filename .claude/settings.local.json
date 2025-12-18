@@ -33,7 +33,9 @@
       "Bash(del /q \"C:\\Users\\nazot\\AppData\\Local\\Temp\\ijKotlinCoroutine*.gradle\")",
       "Bash(./gradlew runClient:*)",
       "Bash(python generate_processing_textures.py:*)",
-      "mcp__serena__onboarding"
+      "mcp__serena__onboarding",
+      "WebFetch(domain:modrinth.com)",
+      "WebFetch(domain:guideme.appliedenergistics.org)"
     ]
   }
 }
