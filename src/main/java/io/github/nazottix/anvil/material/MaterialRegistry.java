@@ -78,7 +78,8 @@ public class MaterialRegistry {
         }
 
         materials.put(id, material);
-        LOGGER.debug("素材を登録しました: {} (ティア: {})", id, material.getTier().getDisplayNameJa());
+        // 変更: ティア情報を削除
+        LOGGER.debug("素材を登録しました: {}", id);
     }
 
     /**
@@ -120,18 +121,6 @@ public class MaterialRegistry {
     }
 
     /**
-     * ティアでフィルタリング
-     *
-     * @param tier 素材ティア
-     * @return 指定ティアの素材リスト
-     */
-    public List<Material> getByTier(MaterialTier tier) {
-        return materials.values().stream()
-                .filter(m -> m.getTier() == tier)
-                .collect(Collectors.toList());
-    }
-
-    /**
      * カテゴリでフィルタリング
      *
      * @param category 素材カテゴリ
@@ -140,19 +129,6 @@ public class MaterialRegistry {
     public List<Material> getByCategory(Material.MaterialCategory category) {
         return materials.values().stream()
                 .filter(m -> m.hasCategory(category))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * ティアとカテゴリでフィルタリング
-     *
-     * @param tier 素材ティア
-     * @param category 素材カテゴリ
-     * @return 条件を満たす素材リスト
-     */
-    public List<Material> getByTierAndCategory(MaterialTier tier, Material.MaterialCategory category) {
-        return materials.values().stream()
-                .filter(m -> m.getTier() == tier && m.hasCategory(category))
                 .collect(Collectors.toList());
     }
 

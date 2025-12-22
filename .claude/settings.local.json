@@ -38,7 +38,10 @@
       "WebFetch(domain:guideme.appliedenergistics.org)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "WebFetch(domain:api.github.com)"
+      "WebFetch(domain:api.github.com)",
+      "mcp__serena__find_referencing_symbols",
+      "Bash(del \"D:\\\\modding\\\\anvil\\\\src\\\\main\\\\java\\\\io\\\\github\\\\nazottix\\\\anvil\\\\material\\\\MaterialTier.java\")",
+      "Bash(rm:*)"
     ]
   }
 }

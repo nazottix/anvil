@@ -12,24 +12,25 @@ import static io.github.nazottix.anvil.material.Material.TraitEntry;
  *
  * バニラMinecraftのアイテムを使用した素材を定義します。
  *
- * 素材構成（10段階ティア）:
- * - ティア0（木材）: 2種（木材、竹）
- * - ティア1（石）: 3種（石、フリント、深層岩）
- * - ティア2（銅）: 3種（銅、金、鎖）
- * - ティア3（鉄）: 3種（鉄、レッドストーン、ラピス）
- * - ティア4（ダイヤモンド）: 2種（ダイヤモンド、エメラルド）
- * - ティア5（クォーツ）: 3種（クォーツ、プリズマリン、アメジスト）
- * - ティア6（黒曜石）: 3種（黒曜石、ブレイズ、マグマブロック）
- * - ティア7（エンダー）: 3種（エンダーパール、エンドストーン、シュルカー）
- * - ティア8（伝説）: 1種（ネザライト）
- * - ティア9（神話）: 2種（ネザースター、ドラゴン）
+ * 素材構成:
+ * - 木材: 2種（木材、竹）
+ * - 石: 3種（石、フリント、深層岩）
+ * - 銅: 3種（銅、金、鎖）
+ * - 鉄: 3種（鉄、レッドストーン、ラピス）
+ * - ダイヤモンド: 2種（ダイヤモンド、エメラルド）
+ * - クォーツ: 3種（クォーツ、プリズマリン、アメジスト）
+ * - 黒曜石: 3種（黒曜石、ブレイズ、マグマブロック）
+ * - エンダー: 3種（エンダーパール、エンドストーン、シュルカー）
+ * - 伝説: 1種（ネザライト）
+ * - 神話: 2種（ネザースター、ドラゴン）
  * - 繊維: 1種（糸）
+ * - その他: 3種（骨、サボテン、石炭）
  *
- * 合計: 26種
+ * 合計: 29種
  *
  * 仕様書参照: docs/01_パーツ_素材システム.md - 3.4 マテリアル（素材）システム
  *
- * 変更履歴: 10段階ティア構成を再編成（エンダーティア追加）
+ * 変更履歴: ティア概念を削除、骨・サボテン・石炭を追加
  */
 public final class Materials {
 
@@ -38,12 +39,11 @@ public final class Materials {
     }
 
     // ============================================
-    // ティア0: 木材（2種）- 木材（全木材対応）、竹
+    // 木材（2種）- 木材（全木材対応）、竹
     // ============================================
 
     /** 木材 - 最も基本的な素材（全木材の板材で作成・修理可能、竹は除く） */
     public static final Material WOOD = Material.builder(loc("wood"))
-            .tier(MaterialTier.WOOD)
             .categories(MaterialCategory.WOOD, MaterialCategory.ORGANIC)
             .headStats(60, 2.0f, 0, 1.0f)
             .handleStats(1.0f, 0.0f)
@@ -64,7 +64,6 @@ public final class Materials {
 
     /** 竹 - 軽量だが脆い */
     public static final Material BAMBOO = Material.builder(loc("bamboo"))
-            .tier(MaterialTier.WOOD)
             .categories(MaterialCategory.WOOD, MaterialCategory.ORGANIC)
             .headStats(45, 2.2f, 0, 0.8f)
             .handleStats(0.8f, 0.1f)  // 攻撃速度ボーナス
@@ -90,12 +89,11 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア1: 石（3種）- 黒曜石はティア3に移動
+    // 石（3種）
     // ============================================
 
     /** 石 - 基本的な石素材 */
     public static final Material STONE = Material.builder(loc("stone"))
-            .tier(MaterialTier.STONE)
             .categories(MaterialCategory.STONE)
             .headStats(130, 4.0f, 1, 1.5f)
             .handleStats(0.9f, -0.1f)  // 脆いハンドル
@@ -103,7 +101,6 @@ public final class Materials {
             .bowLimbStats(0.7f, 1.0f)  // 弓には不向き
             .bowstringStats(0.5f, 0.6f)
             .hookStats(0.8f, 0.0f)
-            .headTraits(TraitEntry.of("anvil:stonebound", 1))
             .repairItem(Items.COBBLESTONE)
             .colors(0x8F8F8F, 0x6F6F6F)
             .rarityWeight(1.0)
@@ -111,7 +108,6 @@ public final class Materials {
 
     /** フリント - 鋭い石 */
     public static final Material FLINT = Material.builder(loc("flint"))
-            .tier(MaterialTier.STONE)
             .categories(MaterialCategory.STONE)
             .headStats(100, 3.5f, 1, 2.0f)  // 攻撃力高め
             .handleStats(0.7f, 0.0f)
@@ -128,7 +124,6 @@ public final class Materials {
 
     /** 深層岩 - 地下深くの頑丈な石 */
     public static final Material DEEPSLATE = Material.builder(loc("deepslate"))
-            .tier(MaterialTier.STONE)
             .categories(MaterialCategory.STONE)
             .headStats(180, 3.8f, 1, 1.8f)
             .handleStats(1.1f, -0.1f)
@@ -144,12 +139,11 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア2: 銅（3種）- 銅、金、鎖
+    // 銅（3種）- 銅、金、鎖
     // ============================================
 
-    /** 銅 - 柔軟な金属（ティア2） */
+    /** 銅 - 柔軟な金属 */
     public static final Material COPPER = Material.builder(loc("copper"))
-            .tier(MaterialTier.COPPER)  // 変更: IRON → COPPER（ティア2）
             .categories(MaterialCategory.METAL)
             .headStats(200, 5.5f, 1, 1.8f)  // 変更: 採掘レベル2→1
             .handleStats(0.95f, 0.05f)  // 若干速い
@@ -164,9 +158,8 @@ public final class Materials {
             .rarityWeight(0.95)
             .build();
 
-    /** 金 - 速いが脆い（ティア2） */
+    /** 金 - 速いが脆い */
     public static final Material GOLD = Material.builder(loc("gold"))
-            .tier(MaterialTier.COPPER)  // 変更: IRON → COPPER（ティア2）
             .categories(MaterialCategory.METAL, MaterialCategory.MAGICAL)
             .headStats(50, 12.0f, 1, 1.5f)  // 変更: 採掘レベル2→1、速いが耐久低い
             .handleStats(0.6f, 0.15f)  // 非常に速い
@@ -181,9 +174,8 @@ public final class Materials {
             .rarityWeight(0.7)
             .build();
 
-    /** 鎖 - 繊維用（弦、ライン等）（ティア2） */
+    /** 鎖 - 繊維用（弦、ライン等） */
     public static final Material CHAIN = Material.builder(loc("chain"))
-            .tier(MaterialTier.COPPER)  // 変更: IRON → COPPER（ティア2）
             .categories(MaterialCategory.METAL, MaterialCategory.FIBER)
             .headStats(150, 4.0f, 1, 1.5f)  // 変更: 採掘レベル2→1
             .handleStats(0.9f, 0.0f)
@@ -198,12 +190,11 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア3: 鉄（3種）- 鉄、レッドストーン、ラピス
+    // 鉄（3種）- 鉄、レッドストーン、ラピス
     // ============================================
 
-    /** 鉄 - バランスの取れた金属（ティア3） */
+    /** 鉄 - バランスの取れた金属 */
     public static final Material IRON = Material.builder(loc("iron"))
-            .tier(MaterialTier.IRON)
             .categories(MaterialCategory.METAL)
             .headStats(250, 6.0f, 2, 2.0f)
             .handleStats(1.0f, 0.0f)
@@ -217,9 +208,8 @@ public final class Materials {
             .rarityWeight(1.0)
             .build();
 
-    /** レッドストーン - 魔法的な鉱石（ティア3） */
+    /** レッドストーン - 魔法的な鉱石 */
     public static final Material REDSTONE = Material.builder(loc("redstone"))
-            .tier(MaterialTier.IRON)
             .categories(MaterialCategory.STONE, MaterialCategory.MAGICAL)
             .headStats(180, 5.0f, 2, 1.8f)
             .handleStats(0.85f, 0.1f)
@@ -235,12 +225,11 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア5: クォーツ（3種）- クォーツ、プリズマリン、アメジスト
+    // クォーツ（3種）- クォーツ、プリズマリン、アメジスト
     // ============================================
 
-    /** クォーツ - ネザー産の白い鉱石（ティア5） */
+    /** クォーツ - ネザー産の白い鉱石 */
     public static final Material QUARTZ = Material.builder(loc("quartz"))
-            .tier(MaterialTier.QUARTZ)  // ティア5
             .categories(MaterialCategory.GEM, MaterialCategory.NETHER)
             .headStats(1000, 7.5f, 3, 2.5f)  // 変更: 採掘レベル3
             .handleStats(0.9f, 0.05f)
@@ -255,9 +244,8 @@ public final class Materials {
             .rarityWeight(0.45)
             .build();
 
-    /** ラピスラズリ - 経験値関連（ティア3） */
+    /** ラピスラズリ - 経験値関連 */
     public static final Material LAPIS = Material.builder(loc("lapis"))
-            .tier(MaterialTier.IRON)  // 変更: QUARTZ → IRON（ティア3）
             .categories(MaterialCategory.GEM, MaterialCategory.MAGICAL)
             .headStats(280, 5.5f, 2, 2.0f)  // 変更: ティア3相当のステータス
             .handleStats(0.85f, 0.05f)
@@ -275,9 +263,8 @@ public final class Materials {
             .rarityWeight(0.45)
             .build();
 
-    /** アメジスト - 精度特化（ティア5） */
+    /** アメジスト - 精度特化 */
     public static final Material AMETHYST = Material.builder(loc("amethyst"))
-            .tier(MaterialTier.QUARTZ)  // ティア5
             .categories(MaterialCategory.GEM, MaterialCategory.MAGICAL)
             .headStats(900, 7.2f, 3, 2.3f)  // 変更: 採掘レベル3
             .handleStats(0.9f, 0.08f)
@@ -292,9 +279,8 @@ public final class Materials {
             .rarityWeight(0.5)
             .build();
 
-    /** プリズマリン - 水中特化（ティア5） */
+    /** プリズマリン - 水中特化 */
     public static final Material PRISMARINE = Material.builder(loc("prismarine"))
-            .tier(MaterialTier.QUARTZ)  // ティア5
             .categories(MaterialCategory.GEM, MaterialCategory.MAGICAL)
             .headStats(1100, 7.8f, 3, 2.4f)  // 変更: 採掘レベル3
             .handleStats(1.0f, 0.0f)
@@ -310,12 +296,11 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア4: ダイヤモンド（2種）- ダイヤモンド、エメラルド
+    // ダイヤモンド（2種）- ダイヤモンド、エメラルド
     // ============================================
 
-    /** ダイヤモンド - 高品質な宝石（ティア4） */
+    /** ダイヤモンド - 高品質な宝石 */
     public static final Material DIAMOND = Material.builder(loc("diamond"))
-            .tier(MaterialTier.DIAMOND)  // ティア4
             .categories(MaterialCategory.GEM)
             .headStats(1500, 8.0f, 3, 3.0f)
             .handleStats(1.0f, 0.0f)
@@ -329,9 +314,8 @@ public final class Materials {
             .rarityWeight(0.4)
             .build();
 
-    /** エメラルド - 幸運の宝石（ティア4） */
+    /** エメラルド - 幸運の宝石 */
     public static final Material EMERALD = Material.builder(loc("emerald"))
-            .tier(MaterialTier.DIAMOND)  // ティア4
             .categories(MaterialCategory.GEM, MaterialCategory.MAGICAL)
             .headStats(1200, 7.5f, 3, 2.5f)
             .handleStats(0.9f, 0.05f)
@@ -347,12 +331,11 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア6: 黒曜石（3種）- 黒曜石、ブレイズ、マグマブロック
+    // 黒曜石（3種）- 黒曜石、ブレイズ、マグマブロック
     // ============================================
 
-    /** 黒曜石 - 非常に硬い（ティア6） */
+    /** 黒曜石 - 非常に硬い */
     public static final Material OBSIDIAN = Material.builder(loc("obsidian"))
-            .tier(MaterialTier.OBSIDIAN)  // 変更: DIAMOND → OBSIDIAN（ティア6）
             .categories(MaterialCategory.STONE, MaterialCategory.MAGICAL)
             .headStats(1300, 5.0f, 3, 3.0f)
             .handleStats(1.3f, -0.2f)  // 重くて遅い
@@ -370,9 +353,8 @@ public final class Materials {
             .rarityWeight(0.4)
             .build();
 
-    /** ブレイズ - 炎属性（ティア6） */
+    /** ブレイズ - 炎属性 */
     public static final Material BLAZE = Material.builder(loc("blaze"))
-            .tier(MaterialTier.OBSIDIAN)  // 変更: NETHERITE → OBSIDIAN（ティア6）
             .categories(MaterialCategory.ORGANIC, MaterialCategory.NETHER, MaterialCategory.MAGICAL)
             .headStats(1300, 7.5f, 3, 3.2f)  // ティア6相当のステータス
             .handleStats(0.9f, 0.1f)
@@ -387,9 +369,8 @@ public final class Materials {
             .rarityWeight(0.35)
             .build();
 
-    /** マグマブロック - 溶岩の熱を持つブロック（ティア6） */
+    /** マグマブロック - 溶岩の熱を持つブロック */
     public static final Material MAGMA_BLOCK = Material.builder(loc("magma_block"))
-            .tier(MaterialTier.OBSIDIAN)  // 変更: DIAMOND → OBSIDIAN（ティア6）
             .categories(MaterialCategory.STONE, MaterialCategory.NETHER, MaterialCategory.MAGICAL)
             .headStats(950, 6.5f, 3, 3.0f)
             .handleStats(1.0f, -0.05f)  // 熱くて扱いにくい
@@ -405,12 +386,11 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア7: エンダー（3種）- エンダーパール、エンドストーン、シュルカー
+    // エンダー（3種）- エンダーパール、エンドストーン、シュルカー
     // ============================================
 
-    /** エンダーパール - テレポート・エンド素材（ティア7） */
+    /** エンダーパール - テレポート・エンド素材 */
     public static final Material ENDER_PEARL = Material.builder(loc("ender_pearl"))
-            .tier(MaterialTier.ENDER)  // 変更: OBSIDIAN → ENDER（ティア7）
             .categories(MaterialCategory.MAGICAL, MaterialCategory.END)
             .headStats(1400, 7.5f, 4, 2.5f)  // ティア7相当のステータス
             .handleStats(0.9f, 0.1f)  // 軽量で速い
@@ -425,9 +405,8 @@ public final class Materials {
             .rarityWeight(0.25)
             .build();
 
-    /** エンドストーン - エンド素材（ティア7） */
+    /** エンドストーン - エンド素材 */
     public static final Material END_STONE = Material.builder(loc("end_stone"))
-            .tier(MaterialTier.ENDER)  // 変更: NETHERITE → ENDER（ティア7）
             .categories(MaterialCategory.STONE, MaterialCategory.END)
             .headStats(1500, 7.8f, 4, 3.0f)  // ティア7相当のステータス
             .handleStats(1.1f, -0.05f)
@@ -442,9 +421,8 @@ public final class Materials {
             .rarityWeight(0.2)
             .build();
 
-    /** シュルカー - ユーティリティ特化（ティア7） */
+    /** シュルカー - ユーティリティ特化 */
     public static final Material SHULKER = Material.builder(loc("shulker"))
-            .tier(MaterialTier.ENDER)  // 変更: NETHERITE → ENDER（ティア7）
             .categories(MaterialCategory.ORGANIC, MaterialCategory.END, MaterialCategory.MAGICAL)
             .headStats(1450, 7.2f, 4, 2.8f)  // ティア7相当のステータス
             .handleStats(1.05f, 0.05f)
@@ -460,12 +438,11 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア8: 伝説（1種）- ネザライト
+    // 伝説（1種）- ネザライト
     // ============================================
 
-    /** ネザライト - 最強のバニラ素材（ティア8） */
+    /** ネザライト - 最強のバニラ素材 */
     public static final Material NETHERITE = Material.builder(loc("netherite"))
-            .tier(MaterialTier.LEGENDARY)  // 変更: NETHERITE → LEGENDARY（ティア8）
             .categories(MaterialCategory.METAL, MaterialCategory.ALLOY, MaterialCategory.NETHER)
             .headStats(2000, 9.0f, 5, 4.0f)  // ティア8相当のステータス
             .handleStats(1.2f, 0.0f)
@@ -484,12 +461,11 @@ public final class Materials {
             .build();
 
     // ============================================
-    // ティア9: 神話（2種）- ネザースター、ドラゴン
+    // 神話（2種）- ネザースター、ドラゴン
     // ============================================
 
-    /** ネザースター - ウィザー討伐報酬、最強クラスの素材（ティア9） */
+    /** ネザースター - ウィザー討伐報酬、最強クラスの素材 */
     public static final Material NETHER_STAR = Material.builder(loc("nether_star"))
-            .tier(MaterialTier.MYTHIC)  // 変更: LEGENDARY → MYTHIC（ティア9）
             .categories(MaterialCategory.MAGICAL, MaterialCategory.NETHER)
             .headStats(2500, 10.0f, 6, 5.0f)  // ティア9相当のステータス
             .handleStats(1.3f, 0.1f)  // 耐久・速度両方ボーナス
@@ -507,9 +483,8 @@ public final class Materials {
             .rarityWeight(0.05)  // 非常にレア
             .build();
 
-    /** ドラゴン - エンダードラゴン討伐報酬（ドラゴンヘッドから作成）（ティア9） */
+    /** ドラゴン - エンダードラゴン討伐報酬（ドラゴンヘッドから作成） */
     public static final Material DRAGON = Material.builder(loc("dragon"))
-            .tier(MaterialTier.MYTHIC)  // 変更: LEGENDARY → MYTHIC（ティア9）
             .categories(MaterialCategory.ORGANIC, MaterialCategory.END, MaterialCategory.MAGICAL)
             .headStats(2800, 9.5f, 6, 5.5f)  // ティア9相当のステータス
             .handleStats(1.25f, 0.05f)
@@ -533,7 +508,6 @@ public final class Materials {
 
     /** 糸 - 基本の繊維 */
     public static final Material STRING = Material.builder(loc("string"))
-            .tier(MaterialTier.WOOD)
             .categories(MaterialCategory.ORGANIC, MaterialCategory.FIBER)
             .headStats(30, 1.0f, 0, 0.5f)
             .handleStats(0.7f, 0.05f)
@@ -544,6 +518,58 @@ public final class Materials {
             .repairItem(Items.STRING)
             .colors(0xEEEEEE, 0xDDDDDD)
             .rarityWeight(1.0)
+            .build();
+
+    // ============================================
+    // その他素材（3種）- 骨、サボテン、石炭
+    // ============================================
+
+    /** 骨 - 軽量だが脆い有機素材 */
+    public static final Material BONE = Material.builder(loc("bone"))
+            .categories(MaterialCategory.ORGANIC)
+            .headStats(80, 3.0f, 0, 1.8f)  // 攻撃力やや高め
+            .handleStats(0.75f, 0.1f)  // 軽量で速い
+            .bindingStats(1.0f)
+            .bowLimbStats(0.9f, 0.9f)
+            .bowstringStats(0.6f, 0.7f)
+            .hookStats(1.1f, 0.05f)  // 釣り針として使える
+            .headTraits(TraitEntry.of("anvil:jagged", 1))  // 骨は鋭い
+            .handleTraits(TraitEntry.of("anvil:lightweight", 1))
+            .repairItem(Items.BONE)
+            .colors(0xE3DAC9, 0xD4C4A8)  // 骨の色
+            .rarityWeight(0.9)
+            .build();
+
+    /** サボテン - 棘による追加ダメージ */
+    public static final Material CACTUS = Material.builder(loc("cactus"))
+            .categories(MaterialCategory.ORGANIC, MaterialCategory.WOOD)
+            .headStats(50, 2.5f, 0, 2.0f)  // 低耐久だが攻撃力高め
+            .handleStats(0.6f, 0.0f)  // ハンドルには不向き（棘が痛い）
+            .bindingStats(0.9f)
+            .bowLimbStats(0.7f, 0.8f)
+            .bowstringStats(0.5f, 0.6f)
+            .hookStats(1.2f, 0.08f)  // 棘で引っかかりやすい
+            .headTraits(TraitEntry.of("anvil:jagged", 2))  // 棘による追加ダメージ
+            .handleTraits(TraitEntry.of("anvil:jagged", 1))
+            .repairItem(Items.CACTUS)
+            .colors(0x5B8731, 0x3D5E1F)  // サボテンの緑色
+            .rarityWeight(0.85)
+            .build();
+
+    /** 石炭 - 燃焼効果を持つ素材 */
+    public static final Material COAL = Material.builder(loc("coal"))
+            .categories(MaterialCategory.STONE)
+            .headStats(100, 3.5f, 1, 1.5f)
+            .handleStats(0.8f, 0.0f)
+            .bindingStats(1.1f)
+            .bowLimbStats(0.6f, 0.9f)
+            .bowstringStats(0.5f, 0.6f)
+            .hookStats(0.7f, 0.0f)
+            .headTraits(TraitEntry.of("anvil:fiery", 1))  // 燃焼効果
+            .handleTraits(TraitEntry.of("anvil:auto_smelt", 1))  // 自動精錬
+            .repairItem(Items.COAL)
+            .colors(0x2D2D2D, 0x1A1A1A)  // 石炭の黒色
+            .rarityWeight(0.95)
             .build();
 
     // ============================================
@@ -566,52 +592,57 @@ public final class Materials {
      * @param registry 登録先レジストリ
      */
     public static void registerAll(MaterialRegistry registry) {
-        // ティア0: 木材（2種）
+        // 木材（2種）
         registry.register(WOOD);
         registry.register(BAMBOO);
 
-        // ティア1: 石（3種）
+        // 石（3種）
         registry.register(STONE);
         registry.register(FLINT);
         registry.register(DEEPSLATE);
 
-        // ティア2: 銅（3種）
+        // 銅（3種）
         registry.register(COPPER);
         registry.register(GOLD);
         registry.register(CHAIN);
 
-        // ティア3: 鉄（3種）
+        // 鉄（3種）
         registry.register(IRON);
         registry.register(REDSTONE);
         registry.register(LAPIS);
 
-        // ティア4: ダイヤモンド（2種）
+        // ダイヤモンド（2種）
         registry.register(DIAMOND);
         registry.register(EMERALD);
 
-        // ティア5: クォーツ（3種）
+        // クォーツ（3種）
         registry.register(QUARTZ);
         registry.register(PRISMARINE);
         registry.register(AMETHYST);
 
-        // ティア6: 黒曜石（3種）
+        // 黒曜石（3種）
         registry.register(OBSIDIAN);
         registry.register(BLAZE);
         registry.register(MAGMA_BLOCK);
 
-        // ティア7: エンダー（3種）
+        // エンダー（3種）
         registry.register(ENDER_PEARL);
         registry.register(END_STONE);
         registry.register(SHULKER);
 
-        // ティア8: 伝説（1種）
+        // 伝説（1種）
         registry.register(NETHERITE);
 
-        // ティア9: 神話（2種）
+        // 神話（2種）
         registry.register(NETHER_STAR);
         registry.register(DRAGON);
 
-        // 繊維（1種）- ティア0相当
+        // 繊維（1種）
         registry.register(STRING);
+
+        // その他（3種）
+        registry.register(BONE);
+        registry.register(CACTUS);
+        registry.register(COAL);
     }
 }

@@ -12,9 +12,10 @@ import java.util.Set;
  * 素材データクラス
  *
  * ツールパーツに使用できる素材を定義します。
- * 各素材はティア、カテゴリ、各パーツタイプでのステータス、特性を持ちます。
+ * 各素材はカテゴリ、各パーツタイプでのステータス、特性を持ちます。
  *
  * 仕様書参照: docs/01_パーツ_素材システム.md - 3.4 マテリアル（素材）システム
+ * 変更履歴: ティア概念を削除
  */
 public class Material {
 
@@ -23,9 +24,6 @@ public class Material {
 
     // 表示名（ローカライズキー）
     private final String translationKey;
-
-    // 素材ティア（0-6）
-    private final MaterialTier tier;
 
     // 素材カテゴリ（metal, wood, stone等）
     private final Set<MaterialCategory> categories;
@@ -61,7 +59,6 @@ public class Material {
     private Material(Builder builder) {
         this.id = builder.id;
         this.translationKey = builder.translationKey;
-        this.tier = builder.tier;
         this.categories = builder.categories;
         this.headStats = builder.headStats;
         this.handleStats = builder.handleStats;
@@ -90,10 +87,6 @@ public class Material {
 
     public String getTranslationKey() {
         return translationKey;
-    }
-
-    public MaterialTier getTier() {
-        return tier;
     }
 
     public Set<MaterialCategory> getCategories() {
@@ -216,7 +209,6 @@ public class Material {
     public static class Builder {
         private final ResourceLocation id;
         private String translationKey;
-        private MaterialTier tier = MaterialTier.WOOD;
         private Set<MaterialCategory> categories = Set.of();
 
         // ステータス（デフォルト値で初期化）
@@ -247,11 +239,6 @@ public class Material {
 
         public Builder translationKey(String key) {
             this.translationKey = key;
-            return this;
-        }
-
-        public Builder tier(MaterialTier tier) {
-            this.tier = tier;
             return this;
         }
 
